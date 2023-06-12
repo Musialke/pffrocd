@@ -163,7 +163,7 @@ int main(int argc, char** argv) {
 	int32_t test_op = -1;
 	e_mt_gen_alg mt_alg = MT_OT;
 	uint32_t test_bit = 0;
-	double fpa = 0, fpb = 0;
+	double fpa = 10.52, fpb = 1.30;
 
 	read_test_options(&argc, &argv, &role, &bitlen, &nvals, &secparam, &address,
 		&port, &test_op, &test_bit, &fpa, &fpb);
