@@ -20,6 +20,7 @@
 #include "../../abycore/aby/abyparty.h"
 #include "../../abycore/circuit/share.h"
 #include "../../abycore/circuit/booleancircuits.h"
+#include "../../abycore/circuit/arithmeticcircuits.h"
 #include "../../abycore/sharing/sharing.h"
 #include <cassert>
 #include <iomanip>
@@ -77,15 +78,16 @@ void test_verilog_add64_SIMD(e_role role, const std::string& address, uint16_t p
 
 	std::vector<Sharing*>& sharings = party->GetSharings();
 
-	BooleanCircuit* circ = (BooleanCircuit*) sharings[sharing]->GetCircuitBuildRoutine();
-
+	BooleanCircuit* bc = (BooleanCircuit*) sharings[S_BOOL]->GetCircuitBuildRoutine();
+	ArithmeticCircuit* ac = (ArithmeticCircuit*) sharings[S_ARITH]->GetCircuitBuildRoutine();
+	
 	// create two arrays of random doubles
 	uint64_t xvals[nvals];
 	uint64_t yvals[nvals];
 
 	// init for random values
 	double lower_bound = 0;
-   	double upper_bound = 100;
+   	double upper_bound = 10;
    	std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
    	std::default_random_engine re;
 
@@ -104,12 +106,57 @@ void test_verilog_add64_SIMD(e_role role, const std::string& address, uint16_t p
 
 
 	// SIMD input gates
-	share* s_xin = circ->PutSIMDINGate(nvals, xvals, bitlen, SERVER);
-	share* s_yin = circ->PutSIMDINGate(nvals, yvals, bitlen, CLIENT);
+	share* s_xin = bc->PutSIMDINGate(nvals, xvals, bitlen, SERVER);
+	share* s_yin = bc->PutSIMDINGate(nvals, yvals, bitlen, CLIENT);
 
-	share *s_product = circ->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
+	share *s_product = bc->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
 
-	share *s_product_out = circ->PutOUTGate(s_product, ALL);
+	share *s_product_split = bc->PutSplitterGate(s_product);
+
+
+	share *s_product_added = s_product_split->get_wire_ids_as_share(0);
+
+	bc->PutPrintValueGate(s_product_added, "First wire");
+
+	share *s_next_wire;
+
+	for (int i = 1; i<nvals; i++) {
+		s_next_wire = s_product_split->get_wire_ids_as_share(i);
+		//s_product_added = bc->PutFPGate(s_product_added, s_next_wire, ADD);
+		bc->PutPrintValueGate(s_next_wire, "next wire");
+	}
+
+	share* s_product_out = bc->PutOUTGate(s_product_added, ALL);
+
+	// // testing
+
+	// share *s_x;
+
+	// s_x = ac->PutB2AGate(s_product);
+
+	// // split SIMD gate to separate wires (size many)
+	// s_x = ac->PutSplitterGate(s_x);
+
+	// // add up the individual multiplication results and store result on wire 0
+	// // in arithmetic sharing ADD is for free, and does not add circuit depth, thus simple sequential adding
+	// for (int i = 1; i < nvals; i++) {
+	// 	s_x->set_wire_id(0, ac->PutADDGate(s_x->get_wire_id(0), s_x->get_wire_id(i)));
+	// }
+
+	// // discard all wires, except the addition result
+	// s_x->set_bitlength(1);
+
+	// share *s_product_out = ac->PutOUTGate(s_x, ALL);
+
+
+	// share *s_product_test = bc->PutSplitterGate(s_product);
+	// share *s_temp = bc->PutFPGate(s_product_test->get_wire_ids_as_share(0), s_product_test->get_wire_ids_as_share(1), ADD, bitlen, nvals, no_status);
+	// bc->PutPrintValueGate (s_temp,"Temp share\n");
+	// for (int i = 1; i < nvals; i++) {
+	// share *s_temp = circ->PutFPGate(s_product_test->get_wire_ids_as_share(0), s_product_test->get_wire_ids_as_share(i), ADD, bitlen, nvals, no_status);
+	// circ->PutPrintValueGate (s_temp,"Temp share\n");
+	// // 	//s_product_test->set_wire_id(0, );
+	// }
 
 	party->ExecCircuit();
 
@@ -117,15 +164,20 @@ void test_verilog_add64_SIMD(e_role role, const std::string& address, uint16_t p
 	uint32_t out_bitlen_product, out_nvals;
 	uint64_t *out_vals_product;
 
-	s_product_out->get_clear_value_vec(&out_vals_product, &out_bitlen_product, &out_nvals);
+	// s_product_out->get_clear_value_vec(&out_vals_product, &out_bitlen_product, &out_nvals);
 
-	// printing result
-	for (uint32_t i = 0; i < nvals; i++) {
-		// dereference output value as double without casting the content
-		double val = *((double*) &out_vals_product[i]);
-		std::cout << "product: " << val << " = " << *(double*) &xvals[i] << " * " << *(double*) &yvals[i] << " | nv: " << out_nvals
-		<< " bitlen: " << out_bitlen_product << std::endl;
-	}
+	// // printing result
+	// for (uint32_t i = 0; i < nvals; i++) {
+	// 	// dereference output value as double without casting the content
+	// 	double val = *((double*) &out_vals_product[i]);
+	// 	std::cout << "product: " << val << " = " << *(double*) &xvals[i] << " * " << *(double*) &yvals[i] << std::endl;
+	// }
+
+	uint32_t *sqrt_out_vals = (uint32_t*) s_product_out->get_clear_value_ptr();
+
+	double val = *((double*) sqrt_out_vals);
+
+	std::cout << "DOT_PRODUCT: " << val << std::endl;
 
 }
 
