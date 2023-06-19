@@ -80,7 +80,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string& address, uint16_t p
 
 	BooleanCircuit* bc = (BooleanCircuit*) sharings[S_BOOL]->GetCircuitBuildRoutine();
 	ArithmeticCircuit* ac = (ArithmeticCircuit*) sharings[S_ARITH]->GetCircuitBuildRoutine();
-	YaoShar* ac = (ArithmeticCircuit*) sharings[S_ARITH]->GetCircuitBuildRoutine();
+	Circuit* yc = sharings[S_YAO]->GetCircuitBuildRoutine();
 
 	
 	// create two arrays of random doubles
