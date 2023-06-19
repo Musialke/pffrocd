@@ -92,92 +92,56 @@ void test_verilog_add64_SIMD(e_role role, const std::string& address, uint16_t p
    	std::default_random_engine re;
 
 
-	for (uint32_t i = 0; i < nvals; i++) {
+	// for (uint32_t i = 0; i < nvals; i++) {
+	// 	double random_x = unif(re);
+	// 	double random_y = unif(re);
+
+	// 	uint64_t *xptr = (uint64_t*) &random_x;
+	// 	uint64_t *yptr = (uint64_t*) &random_y;
+
+	// 	xvals[i] = *xptr;
+	// 	yvals[i] = *yptr;
+
+	// }
+
+
+	// input gates
+	share* s_xins[nvals];
+	share* s_yins[nvals];
+
+	for (int i = 0; i < nvals; i++) {
 		double random_x = unif(re);
 		double random_y = unif(re);
-
 		uint64_t *xptr = (uint64_t*) &random_x;
 		uint64_t *yptr = (uint64_t*) &random_y;
 
-		xvals[i] = *xptr;
-		yvals[i] = *yptr;
-
+		s_xins[i] = bc->PutINGate(xptr, bitlen, SERVER);
+		s_yins[i] = bc->PutINGate(yptr, bitlen, CLIENT);
 	}
 
 
-	// SIMD input gates
-	share* s_xin = bc->PutSIMDINGate(nvals, xvals, bitlen, SERVER);
-	share* s_yin = bc->PutSIMDINGate(nvals, yvals, bitlen, CLIENT);
 
-	share *s_product = bc->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
+	share* s_i = bc->PutFPGate(s_xins[0], s_yins[0], MUL);
+	std::cout << "this gets printed" << std::endl;
+	share* s_product = bc->PutFPGate(s_product, s_i, ADD); //this line breaks it
+	std::cout << "this does not" << std::endl;
 
-	share *s_product_split = bc->PutSplitterGate(s_product);
-
-
-	share *s_product_added = s_product_split->get_wire_ids_as_share(0);
-
-	bc->PutPrintValueGate(s_product_added, "First wire");
-
-	share *s_next_wire;
-
-	for (int i = 1; i<nvals; i++) {
-		s_next_wire = s_product_split->get_wire_ids_as_share(i);
-		//s_product_added = bc->PutFPGate(s_product_added, s_next_wire, ADD);
-		bc->PutPrintValueGate(s_next_wire, "next wire");
+	for (int i = 1; i < nvals; i++) {
+		s_i = bc->PutFPGate(s_xins[i], s_yins[i], MUL);
+		s_product = bc->PutFPGate(s_product, s_i, ADD);
 	}
 
-	share* s_product_out = bc->PutOUTGate(s_product_added, ALL);
-
-	// // testing
-
-	// share *s_x;
-
-	// s_x = ac->PutB2AGate(s_product);
-
-	// // split SIMD gate to separate wires (size many)
-	// s_x = ac->PutSplitterGate(s_x);
-
-	// // add up the individual multiplication results and store result on wire 0
-	// // in arithmetic sharing ADD is for free, and does not add circuit depth, thus simple sequential adding
-	// for (int i = 1; i < nvals; i++) {
-	// 	s_x->set_wire_id(0, ac->PutADDGate(s_x->get_wire_id(0), s_x->get_wire_id(i)));
-	// }
-
-	// // discard all wires, except the addition result
-	// s_x->set_bitlength(1);
-
-	// share *s_product_out = ac->PutOUTGate(s_x, ALL);
-
-
-	// share *s_product_test = bc->PutSplitterGate(s_product);
-	// share *s_temp = bc->PutFPGate(s_product_test->get_wire_ids_as_share(0), s_product_test->get_wire_ids_as_share(1), ADD, bitlen, nvals, no_status);
-	// bc->PutPrintValueGate (s_temp,"Temp share\n");
-	// for (int i = 1; i < nvals; i++) {
-	// share *s_temp = circ->PutFPGate(s_product_test->get_wire_ids_as_share(0), s_product_test->get_wire_ids_as_share(i), ADD, bitlen, nvals, no_status);
-	// circ->PutPrintValueGate (s_temp,"Temp share\n");
-	// // 	//s_product_test->set_wire_id(0, );
-	// }
+	share* s_product_out = bc->PutOUTGate(s_product, ALL);
 
 	party->ExecCircuit();
 
-	// retrieve plantext output
-	uint32_t out_bitlen_product, out_nvals;
-	uint64_t *out_vals_product;
+	uint32_t *product_out_vals = (uint32_t*) s_product_out->get_clear_value_ptr();
 
-	// s_product_out->get_clear_value_vec(&out_vals_product, &out_bitlen_product, &out_nvals);
+	float val = *((float*) product_out_vals);
 
-	// // printing result
-	// for (uint32_t i = 0; i < nvals; i++) {
-	// 	// dereference output value as double without casting the content
-	// 	double val = *((double*) &out_vals_product[i]);
-	// 	std::cout << "product: " << val << " = " << *(double*) &xvals[i] << " * " << *(double*) &yvals[i] << std::endl;
-	// }
+	std::cout << "DOT_PRODUCT RES: " << val << " = " << std::endl;
 
-	uint32_t *sqrt_out_vals = (uint32_t*) s_product_out->get_clear_value_ptr();
-
-	double val = *((double*) sqrt_out_vals);
-
-	std::cout << "DOT_PRODUCT: " << val << std::endl;
+	
 
 }
 
@@ -185,7 +149,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string& address, uint16_t p
 int main(int argc, char** argv) {
 
 	e_role role;
-	uint32_t bitlen = 1, nvals = 128, secparam = 128, nthreads = 1;
+	uint32_t bitlen = 64, nvals = 128, secparam = 128, nthreads = 1;
 
 	uint16_t port = 7766;
 	std::string address = "127.0.0.1";

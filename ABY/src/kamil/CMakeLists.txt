@@ -1,2 +1,4 @@
 add_subdirectory(float_add)
 add_subdirectory(cos_sim)
+add_subdirectory(cos_sim_simd)
+add_subdirectory(cos_sim_int)
