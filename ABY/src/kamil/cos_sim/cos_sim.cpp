@@ -109,9 +109,22 @@ void test_verilog_add64_SIMD(e_role role, const std::string& address, uint16_t p
 	share* s_xins[nvals];
 	share* s_yins[nvals];
 
+	// for verification
+
+	double xs[nvals];
+	double ys[nvals];
+	double x_times_y[nvals];
+	double dot_product = 0;
+
 	for (int i = 0; i < nvals; i++) {
 		double random_x = unif(re);
 		double random_y = unif(re);
+
+		xs[i] = random_x;
+		ys[i] = random_y;
+		x_times_y[i] = xs[i] * ys[i];
+		dot_product += x_times_y[i];
+
 		uint64_t *xptr = (uint64_t*) &random_x;
 		uint64_t *yptr = (uint64_t*) &random_y;
 
@@ -122,9 +135,10 @@ void test_verilog_add64_SIMD(e_role role, const std::string& address, uint16_t p
 
 
 	share* s_i = bc->PutFPGate(s_xins[0], s_yins[0], MUL);
-	std::cout << "this gets printed" << std::endl;
-	share* s_product = bc->PutFPGate(s_product, s_i, ADD); //this line breaks it
-	std::cout << "this does not" << std::endl;
+	//std::cout << "this gets printed" << std::endl;
+	//share* s_product = bc->PutFPGate(s_product, s_i, ADD); //this line breaks it
+	share* s_product = s_i;
+	//std::cout << "this does not" << std::endl;
 
 	for (int i = 1; i < nvals; i++) {
 		s_i = bc->PutFPGate(s_xins[i], s_yins[i], MUL);
@@ -139,7 +153,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string& address, uint16_t p
 
 	float val = *((float*) product_out_vals);
 
-	std::cout << "DOT_PRODUCT RES: " << val << " = " << std::endl;
+	std::cout << "circuit result: " << val << std::endl
+	<< "verification result: " << dot_product << std::endl;
 
 	
 
