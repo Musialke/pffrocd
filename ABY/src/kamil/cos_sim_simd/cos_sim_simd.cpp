@@ -113,26 +113,28 @@ void test_verilog_add64_SIMD(e_role role, const std::string& address, uint16_t p
 
 	share *s_product = bc->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
 
-	//bc->PutPrintValueGate(s_product, "s_product");
+	// bc->PutPrintValueGate(s_product, "s_product");
 
-	share *s_product_split = bc->PutSplitterGate(s_product);
+	// share *s_product_split = bc->PutSplitterGate(s_product);
 
-	bc->PutPrintValueGate(s_product_split, "s_product_split");
+	// bc->PutPrintValueGate(s_product_split, "s_product_split");
 
 
-	share *s_product_added = s_product_split->get_wire_ids_as_share(0);
+	// share *s_product_added = s_product_split->get_wire_ids_as_share(0);
 
-	bc->PutPrintValueGate(s_product_added, "First wire");
+	// bc->PutPrintValueGate(s_product_added, "First wire");
 
-	share *s_next_wire;
+	// share *s_next_wire;
 
-	for (int i = 1; i<nvals; i++) {
-		s_next_wire = s_product_split->get_wire_ids_as_share(i);
-		//s_product_added = bc->PutFPGate(s_product_added, s_next_wire, ADD, bitlen, nvals, no_status);
-		bc->PutPrintValueGate(s_next_wire, "next wire");
-	}
+	// for (int i = 1; i<nvals; i++) {
+	// 	s_next_wire = s_product_split->get_wire_ids_as_share(i);
+	// 	//s_product_added = bc->PutFPGate(s_product_added, s_next_wire, ADD, bitlen, nvals, no_status);
+	// 	bc->PutPrintValueGate(s_next_wire, "next wire");
+	// }
 
-	share* s_product_out = bc->PutOUTGate(s_product_added, ALL);
+	// share* s_product_out = bc->PutOUTGate(s_product_added, ALL);
+
+	share* s_product_out = bc->PutOUTGate(s_product, ALL);
 
 	// // testing
 
@@ -170,20 +172,29 @@ void test_verilog_add64_SIMD(e_role role, const std::string& address, uint16_t p
 	uint32_t out_bitlen_product, out_nvals;
 	uint64_t *out_vals_product;
 
-	// s_product_out->get_clear_value_vec(&out_vals_product, &out_bitlen_product, &out_nvals);
+	s_product_out->get_clear_value_vec(&out_vals_product, &out_bitlen_product, &out_nvals);
 
-	// // printing result
-	// for (uint32_t i = 0; i < nvals; i++) {
-	// 	// dereference output value as double without casting the content
-	// 	double val = *((double*) &out_vals_product[i]);
-	// 	std::cout << "product: " << val << " = " << *(double*) &xvals[i] << " * " << *(double*) &yvals[i] << std::endl;
-	// }
+	// printing result
 
-	uint32_t *sqrt_out_vals = (uint32_t*) s_product_out->get_clear_value_ptr();
+	std::cout << "Circuit results:" << std::endl;
 
-	double val = *((double*) sqrt_out_vals);
+	std::cout << "s_product nvals: " << s_product->get_nvals() << std::endl;
+	std::cout << "s_product bitlength: " << s_product->get_bitlength() << std::endl;
 
-	std::cout << "DOT_PRODUCT: " << val << std::endl;
+	for (uint32_t i = 0; i < nvals; i++) {
+		// dereference output value as double without casting the content
+		double val = *((double*) &out_vals_product[i]);
+		double orig_x_i = *(double*) &xvals[i];
+		double orig_y_i = *(double*) &yvals[i];
+		double ver_result = orig_x_i * orig_y_i;
+		std::cout << i << " | circuit product: " << val << " --- " << "verification: " << ver_result << " = " << *(double*) &xvals[i] << " * " << *(double*) &yvals[i] << std::endl;
+	}
+
+	// uint32_t *sqrt_out_vals = (uint32_t*) s_product_out->get_clear_value_ptr();
+
+	// double val = *((double*) sqrt_out_vals);
+
+	// std::cout << "DOT_PRODUCT: " << val << std::endl;
 
 }
 
@@ -204,8 +215,6 @@ int main(int argc, char** argv) {
 		&port, &test_op, &test_bit, &fpa, &fpb);
 
 	std::cout << std::fixed << std::setprecision(3);
-	std::cout << "double input values: " << fpa << " ; " << fpb << std::endl;
-
 	seclvl seclvl = get_sec_lvl(secparam);
 
 

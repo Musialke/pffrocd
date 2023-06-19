@@ -1,0 +1,168 @@
+Online time is distributed as follows: 
+Bool: local gates: 1.183, interactive gates: 1.404, layer finish: 1.003
+Yao: local gates: 0.027, interactive gates: 0.032, layer finish: 0.010
+Yao Rev: local gates: 0.027, interactive gates: 0.029, layer finish: 0.017
+Arith: local gates: 0.030, interactive gates: 0.030, layer finish: 0.038
+SPLUT: local gates: 0.032, interactive gates: 0.023, layer finish: 0.154
+Communication: 7.528
+
+Complexities: 
+Boolean Sharing: ANDs: 1416704 (1-bit) ; Depth: 113
+Total Vec AND: 1416704
+Total Non-Vec AND: 1416704
+XOR vals: 1515008 gates: 11836
+Comb gates: 0, CombStruct gates: 0, Perm gates: 0, Subset gates: 0, Split gates: 0
+Yao: ANDs: 0 ; Depth: 0
+Reverse Yao: ANDs: 0 ; Depth: 0
+Arithmetic Sharing: MULs: 0 ; Depth: 0
+SP-LUT Sharing: OT-gates: Total OT gates = 0; Depth: 1
+Total number of gates: 23098 Total depth: 113
+Timings: 
+Total =		271.761 ms
+Init =		0.074 ms
+CircuitGen =	0.037 ms
+Network =	0.630 ms
+BaseOTs =	207.643 ms
+Setup =		259.993 ms
+OTExtension =	258.421 ms
+Garbling =	0.001 ms
+Online =	11.767 ms
+
+Communication: 
+Total Sent / Rcv	23041191  bytes / 23041191 bytes
+BaseOTs Sent / Rcv	49956  bytes / 49956 bytes
+Setup Sent / Rcv	22683941  bytes / 22683941 bytes
+OTExtension Sent / Rcv	22683941  bytes / 22683941 bytes
+Garbling Sent / Rcv	0  bytes / 0 bytes
+Online Sent / Rcv	357250  bytes / 357250 bytes
+Circuit results:
+s_product nvals: 128
+s_product bitlength: 64
+0 | circuit product: 6.033 --- verification: 6.033 = 1.315 * 4.587
+1 | circuit product: 14.864 --- verification: 14.864 = 2.190 * 6.789
+2 | circuit product: 48.549 --- verification: 48.549 = 9.347 * 5.194
+3 | circuit product: 1.831 --- verification: 1.831 = 0.346 * 5.297
+4 | circuit product: 0.051 --- verification: 0.051 = 0.077 * 0.668
+5 | circuit product: 63.900 --- verification: 63.900 = 6.868 * 9.304
+6 | circuit product: 34.457 --- verification: 34.457 = 5.269 * 6.539
+7 | circuit product: 53.445 --- verification: 53.445 = 7.012 * 7.622
+8 | circuit product: 1.558 --- verification: 1.558 = 0.475 * 3.282
+9 | circuit product: 27.635 --- verification: 27.635 = 7.564 * 3.653
+10 | circuit product: 74.021 --- verification: 74.021 = 9.826 * 7.534
+11 | circuit product: 6.431 --- verification: 6.431 = 0.727 * 8.847
+12 | circuit product: 20.849 --- verification: 20.849 = 4.364 * 4.777
+13 | circuit product: 4.577 --- verification: 4.577 = 2.749 * 1.665
+14 | circuit product: 5.437 --- verification: 5.437 = 8.977 * 0.606
+15 | circuit product: 16.096 --- verification: 16.096 = 5.045 * 3.190
+16 | circuit product: 4.482 --- verification: 4.482 = 4.940 * 0.907
+17 | circuit product: 2.833 --- verification: 2.833 = 0.737 * 3.841
+18 | circuit product: 42.442 --- verification: 42.442 = 9.138 * 4.644
+19 | circuit product: 3.857 --- verification: 3.857 = 0.501 * 7.702
+20 | circuit product: 8.631 --- verification: 8.631 = 1.254 * 6.885
+21 | circuit product: 45.668 --- verification: 45.668 = 6.295 * 7.254
+22 | circuit product: 27.219 --- verification: 27.219 = 8.886 * 3.063
+23 | circuit product: 43.422 --- verification: 43.422 = 5.133 * 8.460
+24 | circuit product: 34.956 --- verification: 34.956 = 8.415 * 4.154
+25 | circuit product: 8.344 --- verification: 8.344 = 4.679 * 1.783
+26 | circuit product: 1.890 --- verification: 1.890 = 5.717 * 0.331
+27 | circuit product: 37.301 --- verification: 37.301 = 4.985 * 7.483
+28 | circuit product: 75.004 --- verification: 75.004 = 8.907 * 8.420
+29 | circuit product: 2.775 --- verification: 2.775 = 2.128 * 1.304
+30 | circuit product: 11.376 --- verification: 11.376 = 2.746 * 4.143
+31 | circuit product: 17.029 --- verification: 17.029 = 7.098 * 2.399
+32 | circuit product: 20.705 --- verification: 20.705 = 3.175 * 6.521
+33 | circuit product: 26.418 --- verification: 26.418 = 6.813 * 3.877
+34 | circuit product: 12.475 --- verification: 12.475 = 1.475 * 8.456
+35 | circuit product: 14.155 --- verification: 14.155 = 9.554 * 1.482
+36 | circuit product: 23.091 --- verification: 23.091 = 4.088 * 5.649
+37 | circuit product: 46.951 --- verification: 46.951 = 4.885 * 9.611
+38 | circuit product: 12.570 --- verification: 12.570 = 1.998 * 6.293
+39 | circuit product: 52.300 --- verification: 52.300 = 6.513 * 8.031
+40 | circuit product: 9.683 --- verification: 9.683 = 4.764 * 2.033
+41 | circuit product: 12.806 --- verification: 12.806 = 9.017 * 1.420
+42 | circuit product: 36.339 --- verification: 36.339 = 4.103 * 8.856
+43 | circuit product: 5.926 --- verification: 5.926 = 1.622 * 3.653
+44 | circuit product: 6.152 --- verification: 6.152 = 1.351 * 4.553
+45 | circuit product: 42.140 --- verification: 42.140 = 4.523 * 9.317
+46 | circuit product: 19.564 --- verification: 19.564 = 2.152 * 9.089
+47 | circuit product: 43.556 --- verification: 43.556 = 8.609 * 5.060
+48 | circuit product: 37.791 --- verification: 37.791 = 8.176 * 4.622
+49 | circuit product: 52.182 --- verification: 52.182 = 6.327 * 8.247
+50 | circuit product: 67.020 --- verification: 67.020 = 7.022 * 9.544
+51 | circuit product: 14.883 --- verification: 14.883 = 2.893 * 5.144
+52 | circuit product: 36.292 --- verification: 36.292 = 4.140 * 8.766
+53 | circuit product: 52.224 --- verification: 52.224 = 7.297 * 7.156
+54 | circuit product: 1.349 --- verification: 1.349 = 7.065 * 0.191
+55 | circuit product: 3.423 --- verification: 3.423 = 5.250 * 0.652
+56 | circuit product: 33.348 --- verification: 33.348 = 4.889 * 6.820
+57 | circuit product: 81.582 --- verification: 81.582 = 9.166 * 8.900
+58 | circuit product: 13.771 --- verification: 13.771 = 1.392 * 9.894
+59 | circuit product: 22.955 --- verification: 22.955 = 4.460 * 5.147
+60 | circuit product: 35.470 --- verification: 35.470 = 4.397 * 8.066
+61 | circuit product: 3.249 --- verification: 3.249 = 2.115 * 1.536
+62 | circuit product: 0.054 --- verification: 0.054 = 6.164 * 0.009
+63 | circuit product: 30.383 --- verification: 30.383 = 7.273 * 4.177
+64 | circuit product: 56.924 --- verification: 56.924 = 6.806 * 8.364
+65 | circuit product: 6.774 --- verification: 6.774 = 8.287 * 0.817
+66 | circuit product: 13.444 --- verification: 13.444 = 6.296 * 2.135
+67 | circuit product: 36.843 --- verification: 36.843 = 3.888 * 9.475
+68 | circuit product: 7.647 --- verification: 7.647 = 2.692 * 2.840
+69 | circuit product: 22.117 --- verification: 22.117 = 7.839 * 2.822
+70 | circuit product: 1.113 --- verification: 1.113 = 0.113 * 9.832
+71 | circuit product: 32.637 --- verification: 32.637 = 8.197 * 3.981
+72 | circuit product: 2.790 --- verification: 2.790 = 1.769 * 1.577
+73 | circuit product: 2.614 --- verification: 2.614 = 2.572 * 1.016
+74 | circuit product: 50.445 --- verification: 50.445 = 6.347 * 7.948
+75 | circuit product: 47.693 --- verification: 47.693 = 7.529 * 6.334
+76 | circuit product: 19.070 --- verification: 19.070 = 5.982 * 3.188
+77 | circuit product: 6.179 --- verification: 6.179 = 1.174 * 5.261
+78 | circuit product: 41.335 --- verification: 41.335 = 5.880 * 7.030
+79 | circuit product: 13.909 --- verification: 13.909 = 1.617 * 8.602
+80 | circuit product: 17.596 --- verification: 17.596 = 5.568 * 3.160
+81 | circuit product: 31.085 --- verification: 31.085 = 5.285 * 5.881
+82 | circuit product: 15.951 --- verification: 15.951 = 4.308 * 3.702
+83 | circuit product: 17.331 --- verification: 17.331 = 4.469 * 3.878
+84 | circuit product: 1.987 --- verification: 1.987 = 0.783 * 2.539
+85 | circuit product: 49.271 --- verification: 49.271 = 6.762 * 7.286
+86 | circuit product: 88.822 --- verification: 88.822 = 9.448 * 9.402
+87 | circuit product: 30.451 --- verification: 30.451 = 4.604 * 6.614
+88 | circuit product: 9.108 --- verification: 9.108 = 6.056 * 1.504
+89 | circuit product: 17.975 --- verification: 17.975 = 3.438 * 5.228
+90 | circuit product: 0.961 --- verification: 0.961 = 0.150 * 6.430
+91 | circuit product: 89.039 --- verification: 89.039 = 9.178 * 9.701
+92 | circuit product: 38.464 --- verification: 38.464 = 8.440 * 4.558
+93 | circuit product: 1.561 --- verification: 1.561 = 0.221 * 7.069
+94 | circuit product: 32.823 --- verification: 32.823 = 4.366 * 7.517
+95 | circuit product: 52.445 --- verification: 52.445 = 6.957 * 7.539
+96 | circuit product: 0.034 --- verification: 0.034 = 0.043 * 0.799
+97 | circuit product: 67.448 --- verification: 67.448 = 9.033 * 7.467
+98 | circuit product: 0.329 --- verification: 0.329 = 0.063 * 5.185
+99 | circuit product: 11.741 --- verification: 11.741 = 5.440 * 2.158
+100 | circuit product: 44.465 --- verification: 44.465 = 6.269 * 7.093
+101 | circuit product: 10.424 --- verification: 10.424 = 2.803 * 3.719
+102 | circuit product: 3.219 --- verification: 3.219 = 3.102 * 1.038
+103 | circuit product: 4.289 --- verification: 4.289 = 7.759 * 0.553
+104 | circuit product: 4.760 --- verification: 4.760 = 1.603 * 2.970
+105 | circuit product: 24.845 --- verification: 24.845 = 4.778 * 5.200
+106 | circuit product: 12.531 --- verification: 12.531 = 1.503 * 8.337
+107 | circuit product: 19.134 --- verification: 19.134 = 5.778 * 3.312
+108 | circuit product: 0.164 --- verification: 0.164 = 9.869 * 0.017
+109 | circuit product: 1.437 --- verification: 1.437 = 0.294 * 4.897
+110 | circuit product: 39.628 --- verification: 39.628 = 7.390 * 5.363
+111 | circuit product: 2.307 --- verification: 2.307 = 1.225 * 1.883
+112 | circuit product: 7.734 --- verification: 7.734 = 6.141 * 1.259
+113 | circuit product: 79.957 --- verification: 79.957 = 9.540 * 8.381
+114 | circuit product: 10.991 --- verification: 10.991 = 2.590 * 4.243
+115 | circuit product: 68.297 --- verification: 68.297 = 8.979 * 7.606
+116 | circuit product: 30.071 --- verification: 30.071 = 4.519 * 6.655
+117 | circuit product: 11.463 --- verification: 11.463 = 2.096 * 5.470
+118 | circuit product: 7.600 --- verification: 7.600 = 1.760 * 4.319
+119 | circuit product: 57.482 --- verification: 57.482 = 6.874 * 8.362
+120 | circuit product: 7.821 --- verification: 7.821 = 9.733 * 0.804
+121 | circuit product: 19.248 --- verification: 19.248 = 7.694 * 2.502
+122 | circuit product: 57.626 --- verification: 57.626 = 7.691 * 7.493
+123 | circuit product: 2.479 --- verification: 2.479 = 6.817 * 0.364
+124 | circuit product: 14.466 --- verification: 14.466 = 2.217 * 6.526
+125 | circuit product: 8.681 --- verification: 8.681 = 3.715 * 2.337
+126 | circuit product: 2.651 --- verification: 2.651 = 1.659 * 1.598
+127 | circuit product: 62.834 --- verification: 62.834 = 6.620 * 9.492
