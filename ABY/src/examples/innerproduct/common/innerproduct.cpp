@@ -130,13 +130,34 @@ share* BuildInnerProductCircuit(share *s_x, share *s_y, uint32_t numbers, Arithm
 	// pairwise multiplication of all input values
 	s_x = ac->PutMULGate(s_x, s_y);
 
+	std::cout << "wire id " << s_x->get_wire_id(15) << std::endl; 
+
+	ac->PutPrintValueGate(s_x, "s_x");
+
+
 	// split SIMD gate to separate wires (size many)
 	s_x = ac->PutSplitterGate(s_x);
+
+	ac->PutPrintValueGate(s_x, "s_splitter");
+
+	std::cout << "s_x nvals: " << s_x->get_nvals() << std::endl; 
+	std::cout << "s_x: " << s_x->get_bitlength() << std::endl;
+
+	share *temp;
+	share *temp1, *temp2;
+
 
 	// add up the individual multiplication results and store result on wire 0
 	// in arithmetic sharing ADD is for free, and does not add circuit depth, thus simple sequential adding
 	for (i = 1; i < numbers; i++) {
 		s_x->set_wire_id(0, ac->PutADDGate(s_x->get_wire_id(0), s_x->get_wire_id(i)));
+		//std::cout << "s_x wire_id(0)" <<s_x->get_wire_id(0) << std::endl;
+		//std::cout << "s_x wire_id(i)" <<s_x->get_wire_id(i) << std::endl;
+		ac->PutPrintValueGate(s_x->get_wire_ids_as_share(i), "wire(i)");
+		
+		// temp1 = s_x->get_wire_ids_as_share(0);
+		// temp2 = s_x->get_wire_ids_as_share(i);
+		// temp->set_wire_id(0, ac->PutADDGate(temp1, temp2))
 	}
 
 	// discard all wires, except the addition result

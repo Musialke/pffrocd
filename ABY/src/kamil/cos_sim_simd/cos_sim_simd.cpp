@@ -113,28 +113,42 @@ void test_verilog_add64_SIMD(e_role role, const std::string& address, uint16_t p
 
 	share *s_product = bc->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
 
-	// bc->PutPrintValueGate(s_product, "s_product");
+	bc->PutPrintValueGate(s_product->get_wire_ids_as_share(0), "get wire id as share");
 
-	// share *s_product_split = bc->PutSplitterGate(s_product);
+	std::cout << "wire(0) " <<s_product->get_nvals_on_wire(0) << std::endl;
+
+	share *s_product_split = bc->PutSplitterGate(s_product);
+
+	std::cout << "s_product_split nvals: " << s_product_split->get_nvals() << std::endl; 
+	std::cout << "s_product_splitbitlen: " << s_product_split->get_bitlength() << std::endl;
 
 	// bc->PutPrintValueGate(s_product_split, "s_product_split");
 
+	share *s_product_first_wire = s_product->get_wire_ids_as_share(0);
 
-	// share *s_product_added = s_product_split->get_wire_ids_as_share(0);
+	// bc->PutPrintValueGate(s_product_first_wire, "First wire");
 
-	// bc->PutPrintValueGate(s_product_added, "First wire");
+	// share *s_product_split;
 
-	// share *s_next_wire;
+	share *a_share;
 
-	// for (int i = 1; i<nvals; i++) {
-	// 	s_next_wire = s_product_split->get_wire_ids_as_share(i);
-	// 	//s_product_added = bc->PutFPGate(s_product_added, s_next_wire, ADD, bitlen, nvals, no_status);
-	// 	bc->PutPrintValueGate(s_next_wire, "next wire");
-	// }
+	for (int i = 1; i<s_product_split->get_nvals(); i++) {
+		a_share = s_product->get_wire_ids_as_share(i);
+		std::cout << "a share nvals: " << a_share->get_nvals() << std::endl; 
+		std::cout << "a share bitlen: " << a_share->get_bitlength() << std::endl;
+		std::cout << "s_product_first_wire share nvals: " << s_product_first_wire->get_nvals() << std::endl; 
+		std::cout << "s_product_first_wire share bitlen: " << s_product_first_wire->get_bitlength() << std::endl;  
+		std::cout << "here1" << std::endl;
+		// s_product_first_wire = bc->PutFPGate(s_product_first_wire, a_share, ADD, s_product_split->get_bitlength(), s_product_split->get_nvals(), no_status);
+		// s_product_split->set_wire_id(0, bc->PutADDGate(s_product_split->get_wire_ids_as_share(0), s_product_split->get_wire_ids_as_share(i)));
+		s_product_first_wire = bc->PutADDGate(s_product_first_wire, s_product_split->get_wire_ids_as_share(i));
+		std::cout << "here2" << std::endl; 
+		//bc->PutPrintValueGate(s_next_wire, "next wire");
+	}
 
 	// share* s_product_out = bc->PutOUTGate(s_product_added, ALL);
 
-	share* s_product_out = bc->PutOUTGate(s_product, ALL);
+	share* s_product_out = bc->PutOUTGate(s_product_first_wire, ALL);
 
 	// // testing
 
@@ -149,7 +163,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string& address, uint16_t p
 	// // in arithmetic sharing ADD is for free, and does not add circuit depth, thus simple sequential adding
 	// for (int i = 1; i < nvals; i++) {
 	// 	s_x->set_wire_id(0, ac->PutADDGate(s_x->get_wire_id(0), s_x->get_wire_id(i)));
-	// }
+	//}
 
 	// // discard all wires, except the addition result
 	// s_x->set_bitlength(1);
@@ -190,11 +204,11 @@ void test_verilog_add64_SIMD(e_role role, const std::string& address, uint16_t p
 		std::cout << i << " | circuit product: " << val << " --- " << "verification: " << ver_result << " = " << *(double*) &xvals[i] << " * " << *(double*) &yvals[i] << std::endl;
 	}
 
-	// uint32_t *sqrt_out_vals = (uint32_t*) s_product_out->get_clear_value_ptr();
+	uint32_t *sqrt_out_vals = (uint32_t*) s_product_out->get_clear_value_ptr();
 
-	// double val = *((double*) sqrt_out_vals);
+	double val = *((double*) sqrt_out_vals);
 
-	// std::cout << "DOT_PRODUCT: " << val << std::endl;
+	std::cout << "DOT_PRODUCT: " << val << std::endl;
 
 }
 
