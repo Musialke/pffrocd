@@ -134,13 +134,13 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	// std::cout << "wire(0) " <<s_product->get_nvals_on_wire(0) << std::endl;
 
-	share *s_product_split = bc->PutCombinerGate(bc->PutSplitterGate(s_product));
+	//share *s_product_split = bc->PutCombinerGate(bc->PutSplitterGate(s_product));
 
-	std::cout << "s_product_split nvals: " << s_product->get_nvals() << std::endl;
-	std::cout << "s_product_splitbitlen: " << s_product->get_bitlength() << std::endl;
+	std::cout << "s_product nvals: " << s_product->get_nvals() << std::endl;
+	std::cout << "s_product bitlen: " << s_product->get_bitlength() << std::endl;
 
-	bc->PutPrintValueGate(s_product_split, "s_product_split");
-	bc->PutPrintValueGate(s_product, "s_product");
+	//bc->PutPrintValueGate(s_product_split, "s_product_split");
+	//bc->PutPrintValueGate(s_product, "s_product");
 	uint32_t posids[3] = {0, 0, 1};
 	// share *s_product_first_wire = s_product->get_wire_ids_as_share(0);
 	share *a_share = bc->PutSubsetGate(s_product, posids, 1, true);
@@ -156,9 +156,9 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 		// share *s_product_split;
 		a_share = bc->PutFPGate(a_share , bc->PutSubsetGate(s_product,posids,1,true),ADD);
-		std::cout << "s_share nvals: " << a_share->get_nvals() << std::endl;
-		std::cout << "s_share bitlen: " << a_share->get_bitlength() << std::endl;
-		bc->PutPrintValueGate(a_share, "a_share");
+		//std::cout << "s_share nvals: " << a_share->get_nvals() << std::endl;
+		//std::cout << "s_share bitlen: " << a_share->get_bitlength() << std::endl;
+		//bc->PutPrintValueGate(a_share, "a_share");
 	}
 
 	// for (int i = 1; i<2; i++) {
@@ -226,6 +226,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	// std::cout << "s_product nvals: " << s_product->get_nvals() << std::endl;
 	// std::cout << "s_product bitlength: " << s_product->get_bitlength() << std::endl;
+	double sum = 0;
 
 	for (uint32_t i = 0; i < nvals; i++)
 	{
@@ -233,9 +234,11 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		double val = *((double *)&out_vals_product[i]);
 		double orig_x_i = *(double *)&xvals[i];
 		double orig_y_i = *(double *)&yvals[i];
-		double ver_result = orig_x_i * orig_y_i;
+		double ver_result = (orig_x_i * orig_y_i);
+		sum = sum + ver_result;
 		std::cout << i << " | circuit product: " << val << " --- "
 				  << "verification: " << ver_result << " = " << *(double *)&xvals[i] << " * " << *(double *)&yvals[i] << std::endl;
+		std::cout << "SUM: " << sum	 << std::endl;
 	}
 
 	uint32_t *sqrt_out_vals = (uint32_t *)s_product_out->get_clear_value_ptr();
