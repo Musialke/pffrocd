@@ -104,7 +104,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	// init for random values
 	double lower_bound = 0;
-	double upper_bound = 100;
+	double upper_bound = 1;
 	std::uniform_real_distribution<double> unif(lower_bound, upper_bound);
 	std::random_device r;
 	std::default_random_engine re(r());
@@ -156,8 +156,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// }
 
 	share *s_x_times_y = bc->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
-
-	bc->PutPrintValueGate(bc->PutSplitterGate(s_x_times_y), "sproduct");
+	bc->PutPrintValueGate(s_x_times_y, "s_x_times_y");
+	share *s_x_times_y_out = bc->PutOUTGate(s_x_times_y, ALL);
 
 	// std::cout << "wire(0) " <<s_product->get_nvals_on_wire(0) << std::endl;
 
@@ -187,12 +187,16 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		s_x_dot_y = bc->PutFPGate(s_x_dot_y , bc->PutSubsetGate(s_x_times_y,posids,1,true),ADD);
 		//std::cout << "s_share nvals: " << a_share->get_nvals() << std::endl;
 		//std::cout << "s_share bitlen: " << a_share->get_bitlength() << std::endl;
-		//bc->PutPrintValueGate(a_share, "a_share");
+		bc->PutPrintValueGate(s_x_dot_y, "s_x_dot_y");
 	}
+	bc->PutPrintValueGate(s_x_dot_y, "s_x_dot_y");
+	share *s_x_dot_y_out = bc->PutOUTGate(s_x_dot_y, ALL);
+
 
 	// computing norm(X)
 
 	share *s_x_times_x = bc->PutFPGate(s_xin, s_xin, MUL, bitlen, nvals, no_status);
+	bc->PutPrintValueGate(s_x_times_x, "s_x_times_x");
 
 
 	posids[0] = 0;
@@ -218,10 +222,15 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	}
 
 	s_norm_x = bc->PutFPGate(s_norm_x, SQRT);
+	bc->PutPrintValueGate(s_norm_x, "s_norm_x");
+
+	share *s_norm_x_out = bc->PutOUTGate(s_norm_x, ALL);
+
 
 	// computing norm(Y)
 
 	share *s_y_times_y = bc->PutFPGate(s_yin, s_yin, MUL, bitlen, nvals, no_status);
+	bc->PutPrintValueGate(s_y_times_y, "s_y_times_y");
 
 
 	posids[0] = 0;
@@ -247,10 +256,17 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	}
 
 	s_norm_y = bc->PutFPGate(s_norm_y, SQRT);
+	bc->PutPrintValueGate(s_norm_y, "s_norm_y");
+
+	share *s_norm_y_out = bc->PutOUTGate(s_norm_y, ALL);
+
 
 	share *s_norm_x_times_norm_y = bc->PutFPGate(s_norm_x, s_norm_y, MUL);
+	bc->PutPrintValueGate(s_norm_x_times_norm_y, "s_norm_x_times_norm_y");
 
 	share *s_cos_sim = bc->PutFPGate(s_x_dot_y, s_norm_x_times_norm_y, DIV);
+	bc->PutPrintValueGate(s_cos_sim, "s_cos_sim");
+
 
 	share *s_cos_sim_out = bc->PutOUTGate(s_cos_sim, ALL);
 
@@ -333,9 +349,17 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	std::cout << std::endl;
 
-	std::cout << "Verification cos sim:" << ver_cos_sim << std::endl;
+	std::cout << "VERIFICATION:" << std::endl;
+	
+	std::cout << "x dot y: " << ver_x_dot_y << std::endl;
 
-	//std::cout << "Circuit results:" << std::endl;
+	std::cout << "norm(x): " << ver_norm_x << std::endl;
+
+	std::cout << "norm(y): " << ver_norm_y << std::endl;
+
+	std::cout << "cos sim: " << ver_cos_sim << std::endl;
+
+	std::cout << "CIRCUIT RESULTS:" << std::endl;
 
 	// std::cout << "s_product nvals: " << s_product->get_nvals() << std::endl;
 	// std::cout << "s_product bitlength: " << s_product->get_bitlength() << std::endl;
@@ -354,11 +378,43 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// 	std::cout << "SUM: " << sum	 << std::endl;
 	// }
 
-	uint32_t *sqrt_out_vals = (uint32_t *)s_cos_sim_out->get_clear_value_ptr();
 
-	double val = *((double *)sqrt_out_vals);
+	uint32_t *cos_sim_out_vals = (uint32_t *)s_cos_sim_out->get_clear_value_ptr();
+	double cos_sim = *((double *)cos_sim_out_vals);
 
-	std::cout << "cos sim: " << val << std::endl;
+	uint32_t *x_dot_y_out_vals = (uint32_t *)s_x_dot_y_out->get_clear_value_ptr();
+	double x_dot_y = *((double *)x_dot_y_out_vals);
+
+	uint32_t *norm_x_out_vals = (uint32_t *)s_norm_x_out->get_clear_value_ptr();
+	double norm_x = *((double *)norm_x_out_vals);
+
+	uint32_t *norm_y_out_vals = (uint32_t *)s_norm_y_out->get_clear_value_ptr();
+	double norm_y = *((double *)norm_y_out_vals);
+
+	std::cout << "x dot y: " << x_dot_y << std::endl;
+	std::cout << "norm(x) : " << norm_x << std::endl;
+	std::cout << "norm(y): " << norm_y << std::endl;
+	std::cout << "cos sim: " << cos_sim << std::endl;
+
+	// --- printing vectors for verification
+
+	std::cout << "PARTIAL RESULTS:" << std::endl;
+
+	std::cout << "<variable> = ver_result --- circ_result" << std::endl;
+
+
+	uint32_t out_bitlen_x_times_y, out_nvals_x_times_y;
+	uint64_t *out_vals_x_times_y;
+
+	s_x_times_y_out->get_clear_value_vec(&out_vals_x_times_y, &out_bitlen_x_times_y, &out_nvals_x_times_y);
+
+	for (uint32_t i = 0; i < nvals; i++)
+	{
+		double x_times_y_i = *((double *)&out_vals_x_times_y[i]);
+		std::cout << "x_times_y[" << i << "] = " << ver_x_times_y[i] << " --- "<< x_times_y_i << std::endl;
+	}
+
+	
 }
 
 int main(int argc, char **argv)
