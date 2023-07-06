@@ -29,6 +29,9 @@
 #include <random>
 #include <fstream>
 
+
+
+
 void read_test_options(int32_t *argcp, char ***argvp, e_role *role,
 					   uint32_t *bitlen, uint32_t *nvals, uint32_t *secparam, std::string *address,
 					   uint16_t *port, int32_t *test_op, uint32_t *test_bit, double *fpa, double *fpb, std::string *inputfile, std::string *outputfile)
@@ -82,8 +85,13 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	std::vector<double> xembeddings;
 	std::vector<double> yembeddings;
 
+	// array for the Sy<role> share
+	std::vector<double> share_embeddings;
+
 	std::cout << "INPUT FILE NAME: " << inputfile << std::endl;
 	std::cout << "OUTPUT FILE NAME: " << outputfile << std::endl;
+
+	// reading the non-xored embeddings, i.e. current face and database face
 
 	std::fstream infile(inputfile);
 
@@ -98,6 +106,21 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	assert(xembeddings.size() == nvals);
 	assert(yembeddings.size() == nvals);
 
+	// reading the xored embedding, i.e. either Sy<0> or Sy<1> depending on the role
+
+	char *fname = (char *) malloc(150); // file name buffer 
+    sprintf(fname, "share%d.txt", role);
+
+	std::fstream infile_share(fname);
+
+	double z;
+
+	while(infile_share >> z) {
+		share_embeddings.push_back(z);
+	}
+
+	assert(share_embeddings.size() == nvals);
+
 
 	std::string circuit_dir = "../../bin/circ/";
 
@@ -110,9 +133,10 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	Circuit *yc = (BooleanCircuit *)sharings[S_YAO]->GetCircuitBuildRoutine();
 
 
-	// two arrays of random doubles
+	// arrays of integer pointers to doubles
 	uint64_t xvals[nvals];
 	uint64_t yvals[nvals];
+	uint64_t sharevals[nvals];
 
 
 	// verification in plaintext
@@ -136,20 +160,23 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	for (uint32_t i = 0; i < nvals; i++)
 	{
-		double random_x = xembeddings[i];
-		double random_y = yembeddings[i];
+		double current_x = xembeddings[i];
+		double current_y = yembeddings[i];
+		double current_share = share_embeddings[i];
 
-		uint64_t *xptr = (uint64_t *)&random_x;
-		uint64_t *yptr = (uint64_t *)&random_y;
+		uint64_t *xptr = (uint64_t *)&current_x;
+		uint64_t *yptr = (uint64_t *)&current_y;
+		uint64_t *shareptr = (uint64_t *)&current_share;
 
 		xvals[i] = *xptr;
 		yvals[i] = *yptr;
+		sharevals[i] = *shareptr;
 
-		ver_x_times_y[i] = random_x * random_y;
+		ver_x_times_y[i] = current_x * current_y;
 		ver_x_dot_y += ver_x_times_y[i];
 
-		ver_x_times_x[i] = random_x * random_x;
-		ver_y_times_y[i] = random_y * random_y;
+		ver_x_times_x[i] = current_x * current_x;
+		ver_y_times_y[i] = current_y * current_y;
 		ver_norm_x += ver_x_times_x[i];
 		ver_norm_y += ver_y_times_y[i];
  
@@ -166,10 +193,26 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// shr_server_set[0] = bc->PutSIMDINGate(nvals, xvals, bitlen, SERVER);
 	// shr_client_set[0] = bc->PutSIMDINGate(nvals, yvals, bitlen, CLIENT);
 
-	// SIMD input gates
-	share *s_xin = bc->PutSIMDINGate(nvals, xvals, bitlen, SERVER);
-	share *s_yin = bc->PutSIMDINGate(nvals, yvals, bitlen, CLIENT);
-	//bc->PutSharedSIMDINGate(nvals,xvals);
+	// OLD INPUT
+	// share *s_xin = bc->PutSIMDINGate(nvals, xvals, bitlen, SERVER);
+	// share *s_yin = bc->PutSIMDINGate(nvals, yvals, bitlen, CLIENT);
+
+	// INPUTS
+	share *s_xin, *s_yin;
+
+	// Input of the current face captured by the drone
+
+	if(role == SERVER) {
+		s_xin = bc->PutSIMDINGate(nvals, xvals, bitlen, SERVER);
+	} else { //role == CLIENT
+		s_xin = bc->PutDummySIMDINGate(nvals, bitlen);
+	}
+
+	// Input of the pre-computed shares of the face in the database
+
+	s_yin = bc->PutSharedSIMDINGate(nvals, sharevals, bitlen);
+
+
 
 	double const_1 = 1;
 	uint64_t *const_1_ptr = (uint64_t *)&const_1;
@@ -301,7 +344,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	s_cos_sim = bc->PutFPGate(s_const_1, s_cos_sim, SUB);
 
 
-	share *s_cos_sim_out = bc->PutOUTGate(s_cos_sim, ALL);
+	share *s_cos_sim_out = bc->PutOUTGate(s_cos_sim, SERVER);
 
 	// for (int i = 1; i<2; i++) {
 	// 	posids[0] = i;
@@ -364,7 +407,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	// printing result
 
-	std::cout << "RANDOM INPUT:" << std::endl;
+	std::cout << "INPUT EMBEDDINGS:" << std::endl;
 
 	std::cout << "X:" << std::endl;
 
@@ -380,9 +423,17 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		std::cout << *(double *)&yvals[i] << ", ";
 	}
 
+
 	std::cout << std::endl;
 
-	// --- printing vectors for verification
+	std::cout << "SHARE:" << std::endl;
+
+	for (int i = 0; i < nvals; i++) {
+		std::cout << *(double *)&sharevals[i] << ", ";
+	}
+
+	std::cout << std::endl;
+
 
 	std::cout << "PARTIAL RESULTS:" << std::endl;
 
