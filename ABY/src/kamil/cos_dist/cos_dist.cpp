@@ -230,8 +230,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// }
 
 	share *s_x_times_y = bc->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
-	bc->PutPrintValueGate(s_x_times_y, "s_x_times_y");
-	share *s_x_times_y_out = bc->PutOUTGate(s_x_times_y, ALL);
+	// bc->PutPrintValueGate(s_x_times_y, "s_x_times_y");
+	// share *s_x_times_y_out = bc->PutOUTGate(s_x_times_y, ALL);
 
 	// std::cout << "wire(0) " <<s_product->get_nvals_on_wire(0) << std::endl;
 
@@ -270,7 +270,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// computing norm(X)
 
 	share *s_x_times_x = bc->PutFPGate(s_xin, s_xin, MUL, bitlen, nvals, no_status);
-	bc->PutPrintValueGate(s_x_times_x, "s_x_times_x");
+	// bc->PutPrintValueGate(s_x_times_x, "s_x_times_x");
 
 
 	posids[0] = 0;
@@ -296,7 +296,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	}
 
 	s_norm_x = bc->PutFPGate(s_norm_x, SQRT);
-	bc->PutPrintValueGate(s_norm_x, "s_norm_x");
+	// bc->PutPrintValueGate(s_norm_x, "s_norm_x");
 
 	share *s_norm_x_out = bc->PutOUTGate(s_norm_x, ALL);
 
@@ -304,7 +304,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// computing norm(Y)
 
 	share *s_y_times_y = bc->PutFPGate(s_yin, s_yin, MUL, bitlen, nvals, no_status);
-	bc->PutPrintValueGate(s_y_times_y, "s_y_times_y");
+	// bc->PutPrintValueGate(s_y_times_y, "s_y_times_y");
 
 
 	posids[0] = 0;
@@ -330,21 +330,21 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	}
 
 	s_norm_y = bc->PutFPGate(s_norm_y, SQRT);
-	bc->PutPrintValueGate(s_norm_y, "s_norm_y");
+	// bc->PutPrintValueGate(s_norm_y, "s_norm_y");
 
 	share *s_norm_y_out = bc->PutOUTGate(s_norm_y, ALL);
 
 
 	share *s_norm_x_times_norm_y = bc->PutFPGate(s_norm_x, s_norm_y, MUL);
-	bc->PutPrintValueGate(s_norm_x_times_norm_y, "s_norm_x_times_norm_y");
+	// bc->PutPrintValueGate(s_norm_x_times_norm_y, "s_norm_x_times_norm_y");
 
 	share *s_cos_sim = bc->PutFPGate(s_x_dot_y, s_norm_x_times_norm_y, DIV);
-	bc->PutPrintValueGate(s_cos_sim, "s_cos_sim");
+	// bc->PutPrintValueGate(s_cos_sim, "s_cos_sim");
 
 	s_cos_sim = bc->PutFPGate(s_const_1, s_cos_sim, SUB);
 
 
-	share *s_cos_sim_out = bc->PutOUTGate(s_cos_sim, SERVER);
+	share *s_cos_sim_out = bc->PutOUTGate(s_cos_sim, ALL);
 
 	// for (int i = 1; i<2; i++) {
 	// 	posids[0] = i;
@@ -435,21 +435,21 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	std::cout << std::endl;
 
 
-	std::cout << "PARTIAL RESULTS:" << std::endl;
+	// std::cout << "PARTIAL RESULTS:" << std::endl;
 
-	std::cout << "<variable> = ver_result --- circ_result" << std::endl;
+	// std::cout << "<variable> = ver_result --- circ_result" << std::endl;
 
 
 	uint32_t out_bitlen_x_times_y, out_nvals_x_times_y;
 	uint64_t *out_vals_x_times_y;
 
-	s_x_times_y_out->get_clear_value_vec(&out_vals_x_times_y, &out_bitlen_x_times_y, &out_nvals_x_times_y);
+	//s_x_times_y_out->get_clear_value_vec(&out_vals_x_times_y, &out_bitlen_x_times_y, &out_nvals_x_times_y);
 
-	for (uint32_t i = 0; i < nvals; i++)
-	{
-		double x_times_y_i = *((double *)&out_vals_x_times_y[i]);
-		std::cout << "x_times_y[" << i << "] = " << ver_x_times_y[i] << " --- "<< x_times_y_i << std::endl;
-	}
+	// for (uint32_t i = 0; i < nvals; i++)
+	// {
+	// 	double x_times_y_i = *((double *)&out_vals_x_times_y[i]);
+	// 	std::cout << "x_times_y[" << i << "] = " << ver_x_times_y[i] << " --- "<< x_times_y_i << std::endl;
+	// }
 
 	std::cout << std::endl;
 
@@ -496,9 +496,9 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	uint32_t *norm_y_out_vals = (uint32_t *)s_norm_y_out->get_clear_value_ptr();
 	double norm_y = *((double *)norm_y_out_vals);
 
-	std::cout << "x dot y: " << x_dot_y << std::endl;
+	std::cout << "x dot share: " << x_dot_y << std::endl;
 	std::cout << "norm(x) : " << norm_x << std::endl;
-	std::cout << "norm(y): " << norm_y << std::endl;
+	std::cout << "norm(share): " << norm_y << std::endl;
 	std::cout << "cos sim: " << cos_sim << std::endl;
 
 	std::ofstream file;
@@ -506,7 +506,6 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	file.open(outputfile);
 	file << cos_sim << std::endl;
 	file.close();
-
 	
 
 	
