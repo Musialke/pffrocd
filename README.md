@@ -1,7 +1,9 @@
 # pffrocd
 Privacy-Friendly Face Recognition On Constrained Devices
 
-## ABY
+## SFE
+
+Setting up:
 
 1. Enter the framework directory: `cd ABY/`
 2. Create and enter the build directory: `mkdir build && cd build`
@@ -10,14 +12,40 @@ Privacy-Friendly Face Recognition On Constrained Devices
 
 The project-specific examples are in `src/kamil/`
 
-Working examples:
-- `float_add`: add two random floats
+To run the examples run the corresponding python script located in `pyscripts/`
 
-To run the examples (both SERVER and CLIENT) in one terminal:
-
-```bash
-./cos_sim_test -r 1 & (./cos_sim_test -r 0 2>&1 > /dev/null)
+1. Unpack the split database with face images by running
+```sh
+cat lfw.tgz.parta* | tar -xz
 ```
+2. Make sure you have Python3 on your system with venv installed
+3. Create a new virtual environment, activate it and install required packages
+```sh
+python3 -m venv env
+source env/bin/activate
+pip3 install -r requirements.txt
+```
+4. Run a script, for example
+```sh
+python3 pyscripts/cos_dist_float_nscen_simd.py
+```
+
+### Examples explanation:
+
+
+- **cos_dist_float_nscen_simd**
+  - Input: face embeddings, i.e.original floats
+  - Circuit: non-scenario, so two SIMD IN gates
+  - Goal: show that the circuit we have works with two unaltered embeddings without shared gates
+- **cos_dist_roundfloat_nscen_simd**
+  - Input: embeddings, but floats are scaled up by some factor and remainder after the decimal place is removed
+  - Circuit: non-scenario, so two SIMD IN gates
+  - Goal: See if the circuit works with input: float -> int -> float in ABY (all zeros after decimal)
+- **cos_dist_int_nscen_simd**
+  - Input: embeddings cast to int after scaling up by a factor
+  - Circuit: non-scenario, SIMD, inputs as ints instead of floats
+  - Goal: See if having ints as inputs instead of floats works
+
 
 ## Face recognition models:
 

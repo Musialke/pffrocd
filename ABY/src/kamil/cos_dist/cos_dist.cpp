@@ -213,13 +213,6 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	s_yin = bc->PutSharedSIMDINGate(nvals, sharevals, bitlen);
 
 
-
-	double const_1 = 1;
-	uint64_t *const_1_ptr = (uint64_t *)&const_1;
-
-	share *s_const_1 = bc->PutINGate(const_1_ptr, bitlen, SERVER);
-
-
 	// for (uint32_t i = 0; i<nvals;i++){
 	// 	shr_out[i] = bc->PutFPGate(shr_server_set[i], shr_client_set[i], MUL, 1, bitlen, no_status);
 	// 	std::cout << "s_product_split nvals: " << shr_out[i]->get_nvals() << std::endl;
@@ -340,9 +333,6 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	share *s_cos_sim = bc->PutFPGate(s_x_dot_y, s_norm_x_times_norm_y, DIV);
 	// bc->PutPrintValueGate(s_cos_sim, "s_cos_sim");
-
-	s_cos_sim = bc->PutFPGate(s_const_1, s_cos_sim, SUB);
-
 
 	share *s_cos_sim_out = bc->PutOUTGate(s_cos_sim, ALL);
 
@@ -499,7 +489,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	std::cout << "x dot share: " << x_dot_y << std::endl;
 	std::cout << "norm(x) : " << norm_x << std::endl;
 	std::cout << "norm(share): " << norm_y << std::endl;
-	std::cout << "cos sim: " << cos_sim << std::endl;
+	std::cout << "cos sim: " << 1 - cos_sim << std::endl;
 
 	std::ofstream file;
 	file << std::fixed;
