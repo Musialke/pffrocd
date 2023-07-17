@@ -45,6 +45,18 @@ python3 pyscripts/cos_dist_float_nscen_simd.py
   - Input: embeddings cast to int after scaling up by a factor
   - Circuit: non-scenario, SIMD, inputs as ints instead of floats
   - Goal: See if having ints as inputs instead of floats works
+- **cos_dist_float_nscen_nsimd**
+  - Input: embeddings, original floats
+  - Circuit: non-scenario, **non-SIMD**
+  - Goal: Have a non-SIMD version of the circuit, potentially easier to debug
+- **cos_dist_roundfloat_nscen_nsimd**
+  - Input: embeddings, but floats are scaled up by some factor and the remainder after the decimal place is removed
+  - Circuit: non-scenario, **non-SIMD**
+  - Goal: Have a non-SIMD circuit with inputs that can be cast to int
+- **cos_randint_nscen_nsimd**
+  - Input: vectors of random **positive** integers
+  - Circuit: non-scenario, **non-SIMD**
+  - Goal: Have a non-SIMD circuit with inputs that can be XORed
 
 
 ## Face recognition models:

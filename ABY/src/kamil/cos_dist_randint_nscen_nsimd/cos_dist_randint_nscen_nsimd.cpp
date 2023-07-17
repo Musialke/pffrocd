@@ -79,11 +79,11 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 {
 
 	// for addition we operate on doubles, so set bitlen to 64 bits
-	uint32_t bitlen = 32;
+	uint32_t bitlen = 64;
 
 	// two arrays of real-world embeddings
-	std::vector	<uint32_t> xembeddings;
-	std::vector<uint32_t> yembeddings;
+	std::vector	<uint64_t> xembeddings;
+	std::vector<uint64_t> yembeddings;
 
 	// array for the Sy<role> share
 	std::vector<double> share_embeddings;
@@ -93,7 +93,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	std::fstream infile(inputfile);
 
-	uint32_t x, y;
+	uint64_t x, y;
 
 	while (infile >> x >> y) {
 		//std::cout << "x: " << x << " | y: "<< y << std::endl;
@@ -203,7 +203,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	// computing x \dot y
 	share *s_x_times_y[nvals];
-	s_x_times_y[0] = bc->PutFPGate(s_xin[0], s_yin[0], MUL, bitlen, nvals, no_status);
+	s_x_times_y[0] = bc->PutFPGate(s_xin[0], s_yin[0], MUL);
 	bc->PutPrintValueGate(s_x_times_y[0], "s_x_times_y[0]");
 	share *s_x_dot_y = s_x_times_y[0];
 
@@ -305,7 +305,7 @@ int main(int argc, char **argv)
 {
 
 	e_role role;
-	uint32_t bitlen = 32, nvals = 128, secparam = 128, nthreads = 1;
+	uint32_t bitlen = 64, nvals = 128, secparam = 128, nthreads = 1;
 
 	uint16_t port = 7766;
 	std::string address = "127.0.0.1";
