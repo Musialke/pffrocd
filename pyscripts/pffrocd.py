@@ -29,7 +29,7 @@ def run_sfe(x, y, y_0=None, y_1=None):
         for x_i, y_i in zip(x, y):
             f.write(f"{x_i} {y_i}\n")
             
-    if y_0 and y_1:
+    if y_0 is not None and y_1 is not None:
         # write the shares into separate files
         with open(f"{EXECUTABLE_PATH}/share0.txt", 'w') as f:
             for i in y_0:
@@ -41,7 +41,7 @@ def run_sfe(x, y, y_0=None, y_1=None):
     # execute the ABY cos sim computation
     CMD = f"./{EXECUTABLE_NAME} -r 0 -f {INPUT_FILE_NAME} & (./{EXECUTABLE_NAME} -r 1 -f {INPUT_FILE_NAME} 2>&1 > /dev/null)"
     output = subprocess.run(CMD, shell=True, capture_output=True, text=True, cwd=EXECUTABLE_PATH)
-    assert (output.returncode == 0) # make sure the process executed successfully
+    assert (output.returncode == 0), f"{output.stdout=}, {output.stderr=}" # make sure the process executed successfully
     return output
 
 def get_embedding(imagepath):
