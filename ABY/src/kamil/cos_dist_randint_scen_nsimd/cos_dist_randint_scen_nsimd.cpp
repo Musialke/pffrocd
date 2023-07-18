@@ -209,7 +209,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		s_x_times_y[i] = bc->PutFPGate(s_xin[i], s_yin[i], MUL, bitlen, nvals, no_status);
 		s_x_dot_y = bc->PutFPGate(s_x_dot_y, s_x_times_y[i], ADD, bitlen, nvals, no_status);
 	}
-	share *s_x_dot_y_out = bc->PutOUTGate(s_x_dot_y, ALL);
+	share *s_x_dot_y_out = bc->PutOUTGate(s_x_dot_y, SERVER);
 
 	// computing norm(x)
 	share *s_x_times_x[nvals];
@@ -221,7 +221,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		s_x_dot_x = bc->PutFPGate(s_x_dot_x, s_x_times_x[i], ADD, bitlen, nvals, no_status);
 	}
 	share *s_norm_x = bc->PutFPGate(s_x_dot_x, SQRT);
-	share *s_norm_x_out = bc->PutOUTGate(s_norm_x, ALL);
+	share *s_norm_x_out = bc->PutOUTGate(s_norm_x, SERVER);
 
 
 	// computing norm(y)
@@ -234,14 +234,14 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		s_y_dot_y = bc->PutFPGate(s_y_dot_y, s_y_times_y[i], ADD, bitlen, nvals, no_status);
 	}
 	share *s_norm_y = bc->PutFPGate(s_y_dot_y, SQRT);
-	share *s_norm_y_out = bc->PutOUTGate(s_norm_y, ALL);
+	share *s_norm_y_out = bc->PutOUTGate(s_norm_y, SERVER);
 
 
 	// computing norm(y)
 
 	share *s_norm_x_times_norm_y = bc->PutFPGate(s_norm_x, s_norm_y, MUL, bitlen, nvals, no_status);
 	share *s_cos_sim = bc->PutFPGate(s_x_dot_y, s_norm_x_times_norm_y, DIV, bitlen, nvals, no_status);
-	share *s_cos_sim_out = bc->PutOUTGate(s_cos_sim, ALL);
+	share *s_cos_sim_out = bc->PutOUTGate(s_cos_sim, SERVER);
 
 
 	party->ExecCircuit();

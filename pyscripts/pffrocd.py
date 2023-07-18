@@ -6,6 +6,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' # suppress tensorflow warnings https://
 import numpy as np
 import subprocess
 import random
+import re
 from deepface import DeepFace
 
 
@@ -73,3 +74,53 @@ def get_two_random_embeddings(same_person):
             # print(e)
             pass
     return np.array(embedding1), np.array(embedding2)
+
+def parse_aby_output(s):
+    """Parses the benchmark output of ABY and returns stats of interest in a dictionary"""
+
+    # prepare dictionary
+    d = {}
+
+    # online_time
+    d['online_time'] = dict.fromkeys(['bool', 'yao', 'yao_rev', 'arith', 'splut'],{'local_gates': '', 'interactive_gates': '', 'layer_finish': ''})
+    d['online_time'] |= {'communication': ''}
+
+    # complexities
+    d['complexities'] = {'boolean_sharing': {'ands': '', 'depth': ''}}
+    d['complexities'] |= dict.fromkeys(['total_vec_and', 'total_non_vec_and', 'xor_vals', 'gates','comb_gates','combstruct_gates', 'perm_gates', 'subset_gates', 'split_gates'], '')
+    d['complexities'] |= {'yao':{'ands':'', 'depth':''}}
+    d['complexities'] |= {'reverse_yao':{'ands':'', 'depth':''}}
+    d['complexities'] |= {'arithmetic_sharing':{'muls':'', 'depth':''}}
+    d['complexities'] |= {'sp_lut_sharing':{'ot_gates_total':'', 'depth':''}}
+    d['complexities'] |= {'total_nr_of_gates':'','total_depth':''}
+
+    # timings
+    d['timings'] = dict.fromkeys(['total', 'init', 'circuitgen', 'network', 'baseots', 'setup', 'otextension', 'garbling', 'online'], '')
+
+    # communication
+    d['communication'] = dict.fromkeys(['total', 'base_ots', 'setup', 'otextension', 'garbling', 'online'], {'sent':'', 'received':''})
+
+    # remove new line characters
+    lines = [line.strip() for line in s]
+    # remove empty strings
+    lines = [line for line in lines if not line == ""]
+    # parsing
+    lines.pop(0) # first line 'online time distributed...'
+    for _ in range(5):
+        row = lines.pop(0)
+        print(row)
+        row = re.split(': |, |\*|\n', row)
+        print(row)
+        d['online_time'][row[0].lower().replace(' ', '_')]['local_gates'] = float(row[2])
+        d['online_time'][row[0].lower().replace(' ', '_')]['interactive_gates'] = float(row[4])
+        d['online_time'][row[0].lower().replace(' ', '_')]['layer_finish'] = float(row[6])
+
+
+    
+
+    return d
+
+if __name__ == "__main__":
+    with open("sample_aby_output.txt", 'r') as f:
+        s = f.read()
+        print(re.findall(r"[-+]?(?:\d*\.*\d+)", s))

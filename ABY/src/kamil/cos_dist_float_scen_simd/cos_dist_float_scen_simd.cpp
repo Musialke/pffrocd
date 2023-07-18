@@ -88,7 +88,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// array for the Sy<role> share
 	std::vector<double> share_embeddings;
 
-	std::cout << "INPUT FILE NAME: " << inputfile << std::endl;
+	// std::cout << "INPUT FILE NAME: " << inputfile << std::endl;
 
 	// reading the non-xored embeddings, i.e. current face and database face
 
@@ -229,8 +229,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	//share *s_product_split = bc->PutCombinerGate(bc->PutSplitterGate(s_product));
 
-	std::cout << "s_product nvals: " << s_x_times_y->get_nvals() << std::endl;
-	std::cout << "s_product bitlen: " << s_x_times_y->get_bitlength() << std::endl;
+	// std::cout << "s_product nvals: " << s_x_times_y->get_nvals() << std::endl;
+	// std::cout << "s_product bitlen: " << s_x_times_y->get_bitlength() << std::endl;
 
 	//bc->PutPrintValueGate(s_product_split, "s_product_split");
 	//bc->PutPrintValueGate(s_product, "s_product");
@@ -256,7 +256,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		//bc->PutPrintValueGate(s_x_dot_y, "s_x_dot_y");
 	}
 	//bc->PutPrintValueGate(s_x_dot_y, "s_x_dot_y");
-	share *s_x_dot_y_out = bc->PutOUTGate(s_x_dot_y, ALL);
+	// share *s_x_dot_y_out = bc->PutOUTGate(s_x_dot_y, SERVER);
 
 
 	// computing norm(X)
@@ -290,7 +290,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	s_norm_x = bc->PutFPGate(s_norm_x, SQRT);
 	// bc->PutPrintValueGate(s_norm_x, "s_norm_x");
 
-	share *s_norm_x_out = bc->PutOUTGate(s_norm_x, ALL);
+	// share *s_norm_x_out = bc->PutOUTGate(s_norm_x, SERVER);
 
 
 	// computing norm(Y)
@@ -324,7 +324,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	s_norm_y = bc->PutFPGate(s_norm_y, SQRT);
 	// bc->PutPrintValueGate(s_norm_y, "s_norm_y");
 
-	share *s_norm_y_out = bc->PutOUTGate(s_norm_y, ALL);
+	// share *s_norm_y_out = bc->PutOUTGate(s_norm_y, SERVER);
 
 
 	share *s_norm_x_times_norm_y = bc->PutFPGate(s_norm_x, s_norm_y, MUL);
@@ -333,7 +333,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	share *s_cos_sim = bc->PutFPGate(s_x_dot_y, s_norm_x_times_norm_y, DIV);
 	// bc->PutPrintValueGate(s_cos_sim, "s_cos_sim");
 
-	share *s_cos_sim_out = bc->PutOUTGate(s_cos_sim, ALL);
+	share *s_cos_sim_out = bc->PutOUTGate(s_cos_sim, SERVER);
 
 	// for (int i = 1; i<2; i++) {
 	// 	posids[0] = i;
@@ -396,32 +396,32 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	// printing result
 
-	std::cout << "INPUT EMBEDDINGS:" << std::endl;
+	// std::cout << "INPUT EMBEDDINGS:" << std::endl;
 
-	std::cout << "X:" << std::endl;
+	// std::cout << "X:" << std::endl;
 
-	for (int i = 0; i < nvals; i++) {
-		std::cout << *(double *)&xvals[i] << ", ";
-	}
+	// for (int i = 0; i < nvals; i++) {
+	// 	std::cout << *(double *)&xvals[i] << ", ";
+	// }
 
-	std::cout << std::endl;
+	// std::cout << std::endl;
 
-	std::cout << "Y:" << std::endl;
+	// std::cout << "Y:" << std::endl;
 
-	for (int i = 0; i < nvals; i++) {
-		std::cout << *(double *)&yvals[i] << ", ";
-	}
+	// for (int i = 0; i < nvals; i++) {
+	// 	std::cout << *(double *)&yvals[i] << ", ";
+	// }
 
 
-	std::cout << std::endl;
+	// std::cout << std::endl;
 
-	std::cout << "SHARE:" << std::endl;
+	// std::cout << "SHARE:" << std::endl;
 
-	for (int i = 0; i < nvals; i++) {
-		std::cout << *(double *)&sharevals[i] << ", ";
-	}
+	// for (int i = 0; i < nvals; i++) {
+	// 	std::cout << *(double *)&sharevals[i] << ", ";
+	// }
 
-	std::cout << std::endl;
+	// std::cout << std::endl;
 
 
 	// std::cout << "PARTIAL RESULTS:" << std::endl;
@@ -440,20 +440,20 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// 	std::cout << "x_times_y[" << i << "] = " << ver_x_times_y[i] << " --- "<< x_times_y_i << std::endl;
 	// }
 
-	std::cout << std::endl;
+	// std::cout << std::endl;
 
 
-	std::cout << "VERIFICATION:" << std::endl;
+	// std::cout << "VERIFICATION:" << std::endl;
 	
-	std::cout << "x dot y: " << ver_x_dot_y << std::endl;
+	// std::cout << "x dot y: " << ver_x_dot_y << std::endl;
 
-	std::cout << "norm(x): " << ver_norm_x << std::endl;
+	// std::cout << "norm(x): " << ver_norm_x << std::endl;
 
-	std::cout << "norm(y): " << ver_norm_y << std::endl;
+	// std::cout << "norm(y): " << ver_norm_y << std::endl;
 
-	std::cout << "cos sim: " << ver_cos_sim << std::endl;
+	std::cout << std::endl << "cos_dist_ver: " << ver_cos_sim << std::endl;
 
-	std::cout << "CIRCUIT RESULTS:" << std::endl;
+	// std::cout << "CIRCUIT RESULTS:" << std::endl;
 
 	// std::cout << "s_product nvals: " << s_product->get_nvals() << std::endl;
 	// std::cout << "s_product bitlength: " << s_product->get_bitlength() << std::endl;
@@ -476,19 +476,19 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	uint32_t *cos_sim_out_vals = (uint32_t *)s_cos_sim_out->get_clear_value_ptr();
 	double cos_sim = *((double *)cos_sim_out_vals);
 
-	uint32_t *x_dot_y_out_vals = (uint32_t *)s_x_dot_y_out->get_clear_value_ptr();
-	double x_dot_y = *((double *)x_dot_y_out_vals);
+	// uint32_t *x_dot_y_out_vals = (uint32_t *)s_x_dot_y_out->get_clear_value_ptr();
+	// double x_dot_y = *((double *)x_dot_y_out_vals);
 
-	uint32_t *norm_x_out_vals = (uint32_t *)s_norm_x_out->get_clear_value_ptr();
-	double norm_x = *((double *)norm_x_out_vals);
+	// uint32_t *norm_x_out_vals = (uint32_t *)s_norm_x_out->get_clear_value_ptr();
+	// double norm_x = *((double *)norm_x_out_vals);
 
-	uint32_t *norm_y_out_vals = (uint32_t *)s_norm_y_out->get_clear_value_ptr();
-	double norm_y = *((double *)norm_y_out_vals);
+	// uint32_t *norm_y_out_vals = (uint32_t *)s_norm_y_out->get_clear_value_ptr();
+	// double norm_y = *((double *)norm_y_out_vals);
 
-	std::cout << "x dot share: " << x_dot_y << std::endl;
-	std::cout << "norm(x) : " << norm_x << std::endl;
-	std::cout << "norm(share): " << norm_y << std::endl;
-	std::cout << "cos sim: " << 1 - cos_sim << std::endl;
+	// std::cout << "x dot share: " << x_dot_y << std::endl;
+	// std::cout << "norm(x) : " << norm_x << std::endl;
+	// std::cout << "norm(share): " << norm_y << std::endl;
+	std::cout << "cos_dist: " << 1 - cos_sim << std::endl;
 
 	std::ofstream file;
 	file << std::fixed;
