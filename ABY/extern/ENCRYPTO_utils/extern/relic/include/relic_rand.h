@@ -89,7 +89,7 @@ void rand_clean(void);
  * @param[in] size			- the number of bytes.
  * @throw ERR_NO_VALID		- if the entropy length is too small or too large.
  */
-void rand_seed(uint8_t *buf, int size);
+void rand_seed(uint8_t *buf, size_t size);
 
 #else
 
@@ -100,9 +100,19 @@ void rand_seed(uint8_t *buf, int size);
  * @param[in] callback		- the callback to call.
  * @param[in] arg			- the argument for the callback.
  */
-void rand_seed(void (*callback)(uint8_t *, int, void *), void *arg);
+void rand_seed(void (*callback)(uint8_t *, size_t, void *), void *arg);
 
 #endif
+
+/**
+ * Performs a basic self-test in the pseudo-random number generator output, and
+ * raises an exception in case a string of identifical bytes is found.
+ *
+ * @param[out] buf			- the buffer to check.
+ * @param[in] size			- the number of bytes to check.
+ * @throw ERR_NO_RAND       - if the pseudo-random number generator is stuck.
+ */
+int rand_check(uint8_t *buf, size_t size);
 
 /**
  * Gathers pseudo-random bytes from the pseudo-random number generator.
@@ -113,6 +123,6 @@ void rand_seed(void (*callback)(uint8_t *, int, void *), void *arg);
  * @throw ERR_NO_READ		- it the pseudo-random number generator cannot
  * 							generate the specified number of bytes.
  */
-void rand_bytes(uint8_t *buf, int size);
+void rand_bytes(uint8_t *buf, size_t size);
 
 #endif /* !RLC_RAND_H */

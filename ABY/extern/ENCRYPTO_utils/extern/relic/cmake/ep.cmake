@@ -9,8 +9,7 @@ message("      EP_MIXED=[off|on] Use mixed coordinates.")
 message("      EP_CTMAP=[off|on] Use contant-time SSWU and isogeny map for hashing.\n")
 
 message("      EP_PRECO=[off|on] Build precomputation table for generator.")
-message("      EP_DEPTH=w        Width w in [2,8] of precomputation table for fixed point methods.")
-message("      EP_WIDTH=w        Width w in [2,6] of window processing for unknown point methods.\n")
+message("      RLC_DEPTH=w        Width w in [2,8] of precomputation table for fixed point methods.")
 
 message("   ** Available prime elliptic curve methods (default = PROJC;LWNAF;COMBS;INTER):\n")
 
@@ -20,30 +19,22 @@ message("      EP_METHD=PROJC    Homogeneous projective coordinates (complete fo
 message("      EP_METHD=JACOB    Jacobian projective coordinates.\n")
 
 message("      Variable-base scalar multiplication:")
-message("      EP_METHD=BASIC    Binary method.")
-message("      EP_METHD=LWNAF    Left-to-right window NAF method (GLV for Koblitz curves).\n")
+message("      EP_METHD=SLIDE    Sliding window method.")
+message("      EP_METHD=MONTY    Montgomery ladder method.")
+message("      EP_METHD=LWNAF    Left-to-right window NAF method.")
+message("      EP_METHD=LWREG    Left-to-right regular recoding method (GLV for curves with endomorphisms).\n")
 
 message("      Fixed-base scalar multiplication:")
 message("      EP_METHD=BASIC    Binary method for fixed point multiplication.")
 message("      EP_METHD=COMBS    Single-table Comb method for fixed point multiplication.")
 message("      EP_METHD=COMBD    Double-table Comb method for fixed point multiplication.")
-message("      EP_METHD=LWNAF    Left-to-right window NAF method (GLV for curves with endomorphisms).")
-message("      EP_METHD=LWREG    Left-to-right regular recoding method (GLV for curves with endomorphisms).\n")
+message("      EP_METHD=LWNAF    Left-to-right window NAF method (GLV for curves with endomorphisms).\n")
 
 message("      Variable-base simultaneous scalar multiplication:")
 message("      EP_METHD=BASIC    Multiplication-and-addition simultaneous multiplication.")
 message("      EP_METHD=TRICK    Shamir's trick for simultaneous multiplication.")
 message("      EP_METHD=INTER    Interleaving of window NAFs (GLV for Koblitz curves).")
 message("      EP_METHD=JOINT    Joint sparse form.\n")
-
-if (NOT EP_DEPTH)
-	set(EP_DEPTH 4)
-endif(NOT EP_DEPTH)
-if (NOT EP_WIDTH)
-	set(EP_WIDTH 4)
-endif(NOT EP_WIDTH)
-set(EP_DEPTH "${EP_DEPTH}" CACHE STRING "Width of precomputation table for fixed point methods.")
-set(EP_WIDTH "${EP_WIDTH}" CACHE STRING "Width of window processing for unknown point methods.")
 
 option(EP_PLAIN "Support for ordinary curves without endomorphisms" on)
 option(EP_SUPER "Support for supersingular curves" on)

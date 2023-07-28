@@ -35,7 +35,7 @@
 #include "relic_test.h"
 
 static int memory(void) {
-	err_t e;
+	err_t e = ERR_CAUGHT;
 	int code = RLC_ERR;
 	ec_t a;
 
@@ -389,6 +389,18 @@ static int multiplication(void) {
 			ec_neg(r, r);
 			TEST_ASSERT(ec_cmp(q, r) == RLC_EQ, end);
 		} TEST_END;
+
+		TEST_CASE("point multiplication by digit is correct") {
+			ec_mul_dig(r, p, 0);
+			TEST_ASSERT(ec_is_infty(r), end);
+			ec_mul_dig(r, p, 1);
+			TEST_ASSERT(ec_cmp(p, r) == RLC_EQ, end);
+			bn_rand(k, RLC_POS, RLC_DIG);
+			ec_mul(q, p, k);
+			ec_mul_dig(r, p, k->dp[0]);
+			TEST_ASSERT(ec_cmp(q, r) == RLC_EQ, end);
+		}
+		TEST_END;
 	}
 	RLC_CATCH_ANY {
 		util_print("FATAL ERROR!\n");

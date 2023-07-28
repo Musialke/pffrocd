@@ -36,7 +36,7 @@
 #include "relic_fp_low.h"
 
 static int memory(void) {
-	err_t e;
+	err_t e = ERR_CAUGHT;
 	int code = RLC_ERR;
 	fp_t a;
 
@@ -730,7 +730,8 @@ static int reduction(void) {
 			dv_copy(t, fp_prime_get(), RLC_FP_DIGS);
 			/* Test if a * p mod p == 0. */
 			fp_mul(b, a, t);
-			TEST_ASSERT(fp_is_zero(b) == 1, end);
+			fp_sub(t, b, t);
+			TEST_ASSERT(fp_is_zero(b) == 1 || fp_is_zero(t) == 1, end);
 		} TEST_END;
 
 #if FP_RDC == BASIC || !defined(STRIP)
@@ -797,8 +798,7 @@ static int inversion(void) {
 			} while (fp_is_zero(a));
 			fp_inv(b, a);
 			fp_mul(c, a, b);
-			fp_set_dig(b, 1);
-			TEST_ASSERT(fp_cmp(c, b) == RLC_EQ, end);
+			TEST_ASSERT(fp_cmp_dig(c, 1) == RLC_EQ, end);
 		} TEST_END;
 
 #if FP_INV == BASIC || !defined(STRIP)
@@ -856,6 +856,17 @@ static int inversion(void) {
 		} TEST_END;
 #endif
 
+#if FP_INV == JMPDS || !defined(STRIP)
+		TEST_CASE("jump division step inversion is correct") {
+			do {
+				fp_rand(a);
+			} while (fp_is_zero(a));
+			fp_inv(b, a);
+			fp_inv_jmpds(c, a);
+			TEST_ASSERT(fp_cmp(c, b) == RLC_EQ, end);
+		} TEST_END;
+#endif
+
 #if FP_INV == LOWER || !defined(STRIP)
 		TEST_CASE("lower inversion is correct") {
 			do {
@@ -891,6 +902,65 @@ static int inversion(void) {
 	fp_free(c);
 	fp_free(d[0]);
 	fp_free(d[1]);
+	return code;
+}
+
+static int symbol(void) {
+	int code = RLC_ERR;
+	fp_t a, b;
+
+	fp_null(a);
+	fp_null(b);
+
+	RLC_TRY {
+		fp_new(a);
+		fp_new(b);
+
+		TEST_CASE("symbol computation is correct") {
+			fp_zero(a);
+			TEST_ASSERT(fp_smb(a) == 0, end);
+			fp_rand(a);
+			fp_sqr(a, a);
+			TEST_ASSERT(fp_smb(a) == 1, end);
+			do {
+				fp_rand(a);
+			} while(fp_srt(b, a) == 1);
+			TEST_ASSERT(fp_smb(a) == -1, end);
+		}
+		TEST_END;
+
+#if FP_SMB == BASIC || !defined(STRIP)
+		TEST_CASE("basic symbol computation is correct") {
+			fp_rand(a);
+			TEST_ASSERT(fp_smb(a) == fp_smb_basic(a), end);
+		} TEST_END;
+#endif
+#if FP_SMB == DIVST || !defined(STRIP)
+		TEST_CASE("division step symbol computation is correct") {
+			fp_rand(a);
+			TEST_ASSERT(fp_smb(a) == fp_smb_divst(a), end);
+		} TEST_END;
+#endif
+#if FP_SMB == JMPDS || !defined(STRIP)
+		TEST_CASE("jump division step symbol computation is correct") {
+			fp_rand(a);
+			TEST_ASSERT(fp_smb(a) == fp_smb_jmpds(a), end);
+		} TEST_END;
+#endif
+#if FP_SMB == LOWER || !defined(STRIP)
+		TEST_CASE("lower symbol computation is correct") {
+			fp_rand(a);
+			TEST_ASSERT(fp_smb(a) == fp_smb_lower(a), end);
+		} TEST_END;
+#endif
+	}
+	RLC_CATCH_ANY {
+		RLC_ERROR(end);
+	}
+	code = RLC_OK;
+  end:
+	fp_free(a);
+	fp_free(b);
 	return code;
 }
 
@@ -1034,8 +1104,6 @@ static int digit(void) {
 		TEST_CASE("addition of a single digit is consistent") {
 			fp_rand(a);
 			fp_rand(b);
-			for (int j = 1; j < RLC_FP_DIGS; j++)
-				b[j] = 0;
 			g = b[0];
 			fp_set_dig(b, g);
 			fp_add(c, a, b);
@@ -1046,8 +1114,6 @@ static int digit(void) {
 		TEST_CASE("subtraction of a single digit is consistent") {
 			fp_rand(a);
 			fp_rand(b);
-			for (int j = 1; j < RLC_FP_DIGS; j++)
-				b[j] = 0;
 			g = b[0];
 			fp_set_dig(b, g);
 			fp_sub(c, a, b);
@@ -1058,8 +1124,6 @@ static int digit(void) {
 		TEST_CASE("multiplication by a single digit is consistent") {
 			fp_rand(a);
 			fp_rand(b);
-			for (int j = 1; j < RLC_FP_DIGS; j++)
-				b[j] = 0;
 			g = b[0];
 			fp_set_dig(b, g);
 			fp_mul(c, a, b);
@@ -1143,6 +1207,11 @@ int main(void) {
 	}
 
 	if (inversion() != RLC_OK) {
+		core_clean();
+		return 1;
+	}
+
+	if (symbol() != RLC_OK) {
 		core_clean();
 		return 1;
 	}

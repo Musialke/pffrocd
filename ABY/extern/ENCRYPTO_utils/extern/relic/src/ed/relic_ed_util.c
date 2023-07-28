@@ -42,13 +42,12 @@
 /*============================================================================*/
 
 int ed_is_infty(const ed_t p) {
-	fp_t t;
-	int r = 0;
-
-	fp_null(t);
-
 	if (p->coord == BASIC) {
 		return (fp_is_zero(p->x) && (fp_cmp_dig(p->y, 1) == RLC_EQ));
+	}
+
+	if (p->coord != BASIC) {
+		return (fp_is_zero(p->x) && (fp_cmp(p->y, p->z) == RLC_EQ));
 	}
 
 	if (fp_is_zero(p->z)) {
@@ -56,20 +55,7 @@ int ed_is_infty(const ed_t p) {
 		return 0;
 	}
 
-	RLC_TRY {
-		fp_new(t);
-		fp_inv(t, p->z);
-		fp_mul(t, p->y, t);
-		if (fp_is_zero(p->x) && (fp_cmp_dig(t, 1) == RLC_EQ)) {
-			r = 1;
-		}
-	} RLC_CATCH_ANY {
-		RLC_THROW(ERR_CAUGHT);
-	} RLC_FINALLY {
-		fp_free(t);
-	}
-
-	return r;
+	return 0;
 }
 
 void ed_set_infty(ed_t p) {
@@ -122,12 +108,16 @@ void ed_blind(ed_t r, const ed_t p) {
 
 	RLC_TRY {
 		fp_new(rand);
-
 		fp_rand(rand);
+#if ED_ADD == BASIC
+		(void)rand;
+		ed_copy(r, p);
+#elif ED_ADD == PROJC || ED_ADD == EXTND
 		fp_mul(r->x, p->x, rand);
 		fp_mul(r->y, p->y, rand);
 		fp_mul(r->z, p->z, rand);
 		r->coord = PROJC;
+#endif
 #if ED_ADD == EXTND
 		fp_mul(r->t, p->t, rand);
 #endif
@@ -238,7 +228,7 @@ int ed_size_bin(const ed_t a, int pack) {
 	return size;
 }
 
-void ed_read_bin(ed_t a, const uint8_t *bin, int len) {
+void ed_read_bin(ed_t a, const uint8_t *bin, size_t len) {
 	if (len == 1) {
 		if (bin[0] == 0) {
 			ed_set_infty(a);
@@ -287,19 +277,24 @@ void ed_read_bin(ed_t a, const uint8_t *bin, int len) {
 	fp_mul(a->y, a->y, a->z);
 	fp_sqr(a->z, a->z);
 #endif
+
+	if (!ed_on_curve(a)) {
+		RLC_THROW(ERR_NO_VALID);
+	}
 }
 
-void ed_write_bin(uint8_t *bin, int len, const ed_t a, int pack) {
+void ed_write_bin(uint8_t *bin, size_t len, const ed_t a, int pack) {
 	ed_t t;
 
 	ed_null(t);
+
+	memset(bin, 0, len);
 
 	if (ed_is_infty(a)) {
 		if (len < 1) {
 			RLC_THROW(ERR_NO_BUFFER);
 			return;
 		} else {
-			bin[0] = 0;
 			return;
 		}
 	}
@@ -310,7 +305,7 @@ void ed_write_bin(uint8_t *bin, int len, const ed_t a, int pack) {
 		ed_norm(t, a);
 
 		if (pack) {
-			if (len != RLC_FP_BYTES + 1) {
+			if (len < RLC_FP_BYTES + 1) {
 				RLC_THROW(ERR_NO_BUFFER);
 			} else {
 				ed_pck(t, t);
@@ -318,7 +313,7 @@ void ed_write_bin(uint8_t *bin, int len, const ed_t a, int pack) {
 				fp_write_bin(bin + 1, RLC_FP_BYTES, t->y);
 			}
 		} else {
-			if (len != 2 * RLC_FP_BYTES + 1) {
+			if (len < 2 * RLC_FP_BYTES + 1) {
 				RLC_THROW(ERR_NO_BUFFER);
 			} else {
 				bin[0] = 4;
@@ -326,8 +321,7 @@ void ed_write_bin(uint8_t *bin, int len, const ed_t a, int pack) {
 				fp_write_bin(bin + RLC_FP_BYTES + 1, RLC_FP_BYTES, t->x);
 			}
 		}
-	}
-	RLC_CATCH_ANY {
+	} RLC_CATCH_ANY {
 		RLC_THROW(ERR_CAUGHT);
 	}
 	RLC_FINALLY {

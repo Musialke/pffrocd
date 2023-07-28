@@ -62,8 +62,8 @@ int cp_ers_gen_key(bn_t sk, ec_t pk) {
 	return result;
 }
 
-int cp_ers_sig(bn_t td, ers_t p, uint8_t *msg, int len, bn_t sk, ec_t pk,
-		ec_t pp) {
+int cp_ers_sig(bn_t td, ers_t p, const uint8_t *msg, size_t len, const bn_t sk,
+		const ec_t pk, const ec_t pp) {
 	bn_t n;
 	ec_t t, y[2];
 	int result = RLC_OK;
@@ -88,7 +88,7 @@ int cp_ers_sig(bn_t td, ers_t p, uint8_t *msg, int len, bn_t sk, ec_t pk,
 		ec_copy(p->pk, pk);
 		ec_copy(y[0], p->h);
 		ec_copy(y[1], p->pk);
-		cp_sokor_sig(p->c, p->r, msg, len, y, sk, 0);
+		cp_sokor_sig(p->c, p->r, msg, len, y, NULL, sk, 0);
 	}
 	RLC_CATCH_ANY {
 		result = RLC_ERR;
@@ -102,7 +102,8 @@ int cp_ers_sig(bn_t td, ers_t p, uint8_t *msg, int len, bn_t sk, ec_t pk,
 	return result;
 }
 
-int cp_ers_ver(bn_t td, ers_t *s, int size, uint8_t *msg, int len, ec_t pp) {
+int cp_ers_ver(const bn_t td, const ers_t *s, size_t size, const uint8_t *msg,
+		size_t len, const ec_t pp) {
 	bn_t n;
 	ec_t t, y[2];
 	int flag = 0, result = 0;
@@ -122,17 +123,17 @@ int cp_ers_ver(bn_t td, ers_t *s, int size, uint8_t *msg, int len, ec_t pp) {
 		ec_mul_gen(t, td);
 
 		for (int i = 0; i < size; i++) {
-            ec_add(t, t, s[i]->h);
-        }
+			ec_add(t, t, s[i]->h);
+		}
 		if (ec_cmp(pp, t) == RLC_EQ) {
 			flag = 1;
 			for (int i = 0; i < size; i++) {
 				ec_copy(y[0], s[i]->h);
 				ec_copy(y[1], s[i]->pk);
-				flag &= cp_sokor_ver(s[i]->c, s[i]->r, msg, len, y);
-	        }
+				flag &= cp_sokor_ver(s[i]->c, s[i]->r, msg, len, y, NULL);
+			}
 		}
-		result = flag;
+    result = flag;
 	}
 	RLC_CATCH_ANY {
 		RLC_THROW(ERR_CAUGHT);
@@ -146,8 +147,8 @@ int cp_ers_ver(bn_t td, ers_t *s, int size, uint8_t *msg, int len, ec_t pp) {
 	return result;
 }
 
-int cp_ers_ext(bn_t td, ers_t *p, int *size, uint8_t *msg, int len, ec_t pk,
-		ec_t pp) {
+int cp_ers_ext(bn_t td, ers_t *p, size_t *size, const uint8_t *msg, size_t len,
+		const ec_t pk, const ec_t pp) {
 	bn_t n, r;
 	ec_t y[2];
 	int result = RLC_OK;
@@ -178,7 +179,7 @@ int cp_ers_ext(bn_t td, ers_t *p, int *size, uint8_t *msg, int len, ec_t pk,
 		ec_copy(p[*size]->pk, pk);
 		ec_copy(y[0], p[*size]->h);
 		ec_copy(y[1], p[*size]->pk);
-		cp_sokor_sig(p[*size]->c, p[*size]->r, msg, len, y, r, 1);
+		cp_sokor_sig(p[*size]->c, p[*size]->r, msg, len, y, NULL, r, 1);
 		(*size)++;
 		result = RLC_OK;
 	}

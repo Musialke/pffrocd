@@ -48,17 +48,17 @@
 /**
  * Precision in bits of a prime field element.
  */
-#define RLC_FP_BITS 	((int)FP_PRIME)
+#define RLC_FP_BITS 	((size_t)FP_PRIME)
 
 /**
  * Size in digits of a block sufficient to store a prime field element.
  */
-#define RLC_FP_DIGS 	((int)RLC_CEIL(RLC_FP_BITS, RLC_DIG))
+#define RLC_FP_DIGS 	((size_t)RLC_CEIL(RLC_FP_BITS, RLC_DIG))
 
 /**
  * Size in bytes of a block sufficient to store a binary field element.
  */
-#define RLC_FP_BYTES 	((int)RLC_CEIL(RLC_FP_BITS, 8))
+#define RLC_FP_BYTES 	((size_t)RLC_CEIL(RLC_FP_BITS, 8))
 
 /*
  * Finite field identifiers.
@@ -92,6 +92,8 @@ enum {
 	BSI_256,
 	/** SECG 256-bit denser reduction prime. */
 	SECG_256,
+	/** SM2 256-bit prime modulus standardized in China. */
+	SM2_256,
 	/** Curve67254 382-bit prime modulus. */
 	PRIME_382105,
 	/** Curve383187 383-bit prime modulus. */
@@ -110,6 +112,14 @@ enum {
 	BN_254,
 	/** 256-bit prime provided in Barreto et al. for BN curves. */
 	BN_256,
+	/** 256-bit prime provided for BN curve standardized in China. */
+	SM9_256,
+	/** 315-bit prime for BLS curve of embedding degree 24 (SNARKs). */
+	B24_315,
+	/** 317-bit prime for BLS curve of embedding degree 24 (SNARKs). */
+	B24_317,
+	/** 381-bit prime for BLS curve of embedding degree 12 (SNARKs). */
+	B12_377,
 	/** 381-bit prime for BLS curve of embedding degree 12 (Zcash). */
 	B12_381,
 	/** 382-bit prime provided by Barreto for BN curve. */
@@ -129,15 +139,19 @@ enum {
 	/** 511-bit prime for Optimal TNFS-secure curve. */
 	OT_511,
 	/** Random 544-bit prime for Cocks-Pinch curve with embedding degree 8. */
-	CP8_544,
-	/** 569-bit prime for KSS curve with embedding degree 54. */
-	K54_569,
+	GMT8_544,
+	/** 569-bit prime for SG curve with embedding degree 54. */
+	SG54_569,
 	/** 575-bit prime for BLS curve with embedding degree 48. */
 	B48_575,
 	/** 638-bit prime provided in Barreto et al. for BN curve. */
 	BN_638,
 	/** 638-bit prime for BLS curve with embedding degree 12. */
 	B12_638,
+	/** 638-bit prime for KSS curve with embedding degree 18. */
+	K18_638,
+    /** 638-bit prime for SG curve with embedding degree 18. */
+    SG18_638,
 	/** 1536-bit prime for supersingular curve with embedding degree k = 2. */
 	SS_1536,
 	/** 3072-bit prime for supersingular curve with embedding degree k = 1. */
@@ -358,8 +372,28 @@ typedef rlc_align dig_t fp_st[RLC_FP_DIGS + RLC_PAD(RLC_FP_BYTES)/(RLC_DIG / 8)]
 #define fp_inv(C, A)	fp_inv_exgcd(C, A)
 #elif FP_INV == DIVST
 #define fp_inv(C, A)	fp_inv_divst(C, A)
+#elif FP_INV == JMPDS
+#define fp_inv(C, A)	fp_inv_jmpds(C, A)
 #elif FP_INV == LOWER
 #define fp_inv(C, A)	fp_inv_lower(C, A)
+#endif
+
+/**
+ * Computes the Legendre symbol of a prime field element. Computes C = (A|P).
+ *
+ * @param[out] C			- the result.
+ * @param[in] A				- the prime field element to compute.
+ */
+#if FP_SMB == BASIC
+#define fp_smb(A)		fp_smb_basic(A)
+#elif FP_SMB == BINAR
+#define fp_smb(A)		fp_smb_binar(A)
+#elif FP_SMB == DIVST
+#define fp_smb(A)		fp_smb_divst(A)
+#elif FP_SMB == JMPDS
+#define fp_smb(A)		fp_smb_jmpds(A)
+#elif FP_SMB == LOWER
+#define fp_smb(A)		fp_smb_lower(A)
 #endif
 
 /**
@@ -421,6 +455,13 @@ const dig_t *fp_prime_get_conv(void);
 dig_t fp_prime_get_mod8(void);
 
 /**
+ * Returns the result of prime order mod 18.
+ *
+ * @return the result of prime order mod 18.
+ */
+dig_t fp_prime_get_mod18(void);
+
+/**
  * Returns the prime stored in special form. The most significant bit is
  * RLC_FP_BITS.
  *
@@ -471,10 +512,10 @@ void fp_prime_set_dense(const bn_t p);
  * @param[in] spars		- the list of powers of 2 describing the prime.
  * @param[in] len		- the number of powers.
  */
-void fp_prime_set_pmers(const int *spars, int len);
+void fp_prime_set_pmers(const int *spars, size_t len);
 
 /**
-* Assigns the prime field modulus to a parametrization from a family of
+ * Assigns the prime field modulus to a parametrization from a family of
  * pairing-friendly curves.
  */
 void fp_prime_set_pairf(const bn_t x, int pairf);
@@ -623,7 +664,7 @@ int fp_is_even(const fp_t a);
  * @param[in] bit			- the bit position.
  * @return the bit value.
  */
-int fp_get_bit(const fp_t a, int bit);
+int fp_get_bit(const fp_t a, uint_t bit);
 
 /**
  * Stores a bit in a given position on a prime field element.
@@ -632,7 +673,7 @@ int fp_get_bit(const fp_t a, int bit);
  * @param[in] bit			- the bit position.
  * @param[in] value			- the bit value.
  */
-void fp_set_bit(fp_t a, int bit, int value);
+void fp_set_bit(fp_t a, uint_t bit, int value);
 
 /**
  * Assigns a small positive constant to a prime field element.
@@ -651,7 +692,7 @@ void fp_set_dig(fp_t c, dig_t a);
  * @param[in] a				- the prime field element.
  * @return the number of bits.
  */
-int fp_bits(const fp_t a);
+size_t fp_bits(const fp_t a);
 
 /**
  * Assigns a random value to a prime field element.
@@ -659,6 +700,14 @@ int fp_bits(const fp_t a);
  * @param[out] a			- the prime field element to assign.
  */
 void fp_rand(fp_t a);
+
+/**
+ * Normalizes a prime field element to a representative in [0, p - 1].
+ *
+ * @param[out] c 			- the normalized field element.
+ * @param[in] a 			- the field element to normalize-
+ */
+void fp_norm(fp_t c, const fp_t a);
 
 /**
  * Prints a prime field element to standard output.
@@ -676,7 +725,7 @@ void fp_print(const fp_t a);
  * @throw ERR_NO_VALID		- if the radix is invalid.
  * @return the number of digits in the given radix.
  */
-int fp_size_str(const fp_t a, int radix);
+size_t fp_size_str(const fp_t a, uint_t radix);
 
 /**
  * Reads a prime field element from a string in a given radix. The radix must
@@ -688,7 +737,7 @@ int fp_size_str(const fp_t a, int radix);
  * @param[in] radix			- the radix.
  * @throw ERR_NO_VALID		- if the radix is invalid.
  */
-void fp_read_str(fp_t a, const char *str, int len, int radix);
+void fp_read_str(fp_t a, const char *str, size_t len, uint_t radix);
 
 /**
  * Writes a prime field element to a string in a given radix. The radix must
@@ -701,7 +750,7 @@ void fp_read_str(fp_t a, const char *str, int len, int radix);
  * @throw ERR_BUFFER		- if the buffer capacity is insufficient.
  * @throw ERR_NO_VALID		- if the radix is invalid.
  */
-void fp_write_str(char *str, int len, const fp_t a, int radix);
+void fp_write_str(char *str, size_t len, const fp_t a, uint_t radix);
 
 /**
  * Reads a prime field element from a byte vector in big-endian format.
@@ -711,7 +760,7 @@ void fp_write_str(char *str, int len, const fp_t a, int radix);
  * @param[in] len			- the buffer capacity.
  * @throw ERR_NO_BUFFER		- if the buffer capacity is not RLC_FP_BYTES.
  */
-void fp_read_bin(fp_t a, const uint8_t *bin, int len);
+void fp_read_bin(fp_t a, const uint8_t *bin, size_t len);
 
 /**
  * Writes a prime field element to a byte vector in big-endian format.
@@ -721,7 +770,7 @@ void fp_read_bin(fp_t a, const uint8_t *bin, int len);
  * @param[in] a				- the prime field element to write.
  * @throw ERR_NO_BUFFER		- if the buffer capacity is not RLC_FP_BYTES.
  */
-void fp_write_bin(uint8_t *bin, int len, const fp_t a);
+void fp_write_bin(uint8_t *bin, size_t len, const fp_t a);
 
 /**
  * Returns the result of a comparison between two prime field elements.
@@ -934,7 +983,7 @@ void fp_sqr_karat(fp_t c, const fp_t a);
  * @param[in] a				- the prime field element to shift.
  * @param[in] bits			- the number of bits to shift.
  */
-void fp_lsh(fp_t c, const fp_t a, int bits);
+void fp_lsh(fp_t c, const fp_t a, uint_t bits);
 
 /**
  * Shifts a prime field element to the right. Computes c = floor(a / 2^bits).
@@ -943,7 +992,7 @@ void fp_lsh(fp_t c, const fp_t a, int bits);
  * @param[in] a				- the prime field element to shift.
  * @param[in] bits			- the number of bits to shift.
  */
-void fp_rsh(fp_t c, const fp_t a, int bits);
+void fp_rsh(fp_t c, const fp_t a, uint_t bits);
 
 /**
  * Reduces a multiplication result modulo the prime field modulo using
@@ -1028,6 +1077,16 @@ void fp_inv_exgcd(fp_t c, const fp_t a);
 void fp_inv_divst(fp_t c, const fp_t a);
 
 /**
+ * Inverts a prime field element using the constant-time jump division step
+ * by Bernstein and Bo-Yin Yang.
+ *
+ * @param[out] c			- the result.
+ * @param[in] a				- the prime field element to invert.
+ * @throw ERR_NO_VALID		- if the field element is not invertible.
+ */
+void fp_inv_jmpds(fp_t c, const fp_t a);
+
+/**
  * Inverts a prime field element using a direct call to the lower layer.
  *
  * @param[out] c			- the result.
@@ -1044,6 +1103,49 @@ void fp_inv_lower(fp_t c, const fp_t a);
  * @param[in] n				- the number of elements.
  */
 void fp_inv_sim(fp_t *c, const fp_t *a, int n);
+
+/**
+ * Computes Legendre symbol of a prime field element using exponentiation.
+ *
+ * @param[in] a				- the prime field element to compute.
+ * @return the result.
+ */
+int fp_smb_basic(const fp_t a);
+
+/**
+ * Computes Legendre symbol of a prime field element using the binary method.
+ *
+ * @param[in] a				- the prime field element to compute.
+ * @return the result.
+ */
+int fp_smb_binar(const fp_t a);
+
+/**
+ * Computes Legendre symbol of a prime field element using the constant-time
+ * division step approach by Bernstein and Bo-Yin Yang.
+ *
+ * @param[in] a				- the prime field element to compute.
+ * @return the result.
+ */
+int fp_smb_divst(const fp_t a);
+
+/**
+ * Computes Legendre symbol of a prime field element using the constant-time
+ * jump division step approach by Bernstein and Bo-Yin Yang.
+ *
+ * @param[in] a				- the prime field element to compute.
+ * @return the result.
+ */
+int fp_smb_jmpds(const fp_t a);
+
+/**
+ * Computes Legendre symbol a prime field element using a direct call to the
+ * lower layer.
+ *
+ * @param[in] a				- the prime field element to invert.
+ * @return the result.
+ */
+int fp_smb_lower(const fp_t a);
 
 /**
  * Exponentiates a prime field element using the binary

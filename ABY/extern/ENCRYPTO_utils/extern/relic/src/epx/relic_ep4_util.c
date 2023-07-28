@@ -36,7 +36,7 @@
 /* Public definitions                                                         */
 /*============================================================================*/
 
-int ep4_is_infty(ep4_t p) {
+int ep4_is_infty(const ep4_t p) {
 	return (fp4_is_zero(p->z) == 1);
 }
 
@@ -47,7 +47,7 @@ void ep4_set_infty(ep4_t p) {
 	p->coord = BASIC;
 }
 
-void ep4_copy(ep4_t r, ep4_t p) {
+void ep4_copy(ep4_t r, const ep4_t p) {
 	fp4_copy(r->x, p->x);
 	fp4_copy(r->y, p->y);
 	fp4_copy(r->z, p->z);
@@ -78,24 +78,24 @@ void ep4_rand(ep4_t p) {
 	}
 }
 
-void ep4_blind(ep4_t r, ep4_t p) {
+void ep4_blind(ep4_t r, const ep4_t p) {
 	fp4_t rand;
 
 	fp4_null(rand);
 
 	RLC_TRY {
 		fp4_new(rand);
+		fp4_rand(rand);
 #if EP_ADD == BASIC
 		(void)rand;
 		ep4_copy(r, p);
-#elif EP_ADD == PROJC
-		fp4_rand(rand);
+#else
 		fp4_mul(r->z, p->z, rand);
 		fp4_mul(r->y, p->y, rand);
 		fp4_sqr(rand, rand);
 		fp4_mul(r->x, r->x, rand);
 		fp4_mul(r->y, r->y, rand);
-		r->coord = PROJC;
+		r->coord = EP_ADD;
 #endif
 	} RLC_CATCH_ANY {
 		RLC_THROW(ERR_CAUGHT);
@@ -104,7 +104,7 @@ void ep4_blind(ep4_t r, ep4_t p) {
 	}
 }
 
-void ep4_rhs(fp4_t rhs, ep4_t p) {
+void ep4_rhs(fp4_t rhs, const ep4_t p) {
 	fp4_t t0, t1;
 
 	fp4_null(t0);
@@ -121,17 +121,17 @@ void ep4_rhs(fp4_t rhs, ep4_t p) {
 				break;
 #if FP_RDC != MONTY
 			case RLC_MIN3:
-				fp4_sub_dig(t0, t0, 3);
+				fp_sub_dig(t0[0][0], t0[0][0], 3);
 				break;
 			case RLC_ONE:
-				fp4_add_dig(t0, t0, 1);
+				fp_add_dig(t0[0][0], t0[0][0], 1);
 				break;
 			case RLC_TWO:
-				fp4_add_dig(t0, t0, 2);
+				fp_add_dig(t0[0][0], t0[0][0], 2);
 				break;
 			case RLC_TINY:
 				ep4_curve_get_a(t1);
-				fp4_mul_dig(t0, t0, t1[0][0]);
+				fp4_mul_dig(t0, t0, t1[0][0][0]);
 				break;
 #endif
 			default:
@@ -147,17 +147,17 @@ void ep4_rhs(fp4_t rhs, ep4_t p) {
 				break;
 #if FP_RDC != MONTY
 			case RLC_MIN3:
-				fp4_sub_dig(t0, t0, 3);
+				fp_sub_dig(t0[0][0], t0[0][0], 3);
 				break;
 			case RLC_ONE:
-				fp4_add_dig(t0, t0, 1);
+				fp_add_dig(t0[0][0], t0[0][0], 1);
 				break;
 			case RLC_TWO:
-				fp4_add_dig(t0, t0, 2);
+				fp_add_dig(t0[0][0], t0[0][0], 2);
 				break;
 			case RLC_TINY:
 				ep4_curve_get_b(t1);
-				fp4_mul_dig(t0, t0, t1[0][0]);
+				fp4_mul_dig(t0, t0, t1[0][0][0]);
 				break;
 #endif
 			default:
@@ -176,7 +176,7 @@ void ep4_rhs(fp4_t rhs, ep4_t p) {
 }
 
 
-int ep4_on_curve(ep4_t p) {
+int ep4_on_curve(const ep4_t p) {
 	ep4_t t;
 	int r = 0;
 
@@ -199,7 +199,7 @@ int ep4_on_curve(ep4_t p) {
 	return r;
 }
 
-void ep4_tab(ep4_t *t, ep4_t p, int w) {
+void ep4_tab(ep4_t *t, const ep4_t p, int w) {
 	if (w > 2) {
 		ep4_dbl(t[0], p);
 #if defined(EP_MIXED)
@@ -216,13 +216,13 @@ void ep4_tab(ep4_t *t, ep4_t p, int w) {
 	ep4_copy(t[0], p);
 }
 
-void ep4_print(ep4_t p) {
+void ep4_print(const ep4_t p) {
 	fp4_print(p->x);
 	fp4_print(p->y);
 	fp4_print(p->z);
 }
 
-int ep4_size_bin(ep4_t a, int pack) {
+int ep4_size_bin(const ep4_t a, int pack) {
 	ep4_t t;
 	int size = 0;
 
@@ -248,7 +248,7 @@ int ep4_size_bin(ep4_t a, int pack) {
 	return size;
 }
 
-void ep4_read_bin(ep4_t a, const uint8_t *bin, int len) {
+void ep4_read_bin(ep4_t a, const uint8_t *bin, size_t len) {
 	if (len == 1) {
 		if (bin[0] == 0) {
 			ep4_set_infty(a);
@@ -276,19 +276,24 @@ void ep4_read_bin(ep4_t a, const uint8_t *bin, int len) {
 			return;
 		}
 	}
+
+	if (!ep4_on_curve(a)) {
+		RLC_THROW(ERR_NO_VALID);
+	}
 }
 
-void ep4_write_bin(uint8_t *bin, int len, ep4_t a, int pack) {
+void ep4_write_bin(uint8_t *bin, size_t len, const ep4_t a, int pack) {
 	ep4_t t;
 
 	ep4_null(t);
+
+	memset(bin, 0, len);
 
 	if (ep4_is_infty(a)) {
 		if (len < 1) {
 			RLC_THROW(ERR_NO_BUFFER);
 			return;
 		} else {
-			bin[0] = 0;
 			return;
 		}
 	}
