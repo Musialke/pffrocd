@@ -269,7 +269,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	posids[1] = 0;
 	posids[2] = 1;
 	// share *s_product_first_wire = s_product->get_wire_ids_as_share(0);
-	share *s_norm_x = s_x_times_x->get_wire_ids_as_share(posids);
+	share *s_norm_x = bc->PutSubsetGate(s_x_times_x, posids, 1, true);
 	for (int i = 1; i < nvals; i++)
 	{
 		//uint32_t posids[3] = {i, i, 1};
