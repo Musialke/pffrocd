@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
+print("importing pffrocd...")
 import pffrocd # helper functions
+print("pffrocd imported!")
 import numpy as np
 import random
 import time
@@ -13,7 +15,9 @@ pffrocd.INPUT_FILE_NAME = f"input_{pffrocd.EXECUTABLE_NAME}.txt"
 
 
 # get two embeddings of different people
+print("Getting two random embeddings...")
 x, y = pffrocd.get_two_random_embeddings(False)
+print("got the embeddings!")
 
 r = pffrocd.generate_nonce(y)
 
