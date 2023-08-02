@@ -29,11 +29,11 @@ print(output.stdout)
 print("NUMPY COS_DIST:")
 print(pffrocd.get_cos_dist_numpy(x,y))
 
-# print("EMBEDDING X:")
-# print(x)
+print("EMBEDDING X:")
+print(x)
 
-# print("EMBEDDING Y:")
-# print(y)
+print("EMBEDDING Y:")
+print(y)
 
 # print("Y1:")
 # print(y1)
@@ -47,7 +47,7 @@ print(pffrocd.get_cos_dist_numpy(x,y))
 # print("Y0 XOR Y1 == Y:")
 # print(fxor(y0, y1) == y)
 
-# print("NUMPY COS_DIST:")
-# print(pffrocd.get_cos_dist_numpy(x,y))
+print("NUMPY COS_DIST:")
+print(pffrocd.get_cos_dist_numpy(x,y))
 
 

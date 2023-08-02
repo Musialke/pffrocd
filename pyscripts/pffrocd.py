@@ -9,6 +9,7 @@ import random
 import re
 from deepface import DeepFace
 from fabric import Connection
+import paramiko
 
 
 EXECUTABLE_PATH = None
@@ -171,30 +172,85 @@ def parse_aby_output(s):
     return d
 
 
+def execute_command(host, username, private_key_path, command):
+    # Create an SSH client
+    client = paramiko.SSHClient()
 
-def ssh_to_client(host, user, password, executable):
-    """
-    Connects to the client via SSH and runs the specified executable.
+    # Set the policy to automatically add the host key
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-    Args:
-        host (str): The hostname of the client.
-        user (str): The username on the client.
-        password (str): The password for the user on the client.
-        executable (str): The path to the executable to run on the client.
+    # Load the private key
+    private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
 
-    Returns:
-        str: The output of the executable.
-    """
+    try:
+        # Connect to the host with RSA key authentication
+        client.connect(hostname=host, username=username, pkey=private_key)
 
-    with Connection(host, user=user, password=password) as conn:
-        output = conn.run(executable)
+        # Execute the command on the remote system
+        stdin, stdout, stderr = client.exec_command(command)
+
+        # Read the stdout and convert it to a string
+        stdout_str = stdout.read().decode().strip()
+
+        # Close the SSH client
+        client.close()
+
+        # Return the stdout of the command
+        return stdout_str
+
+    except paramiko.AuthenticationException:
+        print("Authentication failed. Please check the private key or username.")
+
+from pssh.clients import ParallelSSHClient
+
+def execute_command_parallel_with_key(host1, username1, private_key_path1, command1, host2, command2):
+    client = ParallelSSHClient([host1, host2], user=username1, pkey=private_key_path1)
+
+    commands = {
+        host1: command1,
+        host2: command2
+    }
+
+    output = client.run_command(commands)
+
+    output1 = output[host1]['stdout']
+    output2 = output[host2]['stdout']
+
+    client.join(output)
+
+    return output1, output2
+
+from concurrent.futures import ThreadPoolExecutor
+import paramiko
+
+def execute_command_parallel(host1, username1, private_key, command1, host2, username2, command2):
+    def execute_command(host, username, private_key, command):
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect(host, username=username, pkey=private_key)
+        _, stdout, _ = ssh.exec_command(command)
+        output = stdout.read().decode().strip()
+        ssh.close()
         return output
 
-if __name__ == "__main__":
-    host = "client.example.com"
-    user = "pi"
-    password = "raspberry"
-    executable = "/home/pi/secure_function_evaluation"
+    with ThreadPoolExecutor() as executor:
+        future1 = executor.submit(execute_command, host1, username1, private_key, command1)
+        future2 = executor.submit(execute_command, host2, username2, private_key, command2)
 
-    output = ssh_to_client(host, user, password, executable)
-    print(output)
+        output1 = future1.result()
+        output2 = future2.result()
+
+    return output1, output2
+
+
+if __name__ == "__main__":
+    host1 = "192.168.50.55"
+    host2 = "192.168.50.190"
+    hosts = [host1, host2]
+    username = "dietpi"
+    private_key_path = "/home/kamil/.ssh/id_thesis"
+    private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
+    command = "ls -l"
+    output1, output2 = execute_command_parallel(host1, username, private_key, command, host2, username, command)
+
+    print(output1, output2)

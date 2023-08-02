@@ -255,8 +255,34 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		//std::cout << "s_share bitlen: " << a_share->get_bitlength() << std::endl;
 		//bc->PutPrintValueGate(s_x_dot_y, "s_x_dot_y");
 	}
-	//bc->PutPrintValueGate(s_x_dot_y, "s_x_dot_y");
-	// share *s_x_dot_y_out = bc->PutOUTGate(s_x_dot_y, SERVER);
+
+	// share *temp_x, *temp_y, *temp_add;
+
+	// temp_x = s_x_times_y->get_wire_ids_as_share(0);
+	// bc->PutPrintValueGate(temp_x, "temp_x");
+
+	// temp_y = s_x_times_y->get_wire_ids_as_share(1);
+	// bc->PutPrintValueGate(temp_y, "temp_y");
+
+	// temp_add = bc->PutFPGate(temp_x, temp_y, ADD, bitlen, nvals);
+	// bc->PutPrintValueGate(temp_add, "temp_add");
+
+	// temp_add = bc->PutFPGate(temp_add,s_x_times_y->get_wire_ids_as_share(2), ADD, bitlen, nvals);
+	// bc->PutPrintValueGate(temp_add, "temp_add");
+
+	std::cout << "HERE" << std::endl; 
+
+	// for (int i = 0; i < nvals; i++) {
+	// 	bc->PutPrintValueGate(s_x_times_y->get_wire_ids_as_share(i), "ith posid as share");
+	// }
+
+	bc->PutPrintValueGate(s_x_times_y->get_wire_ids_as_share(0), "0 posid as share");
+	bc->PutPrintValueGate(s_x_times_y->get_wire_ids_as_share(1), "1 posid as share");
+	bc->PutPrintValueGate(s_x_times_y->get_wire_ids_as_share(2), "2 posid as share");
+	bc->PutPrintValueGate(s_x_times_y->get_wire_ids_as_share(3), "3 posid as share");
+	bc->PutPrintValueGate(s_x_times_y->get_wire_ids_as_share(4), "4 posid as share");
+
+	std::cout << "HERE2" << std::endl; 
 
 
 	// computing norm(X)
