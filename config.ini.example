@@ -1,0 +1,23 @@
+[client]
+ip_address = 192.168.0.1
+username = dietpi
+# path to a private ssh key used to connect to the client
+private_ssh_key_path = /home/user/.ssh/id_rsa
+# location of the the sfe executable
+executable_path = home/dietpi/pffrocd/ABY/build/bin
+# name of the sfe executable
+executable_name = cos_dist_float_scen_simd
+
+[server]
+ip_address = 192.168.0.2
+username = dietpi
+# path to a private ssh key used to connect to the server
+private_ssh_key_path = /home/user/.ssh/id_rsa
+# location of the the sfe executable
+executable_path = home/dietpi/pffrocd/ABY/build/bin
+# name of the sfe executable
+executable_name = cos_dist_float_scen_simd
+
+[misc]
+# Use this to for a test run. Only runs the tests with one person
+test_mode = False
