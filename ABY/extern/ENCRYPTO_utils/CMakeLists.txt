@@ -30,6 +30,17 @@ endif()
 
 set(ecclvl 251) #set this for the ecc security level
 
+IF(${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64") # for desktop
+  message("Desktop!")
+  RETURN()
+ELSEIF(${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64") # for rpi
+  message("Rpi!")
+  RETURN()
+ELSE()
+  message(FATAL_ERROR "Unknown System Architecture: ${CMAKE_SYSTEM_PROCESSOR}")
+  RETURN()
+ENDIF()
+
 #relic library configuration
 set(DEBUG off CACHE BOOL "Build relic with debugging support")
 set(PROFL off CACHE BOOL "Build relic with profiling support")
