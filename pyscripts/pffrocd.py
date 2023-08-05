@@ -8,6 +8,8 @@ import subprocess
 import random
 import re
 from deepface import DeepFace
+from fabric import Connection
+import paramiko
 
 
 EXECUTABLE_PATH = None
@@ -75,52 +77,180 @@ def get_two_random_embeddings(same_person):
             pass
     return np.array(embedding1), np.array(embedding2)
 
+fxor = lambda x,y:(x.view("int64")^y.view("int64")).view("float64")
+
+def generate_nonce(a):
+    n = np.zeros(128)
+    for i in range(len(a)):
+        x = np.double(np.random.uniform(-3,3))
+        n_i = fxor(a[i], x)
+        while np.isnan(n_i):
+            print(f"{i=}, {n_i=}")
+            x = np.double(np.random.uniform(-3,3))
+            n_i = fxor(a[i], x)
+        n[i] = n_i
+    return n
+
+
 def parse_aby_output(s):
     """Parses the benchmark output of ABY and returns stats of interest in a dictionary"""
 
+    # get all numbers from the output string
+    numbers = re.findall(r"[-+]?(?:\d*\.*\d+)", s) 
+
     # prepare dictionary
-    d = {}
+    d = {'online_time': {}, 'complexities': {}, 'communication': {}}
 
     # online_time
-    d['online_time'] = dict.fromkeys(['bool', 'yao', 'yao_rev', 'arith', 'splut'],{'local_gates': '', 'interactive_gates': '', 'layer_finish': ''})
+    some_keys = ['bool', 'yao', 'yao_rev', 'arith', 'splut']
+    a_dict = {'local_gates': '', 'interactive_gates': '', 'layer_finish': ''}
+    d['online_time'] = {key : a_dict.copy() for key in some_keys}
+
     d['online_time'] |= {'communication': ''}
 
+    d['online_time']['bool']['local_gates'] = numbers[0]
+    d['online_time']['bool']['interactive_gates'] = numbers[1]
+    d['online_time']['bool']['layer_finish'] = numbers[2]
+
+    d['online_time']['yao']['local_gates'] = numbers[3]
+    d['online_time']['yao']['interactive_gates'] = numbers[4]
+    d['online_time']['yao']['layer_finish'] = numbers[5]
+
+    d['online_time']['yao_rev']['local_gates'] = numbers[6]
+    d['online_time']['yao_rev']['interactive_gates'] = numbers[7]
+    d['online_time']['yao_rev']['layer_finish'] = numbers[8]
+
+    d['online_time']['arith']['local_gates'] = numbers[9]
+    d['online_time']['arith']['interactive_gates'] = numbers[10]
+    d['online_time']['arith']['layer_finish'] = numbers[11]
+
+    d['online_time']['splut']['local_gates'] = numbers[12]
+    d['online_time']['splut']['interactive_gates'] = numbers[13]
+    d['online_time']['splut']['layer_finish'] = numbers[14]
+
+    d['online_time']['communication'] = numbers[15]
+
+
     # complexities
-    d['complexities'] = {'boolean_sharing': {'ands': '', 'depth': ''}}
-    d['complexities'] |= dict.fromkeys(['total_vec_and', 'total_non_vec_and', 'xor_vals', 'gates','comb_gates','combstruct_gates', 'perm_gates', 'subset_gates', 'split_gates'], '')
-    d['complexities'] |= {'yao':{'ands':'', 'depth':''}}
-    d['complexities'] |= {'reverse_yao':{'ands':'', 'depth':''}}
-    d['complexities'] |= {'arithmetic_sharing':{'muls':'', 'depth':''}}
-    d['complexities'] |= {'sp_lut_sharing':{'ot_gates_total':'', 'depth':''}}
-    d['complexities'] |= {'total_nr_of_gates':'','total_depth':''}
+    d['complexities'] = {'boolean_sharing': {'ands': numbers[16], 'depth': numbers[18]}}
+    d['complexities'] |= {'total_vec_and': numbers[19], 'total_non_vec_and': numbers[20], 'xor_vals': numbers[21], 'gates': numbers[22],'comb_gates': numbers[23],'combstruct_gates': numbers[24], 'perm_gates': numbers[25], 'subset_gates': numbers[26], 'split_gates': numbers[27]}
+    d['complexities'] |= {'yao':{'ands':numbers[28], 'depth':numbers[29]}}
+    d['complexities'] |= {'reverse_yao':{'ands':numbers[30], 'depth':numbers[31]}}
+    d['complexities'] |= {'arithmetic_sharing':{'muls':numbers[32], 'depth':numbers[33]}}
+    d['complexities'] |= {'sp_lut_sharing':{'ot_gates_total':numbers[34], 'depth':numbers[35]}}
+    d['complexities'] |= {'total_nr_of_gates':numbers[36],'total_depth':numbers[37]}
 
     # timings
-    d['timings'] = dict.fromkeys(['total', 'init', 'circuitgen', 'network', 'baseots', 'setup', 'otextension', 'garbling', 'online'], '')
+    d['timings'] = {'total': numbers[38], 'init': numbers[39], 'circuitgen': numbers[40], 'network': numbers[41], 'baseots': numbers[42], 'setup': numbers[43], 'otextension':numbers[44], 'garbling':numbers[45], 'online': numbers[46]}
 
     # communication
-    d['communication'] = dict.fromkeys(['total', 'base_ots', 'setup', 'otextension', 'garbling', 'online'], {'sent':'', 'received':''})
+    some_keys = ['total', 'base_ots', 'setup', 'otextension', 'garbling', 'online']
+    a_dict = {'sent':'', 'received':''}
+    d['communication'] = {key: a_dict.copy() for key in some_keys}
 
-    # remove new line characters
-    lines = [line.strip() for line in s]
-    # remove empty strings
-    lines = [line for line in lines if not line == ""]
-    # parsing
-    lines.pop(0) # first line 'online time distributed...'
-    for _ in range(5):
-        row = lines.pop(0)
-        print(row)
-        row = re.split(': |, |\*|\n', row)
-        print(row)
-        d['online_time'][row[0].lower().replace(' ', '_')]['local_gates'] = float(row[2])
-        d['online_time'][row[0].lower().replace(' ', '_')]['interactive_gates'] = float(row[4])
-        d['online_time'][row[0].lower().replace(' ', '_')]['layer_finish'] = float(row[6])
+    d['communication']['total']['sent'] = numbers[47]
+    d['communication']['total']['received'] = numbers[48]
 
+    d['communication']['base_ots']['sent'] = numbers[49]
+    d['communication']['base_ots']['received'] = numbers[50]
 
-    
+    d['communication']['setup']['sent'] = numbers[51]
+    d['communication']['setup']['received'] = numbers[52]
+
+    d['communication']['otextension']['sent'] = numbers[53]
+    d['communication']['otextension']['received'] = numbers[54]
+
+    d['communication']['garbling']['sent'] = numbers[55]
+    d['communication']['garbling']['received'] = numbers[56]
+
+    d['communication']['online']['sent'] = numbers[57]
+    d['communication']['online']['received'] = numbers[58]
+
+    d['cos_dist_ver'] = numbers[59]
+    d['cos_dist_sfe'] = numbers[60]
 
     return d
 
+
+def execute_command(host, username, private_key_path, command):
+    # Create an SSH client
+    client = paramiko.SSHClient()
+
+    # Set the policy to automatically add the host key
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+    # Load the private key
+    private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
+
+    try:
+        # Connect to the host with RSA key authentication
+        client.connect(hostname=host, username=username, pkey=private_key)
+
+        # Execute the command on the remote system
+        stdin, stdout, stderr = client.exec_command(command)
+
+        # Read the stdout and convert it to a string
+        stdout_str = stdout.read().decode().strip()
+
+        # Close the SSH client
+        client.close()
+
+        # Return the stdout of the command
+        return stdout_str
+
+    except paramiko.AuthenticationException:
+        print("Authentication failed. Please check the private key or username.")
+
+from pssh.clients import ParallelSSHClient
+
+def execute_command_parallel_with_key(host1, username1, private_key_path1, command1, host2, command2):
+    client = ParallelSSHClient([host1, host2], user=username1, pkey=private_key_path1)
+
+    commands = {
+        host1: command1,
+        host2: command2
+    }
+
+    output = client.run_command(commands)
+
+    output1 = output[host1]['stdout']
+    output2 = output[host2]['stdout']
+
+    client.join(output)
+
+    return output1, output2
+
+from concurrent.futures import ThreadPoolExecutor
+import paramiko
+
+def execute_command_parallel(host1, username1, private_key, command1, host2, username2, command2):
+    def execute_command(host, username, private_key, command):
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.connect(host, username=username, pkey=private_key)
+        _, stdout, _ = ssh.exec_command(command)
+        output = stdout.read().decode().strip()
+        ssh.close()
+        return output
+
+    with ThreadPoolExecutor() as executor:
+        future1 = executor.submit(execute_command, host1, username1, private_key, command1)
+        future2 = executor.submit(execute_command, host2, username2, private_key, command2)
+
+        output1 = future1.result()
+        output2 = future2.result()
+
+    return output1, output2
+
+
 if __name__ == "__main__":
-    with open("sample_aby_output.txt", 'r') as f:
-        s = f.read()
-        print(re.findall(r"[-+]?(?:\d*\.*\d+)", s))
+    host1 = "192.168.50.55"
+    host2 = "192.168.50.190"
+    hosts = [host1, host2]
+    username = "dietpi"
+    private_key_path = "/home/kamil/.ssh/id_thesis"
+    private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
+    command = "ls -l"
+    output1, output2 = execute_command_parallel(host1, username, private_key, command, host2, username, command)
+
+    print(output1, output2)

@@ -30,26 +30,39 @@ endif()
 
 set(ecclvl 251) #set this for the ecc security level
 
+
+
 #relic library configuration
+#detect whether running on desktop or rpi and set configuration accordingly 
+IF(${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64") # for desktop
+  set(ARCH "X64" CACHE STRING "Architecture to be used in relic")
+  set(ARITH "curve2251-sse" CACHE STRING "arithmetic utils used in relic")
+  set(CFLAGS "-O3 -funroll-loops -fomit-frame-pointer" CACHE STRING "Relic cflags")
+ELSEIF(${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64") # for rpi
+  set(ARCH "A64" CACHE STRING "Architecture to be used in relic")
+  set(ARITH "gmp" CACHE STRING "arithmetic utils used in relic")
+  set(CFLAGS "-O3 -funroll-loops -fomit-frame-pointer -march=core2 -msse4.2 -mpclmul" CACHE STRING "Relic cflags")
+ELSE()
+  message(FATAL_ERROR "Unknown System Architecture: ${CMAKE_SYSTEM_PROCESSOR}")
+  RETURN()
+ENDIF()
+
 set(DEBUG off CACHE BOOL "Build relic with debugging support")
 set(PROFL off CACHE BOOL "Build relic with profiling support")
 set(CHECK off CACHE BOOL "Build relic with error-checking support")
 set(ALIGN "16" CACHE STRING "Relic align")
-set(ARCH "X64" CACHE STRING "Architecture to be used in relic")
-set(ARITH "curve2251-sse" CACHE STRING "arithmetic utils used in relic")
 set(FB_POLYN ${ecclvl} CACHE INTEGER "security level of the ecc binary curve in relic")
 set(FB_METHD "INTEG;INTEG;QUICK;QUICK;QUICK;QUICK;LOWER;SLIDE;QUICK" CACHE STRING "Methods for fb in relic")
 set(FB_PRECO on CACHE BOOl "fb preco for relic")
 set(FB_SQRTF off CACHE BOOL "sqrtf for relic")
 set(EB_METHD "PROJC;LODAH;COMBS;INTER" CACHE STRING "Methods for eb in relic")
 set(EC_METHD "CHAR2" CACHE STRING "Methods for ec in relic")
-set(CFLAGS "-O3 -funroll-loops -fomit-frame-pointer -march=core2 -msse4.2 -mpclmul" CACHE STRING "Relic cflags")
 set(TIMER "CYCLE" CACHE STRING "Relic timer")
 set(WITH "MD;DV;BN;FB;EB;EC" CACHE STRING "Relic algorithms")
 set(WSIZE "64" CACHE STRING "Relic word size in bits")
 set(TESTS "0" CACHE STRING "Relic amount of random tests, 0 for disable")
 set(BENCH "0" CACHE STRING "Relic amount of benchmarks on random values, 0 for disable")
-set(SHLIB off CACHE BOOL "Relic shared library")
+set(SHLIB on CACHE BOOL "Relic shared library")
 set(STLIB on CACHE BOOL "Relic static library")
 add_subdirectory(extern/relic)
 

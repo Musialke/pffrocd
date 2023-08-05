@@ -210,14 +210,11 @@ void ed_dbl_extnd(ed_t r, const ed_t p) {
 		fp_mul(r->x, t2, t3);
 		/* Y = G * H */
 		fp_mul(r->y, t4, r->z);
-		if (r->coord != EXTND) {
-			/* T = E * H */
-			fp_mul(r->t, t2, r->z);
-		}
+		/* T = E * H */
+		fp_mul(r->t, t2, r->z);
 		/* Z = F * G */
 		fp_mul(r->z, t3, t4);
-
-		r->coord = PROJC;
+		r->coord = EXTND;
 	} RLC_CATCH_ANY {
 		RLC_THROW(ERR_CAUGHT);
 	} RLC_FINALLY {

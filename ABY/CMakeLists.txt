@@ -5,7 +5,7 @@ if (CMAKE_COMPILER_IS_GNUCXX AND CMAKE_CXX_COMPILER_VERSION VERSION_LESS 8.0)
     message(FATAL_ERROR "ABY requires at least g++-8")
 endif()
 
-option(ABY_BUILD_EXE "Build executables" OFF)
+option(ABY_BUILD_EXE "Build executables" ON)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
