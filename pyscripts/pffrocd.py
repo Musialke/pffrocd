@@ -8,13 +8,23 @@ import subprocess
 import random
 import re
 from deepface import DeepFace
-from fabric import Connection
 import paramiko
+from concurrent.futures import ThreadPoolExecutor
+import logging
+import datetime
+import configparser
+import json
 
 
-EXECUTABLE_PATH = None
-INPUT_FILE_NAME = None
-EXECUTABLE_NAME = None
+def get_config_in_printing_format(config):
+    d = {section: dict(config[section]) for section in config.sections()}
+    return json.dumps(
+    d,
+    sort_keys=False,
+    indent=4,
+    separators=(',', ': ')
+    )
+
 
 def get_cos_dist_numpy(x, y):
     """
@@ -48,7 +58,7 @@ def run_sfe(x, y, y_0=None, y_1=None):
     return output
 
 def get_embedding(imagepath):
-    return DeepFace.represent(img_path = imagepath, model_name="SFace", enforce_detection=True)[0]["embedding"]
+    return np.array(DeepFace.represent(img_path = imagepath, model_name="SFace", enforce_detection=True)[0]["embedding"])
 
 def get_two_random_embeddings(same_person):
     print(os.getcwd())
@@ -80,12 +90,14 @@ def get_two_random_embeddings(same_person):
 fxor = lambda x,y:(x.view("int64")^y.view("int64")).view("float64")
 
 def generate_nonce(a):
+    """Generates random float nonces given a list of floats of size 128 (the face emedding)
+    Checks for nan values after xoring, if that happens then it generates the nonces again
+    """
     n = np.zeros(128)
     for i in range(len(a)):
         x = np.double(np.random.uniform(-3,3))
         n_i = fxor(a[i], x)
         while np.isnan(n_i):
-            print(f"{i=}, {n_i=}")
             x = np.double(np.random.uniform(-3,3))
             n_i = fxor(a[i], x)
         n[i] = n_i
@@ -172,85 +184,204 @@ def parse_aby_output(s):
     return d
 
 
+def setup_logging():
+    # Create a logger
+    logger = logging.getLogger()
+    logger.setLevel(logging.DEBUG)
+
+    # Create a formatter for the log messages
+    formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+
+    # Create a handler for logging to stdout (info level)
+    stdout_handler = logging.StreamHandler()
+    stdout_handler.setLevel(logging.INFO)
+    stdout_handler.setFormatter(formatter)
+    logger.addHandler(stdout_handler)
+
+    # Create a handler for logging to a file (debug level)
+    current_datetime = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+    file_handler = logging.FileHandler(f'log/debug_{current_datetime}.log')
+    file_handler.setLevel(logging.DEBUG)
+    file_handler.setFormatter(formatter)
+    logger.addHandler(file_handler)
+
+# Function to execute a command on a remote host
 def execute_command(host, username, private_key_path, command):
+    # Load the private key from the specified file path
+    private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
+
+    # Create an SSH client
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+    # Connect to the remote host using the provided credentials
+    ssh.connect(host, username=username, pkey=private_key)
+
+    # Execute the command on the remote host
+    _, stdout, stderr = ssh.exec_command(command)
+
+    # Read and decode the output of the command
+    output_stdout = stdout.read().decode().strip()
+    output_stderr = stderr.read().decode().strip()
+
+    # Close the SSH connection
+    ssh.close()
+
+    # Return the output of the command
+    return output_stdout, output_stderr
+
+def send_file_to_remote_host(hostname, username, private_key_path, local_path, remote_path):
     # Create an SSH client
     client = paramiko.SSHClient()
 
-    # Set the policy to automatically add the host key
+    # Automatically add the remote host's SSH key
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-    # Load the private key
-    private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
-
     try:
-        # Connect to the host with RSA key authentication
-        client.connect(hostname=host, username=username, pkey=private_key)
+        # Load the private key
+        private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
 
-        # Execute the command on the remote system
-        stdin, stdout, stderr = client.exec_command(command)
+        # Connect to the remote host using the private key for authentication
+        client.connect(hostname, username=username, pkey=private_key)
 
-        # Read the stdout and convert it to a string
-        stdout_str = stdout.read().decode().strip()
+        # Create an SFTP session
+        sftp = client.open_sftp()
 
-        # Close the SSH client
+        # Upload the local file to the remote host
+        sftp.put(local_path, remote_path)
+
+        # Close the SFTP session
+        sftp.close()
+    finally:
+        # Close the SSH client connection
         client.close()
 
-        # Return the stdout of the command
-        return stdout_str
+def write_to_remote_file(hostname, username, private_key_path, remote_path, content):
+    # Load the private key from the specified file path
+    private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
 
-    except paramiko.AuthenticationException:
-        print("Authentication failed. Please check the private key or username.")
+    # Create an SSH client
+    client = paramiko.SSHClient()
 
-from pssh.clients import ParallelSSHClient
+    # Automatically add the remote host's SSH key
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
-def execute_command_parallel_with_key(host1, username1, private_key_path1, command1, host2, command2):
-    client = ParallelSSHClient([host1, host2], user=username1, pkey=private_key_path1)
+    try:
+        # Connect to the remote host
+        client.connect(hostname, username=username, pkey=private_key)
 
-    commands = {
-        host1: command1,
-        host2: command2
-    }
+        # Create an SFTP session
+        sftp = client.open_sftp()
 
-    output = client.run_command(commands)
+        with sftp.open(remote_path, 'w') as file:
+            # Write the content to the file
+            file.write(content)
 
-    output1 = output[host1]['stdout']
-    output2 = output[host2]['stdout']
+        # Close the SFTP session
+        sftp.close()
+    finally:
+        # Close the SSH client connection
+        client.close()
 
-    client.join(output)
 
-    return output1, output2
-
-from concurrent.futures import ThreadPoolExecutor
-import paramiko
-
-def execute_command_parallel(host1, username1, private_key, command1, host2, username2, command2):
-    def execute_command(host, username, private_key, command):
-        ssh = paramiko.SSHClient()
-        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        ssh.connect(host, username=username, pkey=private_key)
-        _, stdout, _ = ssh.exec_command(command)
-        output = stdout.read().decode().strip()
-        ssh.close()
-        return output
-
+def execute_command_parallel(host1, username1, command1, host2, username2, command2, private_key_path):
+    # Create a thread pool executor
     with ThreadPoolExecutor() as executor:
-        future1 = executor.submit(execute_command, host1, username1, private_key, command1)
-        future2 = executor.submit(execute_command, host2, username2, private_key, command2)
+        # Submit the command execution tasks to the executor
+        future1 = executor.submit(execute_command, host1, username1, private_key_path, command1)
+        future2 = executor.submit(execute_command, host2, username2, private_key_path, command2)
 
-        output1 = future1.result()
-        output2 = future2.result()
+        # Get the results of the command execution tasks
+        output1, _ = future1.result()
+        output2, _ = future2.result()
 
+    # Return the outputs of the command execution tasks
     return output1, output2
+
+def get_people_with_multiple_images(root_dir):
+    people_folders = os.listdir(root_dir)
+    people_with_multiple_images = []
+
+    for person_folder in people_folders:
+        person_path = os.path.join(root_dir, person_folder)
+        if os.path.isdir(person_path):
+            images = os.listdir(person_path)
+            if len(images) > 1:
+                people_with_multiple_images.append(person_path)
+
+    return sorted(people_with_multiple_images)
+
+import os
+
+def create_shares(img_path):
+    """Create shares for the client and server from an image"""
+
+    # get the embedding of the image
+    x = get_embedding(img_path)
+
+    # generate nonces
+    r = generate_nonce(x)
+
+    # server's part is the nonces
+    share1 = r
+
+    # client's part is the nonces xored with the embedding
+    share0 = fxor(x, share1)
+
+    return share0, share1
+
+def get_images_in_folder(folder_path):
+    images = []
+    for file_name in os.listdir(folder_path):
+        file_path = os.path.join(folder_path, file_name)
+        if os.path.isfile(file_path):
+            images.append(file_path)
+    return sorted(images)
+
+
+import os
+import random
+
+def get_random_images_except_person(root_dir, excluded_person, num_images):
+    # Get the list of all people folders in the root directory
+    people_folders = [os.path.join(root_dir, directory) for directory in os.listdir(root_dir)]
+
+    # Remove the excluded person from the list of people folders
+    people_folders.remove(excluded_person)
+
+    # Create an empty list to store the paths to random images
+    random_image_paths = []
+
+    for _ in range(num_images):
+
+        # sample a random person from the list
+        person_folder = random.choice(people_folders)
+
+        # Get the list of images in the person folder
+        images = os.listdir(person_folder)
+
+        # Choose a random image from the person folder
+        random_image = random.choice(images)
+
+        # Create the path of the random image
+        random_image_path = os.path.join(person_folder, random_image)
+
+        # Add the path to the list of random image paths
+        random_image_paths.append(random_image_path)
+
+    # Return the list of random image paths
+    return random_image_paths
+
+
 
 
 if __name__ == "__main__":
-    host1 = "192.168.50.55"
-    host2 = "192.168.50.190"
-    hosts = [host1, host2]
-    username = "dietpi"
-    private_key_path = "/home/kamil/.ssh/id_thesis"
-    private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
-    command = "ls -l"
-    output1, output2 = execute_command_parallel(host1, username, private_key, command, host2, username, command)
-
-    print(output1, output2)
+    # host1 = "192.168.50.55"
+    # host2 = "192.168.50.190"
+    # hosts = [host1, host2]
+    # username = "dietpi"
+    # private_key_path = "/home/kamil/.ssh/id_thesis"
+    # command = "ls -l"
+    # # output1, output2 = execute_command_parallel(host1, username, private_key_path, command, host2, username, command)
+    # send_file_to_remote_host(host1, username, private_key_path, "/home/kamil/Documents/uni/thesis/pffrocd/lfw/George_W_Bush/George_W_Bush_0001.jpg", "/home/dietpi/testimg.jpg")
+    print(config.sections())
