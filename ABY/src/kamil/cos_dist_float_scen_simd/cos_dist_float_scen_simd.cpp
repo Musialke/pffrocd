@@ -134,7 +134,11 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	std::string circuit_dir = "../../bin/circ/";
 
+	std::cout << "CIRCUIT DIRECTORY: " << circuit_dir << std::endl;
+
 	ABYParty *party = new ABYParty(role, address, port, seclvl, bitlen, nthreads, mt_alg, 100000, circuit_dir);
+
+	std::cout << "party created" << std::endl;
 
 	std::vector<Sharing *> &sharings = party->GetSharings();
 
