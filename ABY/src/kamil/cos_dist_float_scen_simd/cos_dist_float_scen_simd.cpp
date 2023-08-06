@@ -169,20 +169,25 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	for (uint32_t i = 0; i < nvals; i++)
 	{
+		std::cout << "looping" << std::endl;
 		double current_x = xembeddings[i];
 		double current_y = yembeddings[i];
 		double current_share = share_embeddings[i];
+		std::cout << "looping" << std::endl;
 
 		uint64_t *xptr = (uint64_t *)&current_x;
 		uint64_t *yptr = (uint64_t *)&current_y;
 		uint64_t *shareptr = (uint64_t *)&current_share;
+		std::cout << "looping" << std::endl;
 
 		xvals[i] = *xptr;
 		yvals[i] = *yptr;
 		sharevals[i] = *shareptr;
+		std::cout << "looping" << std::endl;
 
 		ver_x_times_y[i] = current_x * current_y;
 		ver_x_dot_y += ver_x_times_y[i];
+		std::cout << "looping" << std::endl;
 
 		ver_x_times_x[i] = current_x * current_x;
 		ver_y_times_y[i] = current_y * current_y;
@@ -191,12 +196,10 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 		std::cout << "here " << i <<std::endl;
  
-
-		// shr_server_set[i] = yc->PutSIMDINGate(bitlen, xvals[i], 1, SERVER);
-		// shr_client_set[i] = yc->PutSIMDINGate(bitlen, yvals[i], 1, CLIENT);
+		std::cout << "looping" << std::endl;
 	}
 
-	std::cout << "here 4" << std::endl;
+	std::cout << "here 1" << std::endl;
 
 	ver_norm_x = sqrt(ver_norm_x);
 	ver_norm_y = sqrt(ver_norm_y);
