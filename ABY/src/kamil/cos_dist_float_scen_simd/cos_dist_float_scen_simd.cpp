@@ -147,13 +147,13 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	Circuit *yc = (BooleanCircuit *)sharings[S_YAO]->GetCircuitBuildRoutine();
 
 	std::cout << "circuit retrieved" << std::endl;
-
+	std::cout << "here 1" << std::endl;
 
 	// arrays of integer pointers to doubles
 	uint64_t xvals[nvals];
 	uint64_t yvals[nvals];
 	uint64_t sharevals[nvals];
-
+	std::cout << "here 1" << std::endl;
 
 	// verification in plaintext
 	double ver_x_times_y[nvals];
@@ -162,6 +162,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	double ver_x_dot_y = 0;
 	double ver_norm_x = 0;
 	double ver_norm_y = 0;
+	std::cout << "here 1" << std::endl;
 
 	// S_c(X,Y) = (X \dot Y) / (norm(X) * norm(Y))
 
@@ -187,11 +188,15 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		ver_y_times_y[i] = current_y * current_y;
 		ver_norm_x += ver_x_times_x[i];
 		ver_norm_y += ver_y_times_y[i];
+
+		std::cout << "here " << i <<std::endl;
  
 
 		// shr_server_set[i] = yc->PutSIMDINGate(bitlen, xvals[i], 1, SERVER);
 		// shr_client_set[i] = yc->PutSIMDINGate(bitlen, yvals[i], 1, CLIENT);
 	}
+
+	std::cout << "here 4" << std::endl;
 
 	ver_norm_x = sqrt(ver_norm_x);
 	ver_norm_y = sqrt(ver_norm_y);
