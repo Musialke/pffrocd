@@ -132,7 +132,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	assert(share_embeddings.size() == nvals);
 
 
-	std::string circuit_dir = "../../bin/circ/";
+	std::string circuit_dir = "/home/dietpi/pffrocd/ABY/bin/circ/";
 
 	std::cout << "CIRCUIT DIRECTORY: " << circuit_dir << std::endl;
 
