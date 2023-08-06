@@ -114,7 +114,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// reading the xored embedding, i.e. either Sy<0> or Sy<1> depending on the role
 
 	char *fname = (char *) malloc(150); // file name buffer 
-    sprintf(fname, "share%d.txt", role);
+    sprintf(fname, "/home/dietpi/pffrocd/ABY/build/bin/share%d.txt", role);
 
 	std::fstream infile_share(fname);
 
