@@ -12,9 +12,11 @@ import paramiko
 from concurrent.futures import ThreadPoolExecutor
 import logging
 import datetime
-import configparser
 import json
+from pssh.clients import ParallelSSHClient
 
+current_datetime = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
+logging.getLogger("paramiko").setLevel(logging.WARNING) 
 
 def get_config_in_printing_format(config):
     d = {section: dict(config[section]) for section in config.sections()}
@@ -199,14 +201,14 @@ def setup_logging():
     logger.addHandler(stdout_handler)
 
     # Create a handler for logging to a file (debug level)
-    current_datetime = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     file_handler = logging.FileHandler(f'log/debug_{current_datetime}.log')
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
 
 # Function to execute a command on a remote host
-def execute_command(host, username, private_key_path, command):
+def execute_command(host, username, command, private_key_path):
+    
     # Load the private key from the specified file path
     private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
 
@@ -215,7 +217,7 @@ def execute_command(host, username, private_key_path, command):
     ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
     # Connect to the remote host using the provided credentials
-    ssh.connect(host, username=username, pkey=private_key)
+    ssh.connect(hostname=host, username=username, pkey=private_key)
 
     # Execute the command on the remote host
     _, stdout, stderr = ssh.exec_command(command)
@@ -227,6 +229,9 @@ def execute_command(host, username, private_key_path, command):
     # Close the SSH connection
     ssh.close()
 
+    if output_stderr != '':
+        logging.error("REMOTE EXECUTION OF COMMAND FAILED")
+        logging.error(output_stderr)
     # Return the output of the command
     return output_stdout, output_stderr
 
@@ -256,7 +261,7 @@ def send_file_to_remote_host(hostname, username, private_key_path, local_path, r
         # Close the SSH client connection
         client.close()
 
-def write_to_remote_file(hostname, username, private_key_path, remote_path, content):
+def write_share_to_remote_file(hostname, username, private_key_path, remote_path, content: np.ndarray):
     # Load the private key from the specified file path
     private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
 
@@ -275,7 +280,8 @@ def write_to_remote_file(hostname, username, private_key_path, remote_path, cont
 
         with sftp.open(remote_path, 'w') as file:
             # Write the content to the file
-            file.write(content)
+            for i in content:
+                file.write(f"{i}\n")
 
         # Close the SFTP session
         sftp.close()
@@ -284,12 +290,13 @@ def write_to_remote_file(hostname, username, private_key_path, remote_path, cont
         client.close()
 
 
-def execute_command_parallel(host1, username1, command1, host2, username2, command2, private_key_path):
+def execute_command_parallel(host1, username1, command1, private_key_path1, host2, username2, command2, private_key_path2):
+
     # Create a thread pool executor
     with ThreadPoolExecutor() as executor:
         # Submit the command execution tasks to the executor
-        future1 = executor.submit(execute_command, host1, username1, private_key_path, command1)
-        future2 = executor.submit(execute_command, host2, username2, private_key_path, command2)
+        future1 = executor.submit(execute_command, host1, username1, command1, private_key_path1)
+        future2 = executor.submit(execute_command, host2, username2, command2, private_key_path2)
 
         # Get the results of the command execution tasks
         output1, _ = future1.result()
@@ -384,4 +391,11 @@ if __name__ == "__main__":
     # command = "ls -l"
     # # output1, output2 = execute_command_parallel(host1, username, private_key_path, command, host2, username, command)
     # send_file_to_remote_host(host1, username, private_key_path, "/home/kamil/Documents/uni/thesis/pffrocd/lfw/George_W_Bush/George_W_Bush_0001.jpg", "/home/dietpi/testimg.jpg")
-    print(config.sections())
+    # print(config.sections())
+
+    # share0, share1 = create_shares("/home/kamil/Documents/uni/thesis/pffrocd/lfw/George_W_Bush/George_W_Bush_0001.jpg")
+    # print(share0, share1)
+
+    client = ParallelSSHClient(hosts=['192.168.50.190'], user='dietpi')
+    output = client.run_command('ls -l')
+    print(output)
