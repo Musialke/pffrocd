@@ -171,7 +171,9 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	{
 		std::cout << "looping" << std::endl;
 		double current_x = xembeddings[i];
+		std::cout << "looping" << std::endl;
 		double current_y = yembeddings[i];
+		std::cout << "looping" << std::endl;
 		double current_share = share_embeddings[i];
 		std::cout << "looping" << std::endl;
 
