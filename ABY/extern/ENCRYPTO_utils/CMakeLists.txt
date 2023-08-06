@@ -37,11 +37,11 @@ set(ecclvl 251) #set this for the ecc security level
 IF(${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86_64") # for desktop
   set(ARCH "X64" CACHE STRING "Architecture to be used in relic")
   set(ARITH "curve2251-sse" CACHE STRING "arithmetic utils used in relic")
-  set(CFLAGS "-O3 -funroll-loops -fomit-frame-pointer" CACHE STRING "Relic cflags")
+  set(CFLAGS "-O3 -funroll-loops -fomit-frame-pointer -march=core2 -msse4.2 -mpclmul" CACHE STRING "Relic cflags")
 ELSEIF(${CMAKE_SYSTEM_PROCESSOR} MATCHES "aarch64") # for rpi
   set(ARCH "A64" CACHE STRING "Architecture to be used in relic")
   set(ARITH "gmp" CACHE STRING "arithmetic utils used in relic")
-  set(CFLAGS "-O3 -funroll-loops -fomit-frame-pointer -march=core2 -msse4.2 -mpclmul" CACHE STRING "Relic cflags")
+  set(CFLAGS "-O3 -funroll-loops -fomit-frame-pointer" CACHE STRING "Relic cflags")
 ELSE()
   message(FATAL_ERROR "Unknown System Architecture: ${CMAKE_SYSTEM_PROCESSOR}")
   RETURN()
