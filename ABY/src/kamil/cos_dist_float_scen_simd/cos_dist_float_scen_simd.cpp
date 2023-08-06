@@ -146,6 +146,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	ArithmeticCircuit *ac = (ArithmeticCircuit *)sharings[S_ARITH]->GetCircuitBuildRoutine();
 	Circuit *yc = (BooleanCircuit *)sharings[S_YAO]->GetCircuitBuildRoutine();
 
+	std::cout << "circuit retrieved" << std::endl;
+
 
 	// arrays of integer pointers to doubles
 	uint64_t xvals[nvals];
@@ -163,14 +165,6 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	// S_c(X,Y) = (X \dot Y) / (norm(X) * norm(Y))
 
-
-	// init for random values
-	double lower_bound = 0;
-	double upper_bound = 1;
-	std::uniform_real_distribution<double> unif(lower_bound, upper_bound);
-	//std::random_device r;
-	std::default_random_engine re;
-	share **shr_server_set, **shr_client_set, **shr_out;
 
 	for (uint32_t i = 0; i < nvals; i++)
 	{
@@ -203,6 +197,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	ver_norm_y = sqrt(ver_norm_y);
 
 	double ver_cos_sim = 1 - (ver_x_dot_y / (ver_norm_x * ver_norm_y));
+
+	std::cout << "verification values computed" << std::endl;
 
 	// shr_server_set[0] = bc->PutSIMDINGate(nvals, xvals, bitlen, SERVER);
 	// shr_client_set[0] = bc->PutSIMDINGate(nvals, yvals, bitlen, CLIENT);
