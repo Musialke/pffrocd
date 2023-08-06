@@ -212,6 +212,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	// Input of the current face captured by the drone
 
+	std::cout << "assigning ingates" << std::endl;
+
 	if(role == SERVER) {
 		s_xin = bc->PutSIMDINGate(nvals, xvals, bitlen, SERVER);
 	} else { //role == CLIENT
@@ -231,6 +233,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// 	std::cout << "s_product_split nvals: " << shr_out[i]->get_nvals() << std::endl;
 	// 	std::cout << "s_product_splitbitlen: " << shr_out[i]->get_bitlength() << std::endl;
 	// }
+
+	std::cout << "finished assigning ingates" << std::endl;
 
 	share *s_x_times_y = bc->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
 	// bc->PutPrintValueGate(s_x_times_y, "s_x_times_y");
