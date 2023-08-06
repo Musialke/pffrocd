@@ -98,11 +98,15 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	double x, y;
 
+	std::cout << "starting reading x and y" << std::endl;
+
 	while (infile >> x >> y) {
 		std::cout << "x: " << x << " | y: "<< y << std::endl;
 		xembeddings.push_back(x);
 		yembeddings.push_back(y);
 	}
+
+	std::cout<<"finished reading x and y" << std::endl;
 
 	assert(xembeddings.size() == nvals);
 	assert(yembeddings.size() == nvals);
@@ -116,10 +120,14 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	double z;
 
+	std::cout << "starting reading z" << std::endl;
+
 	while(infile_share >> z) {
 		std::cout << "z: " << z << std::endl;
 		share_embeddings.push_back(z);
 	}
+
+	std::cout<<"finished reading z" << std::endl;
 
 	assert(share_embeddings.size() == nvals);
 
