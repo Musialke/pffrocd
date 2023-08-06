@@ -95,7 +95,7 @@ int32_t test_millionaire_prob_circuit(e_role role, const std::string& address, u
 				the server and the client. This step writes the output to the
 				shared output object based on the role.
 	*/
-	s_out = circ->PutOUTGate(s_out, SERVER);
+	s_out = circ->PutOUTGate(s_out, ALL);
 
 	/**
 		Step 9: Executing the circuit using the ABYParty object evaluate the

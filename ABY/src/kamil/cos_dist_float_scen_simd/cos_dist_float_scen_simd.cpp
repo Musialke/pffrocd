@@ -140,7 +140,6 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	std::cout << "party created" << std::endl;
 
-	sleep(2);
 
 	std::vector<Sharing *> &sharings = party->GetSharings();
 
@@ -168,7 +167,6 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	// S_c(X,Y) = (X \dot Y) / (norm(X) * norm(Y))
 
-	sleep(2);
 
 
 	for (uint32_t i = 0; i < nvals; i++)
