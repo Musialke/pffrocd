@@ -94,6 +94,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	std::fstream infile(inputfile);
 
+	std::cout << "INPUT FILE NAME: " << inputfile << std::endl;
+
 	double x, y;
 
 	while (infile >> x >> y) {

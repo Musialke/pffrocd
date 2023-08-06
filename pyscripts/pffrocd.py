@@ -290,6 +290,34 @@ def write_share_to_remote_file(hostname, username, private_key_path, remote_path
         client.close()
 
 
+def write_embeddings_to_remote_file(hostname, username, private_key_path, remote_path, x: np.ndarray, y: np.ndarray):
+    # Load the private key from the specified file path
+    private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
+
+    # Create an SSH client
+    client = paramiko.SSHClient()
+
+    # Automatically add the remote host's SSH key
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+    try:
+        # Connect to the remote host
+        client.connect(hostname, username=username, pkey=private_key)
+
+        # Create an SFTP session
+        sftp = client.open_sftp()
+
+        with sftp.open(remote_path, 'w') as file:
+            # Write the content to the file
+            for x_i, y_i in zip(x, y):
+                file.write(f"{x_i} {y_i}\n")
+
+        # Close the SFTP session
+        sftp.close()
+    finally:
+        # Close the SSH client connection
+        client.close()
+
 def execute_command_parallel(host1, username1, command1, private_key_path1, host2, username2, command2, private_key_path2):
 
     # Create a thread pool executor
@@ -299,11 +327,11 @@ def execute_command_parallel(host1, username1, command1, private_key_path1, host
         future2 = executor.submit(execute_command, host2, username2, command2, private_key_path2)
 
         # Get the results of the command execution tasks
-        output1, _ = future1.result()
-        output2, _ = future2.result()
+        stdout1, stderr1 = future1.result()
+        stdout2, stderr2 = future2.result()
 
     # Return the outputs of the command execution tasks
-    return output1, output2
+    return stdout1, stderr1, stdout2, stderr2
 
 def get_people_with_multiple_images(root_dir):
     people_folders = os.listdir(root_dir)
@@ -320,11 +348,8 @@ def get_people_with_multiple_images(root_dir):
 
 import os
 
-def create_shares(img_path):
+def create_shares(x: np.ndarray):
     """Create shares for the client and server from an image"""
-
-    # get the embedding of the image
-    x = get_embedding(img_path)
 
     # generate nonces
     r = generate_nonce(x)

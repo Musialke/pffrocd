@@ -60,7 +60,8 @@ def run_test():
         imgs = imgs + other_imgs
 
         # create shares of the reference image
-        share0, share1 = pffrocd.create_shares(ref_img)
+        ref_img_embedding = pffrocd.get_embedding(ref_img)
+        share0, share1 = pffrocd.create_shares(ref_img_embedding)
 
         # write the shares to the server and client
         pffrocd.write_share_to_remote_file(client_ip, client_username, client_key, f"{client_exec_path}/share0.txt", share0)
@@ -70,23 +71,24 @@ def run_test():
         for img in imgs:
             logging.debug(f"Running test for {img}")
 
-            # send the image to the server
-            pffrocd.send_file_to_remote_host(server_ip, server_username, server_key, img, f"{server_exec_path}/ref_img.jpg")
-
-            logging.debug("Image sent to server")
-
             # run the face embedding extraction script on the server
             stdout, stderr = pffrocd.execute_command(server_ip, server_username, f"{server_pffrocd_path}/env/bin/python {server_pffrocd_path}/pyscripts/extract_embedding.py -i {server_pffrocd_path}/{img} -o {server_exec_path}/embedding.txt", server_key)
 
             logging.debug(f"Embedding extracted by the server in {stdout} seconds")
-            logging.debug("Running sfe...")
-
+            
+            # send the files with embeddings to the client and server
+            img_embedding = pffrocd.get_embedding(img)
+            pffrocd.write_embeddings_to_remote_file(client_ip, client_username, client_key, f"{client_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
+            
             # run the sfe on both client and server in parallel
-            output1, output2 = pffrocd.execute_command_parallel(host1=client_ip, username1=client_username, command1=f"{client_exec_path}/{client_exec_name} -r 0 -a {server_ip} -f share0.txt", host2=server_ip, username2=server_username, command2=f"{server_exec_path}/{server_exec_name} -r 1 -a {client_ip} -f share1.txt", private_key_path1=client_key, private_key_path2=server_key)
+            logging.debug("Running sfe...")
+            stdout1, stderr1, stdout2, stderr2 = pffrocd.execute_command_parallel(host1=client_ip, username1=client_username, command1=f"{client_exec_path}/{client_exec_name} -r 0 -a {server_ip} -f embeddings.txt", host2=server_ip, username2=server_username, command2=f"{server_exec_path}/{server_exec_name} -r 1 -a {client_ip} -f embeddings.txt", private_key_path1=client_key, private_key_path2=server_key)
 
             logging.debug("sfe done")
-            logging.debug(output1)
-            logging.debug(output2)
+            logging.debug(f"{stdout1=}")
+            logging.debug(f"{stderr1=}")
+            logging.debug(f"{stdout2=}")
+            logging.debug(f"{stderr2=}")
 
             # todo: save all results and timing data
 
