@@ -333,7 +333,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	share *s_cos_sim = bc->PutFPGate(s_x_dot_y, s_norm_x_times_norm_y, DIV);
 	// bc->PutPrintValueGate(s_cos_sim, "s_cos_sim");
 
-	share *s_cos_sim_out = bc->PutOUTGate(s_cos_sim, SERVER);
+	share *s_cos_sim_out = bc->PutOUTGate(s_cos_sim, ALL);
 
 	// for (int i = 1; i<2; i++) {
 	// 	posids[0] = i;
