@@ -140,6 +140,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	std::cout << "party created" << std::endl;
 
+	sleep(2);
+
 	std::vector<Sharing *> &sharings = party->GetSharings();
 
 	BooleanCircuit *bc = (BooleanCircuit *)sharings[S_BOOL]->GetCircuitBuildRoutine();
@@ -165,6 +167,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	std::cout << "here 1" << std::endl;
 
 	// S_c(X,Y) = (X \dot Y) / (norm(X) * norm(Y))
+
+	sleep(2);
 
 
 	for (uint32_t i = 0; i < nvals; i++)
