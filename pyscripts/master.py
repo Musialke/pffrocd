@@ -82,13 +82,13 @@ def run_test():
             logging.debug("Running sfe...")
 
             # run the sfe on both client and server in parallel
-            output1, output2 = pffrocd.execute_command_parallel(host1=client_ip, username1=client_username, command1=f"{client_exec_path}/{client_exec_name} -r 0", host2=server_ip, username2=server_username, command2=f"{server_exec_path}/{server_exec_name} -r 1", private_key_path1=client_key, private_key_path2=server_key)
+            output1, output2 = pffrocd.execute_command_parallel(host1=client_ip, username1=client_username, command1=f"{client_exec_path}/{client_exec_name} -r 0 -a {server_ip} -f share0.txt", host2=server_ip, username2=server_username, command2=f"{server_exec_path}/{server_exec_name} -r 1 -a {client_ip} -f share1.txt", private_key_path1=client_key, private_key_path2=server_key)
 
             logging.debug("sfe done")
+            logging.debug(output1)
+            logging.debug(output2)
 
             # todo: save all results and timing data
-
-
 
 
             # todo: rerun the routine with powertop to gather energy consumption data
