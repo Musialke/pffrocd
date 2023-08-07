@@ -238,6 +238,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	std::cout << "finished assigning ingates" << std::endl;
 
 	share *s_x_times_y = bc->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
+
+	std::cout << "multiplied" << std::endl;
 	// bc->PutPrintValueGate(s_x_times_y, "s_x_times_y");
 	// share *s_x_times_y_out = bc->PutOUTGate(s_x_times_y, ALL);
 
@@ -271,6 +273,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		//std::cout << "s_share bitlen: " << a_share->get_bitlength() << std::endl;
 		//bc->PutPrintValueGate(s_x_dot_y, "s_x_dot_y");
 	}
+
+	std::cout << "finished computing x dot y" << std::endl;
 	//bc->PutPrintValueGate(s_x_dot_y, "s_x_dot_y");
 	// share *s_x_dot_y_out = bc->PutOUTGate(s_x_dot_y, SERVER);
 
@@ -279,6 +283,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	share *s_x_times_x = bc->PutFPGate(s_xin, s_xin, MUL, bitlen, nvals, no_status);
 	// bc->PutPrintValueGate(s_x_times_x, "s_x_times_x");
+
+	std::cout << "multiplied" << std::endl;
 
 
 	posids[0] = 0;
@@ -304,6 +310,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	}
 
 	s_norm_x = bc->PutFPGate(s_norm_x, SQRT);
+
+	std::cout << "finished computing norm(x)" << std::endl;
 	// bc->PutPrintValueGate(s_norm_x, "s_norm_x");
 
 	// share *s_norm_x_out = bc->PutOUTGate(s_norm_x, SERVER);
@@ -313,6 +321,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	share *s_y_times_y = bc->PutFPGate(s_yin, s_yin, MUL, bitlen, nvals, no_status);
 	// bc->PutPrintValueGate(s_y_times_y, "s_y_times_y");
+
+	std:cout << "multiplied" << std::endl;
 
 
 	posids[0] = 0;
@@ -340,6 +350,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	s_norm_y = bc->PutFPGate(s_norm_y, SQRT);
 	// bc->PutPrintValueGate(s_norm_y, "s_norm_y");
 
+	std::cout << "finished computing norm(y)" << std::endl;
+
 	// share *s_norm_y_out = bc->PutOUTGate(s_norm_y, SERVER);
 
 
@@ -350,6 +362,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// bc->PutPrintValueGate(s_cos_sim, "s_cos_sim");
 
 	share *s_cos_sim_out = bc->PutOUTGate(s_cos_sim, ALL);
+
+	std::cout << "finished computing cos dist" << std::endl;
 
 	// for (int i = 1; i<2; i++) {
 	// 	posids[0] = i;
