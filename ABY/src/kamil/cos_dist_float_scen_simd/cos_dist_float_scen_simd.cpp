@@ -322,7 +322,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	share *s_y_times_y = bc->PutFPGate(s_yin, s_yin, MUL, bitlen, nvals, no_status);
 	// bc->PutPrintValueGate(s_y_times_y, "s_y_times_y");
 
-	std:cout << "multiplied" << std::endl;
+	std::cout << "multiplied" << std::endl;
 
 
 	posids[0] = 0;
