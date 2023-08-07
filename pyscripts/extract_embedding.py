@@ -18,7 +18,7 @@ args = parser.parse_args()
 input_image = args.input
 
 # Extract the face embedding
-embedding = DeepFace.represent(input_image, model_name='SFace', enforce_detection=True)[0]["embedding"]
+embedding = DeepFace.represent(input_image, model_name='SFace', enforce_detection=False)[0]["embedding"]
 
 # Write the embedding to the output file
 output_file = args.output
