@@ -34,10 +34,10 @@
 
 void read_test_options(int32_t *argcp, char ***argvp, e_role *role,
 					   uint32_t *bitlen, uint32_t *nvals, uint32_t *secparam, std::string *address,
-					   uint16_t *port, int32_t *test_op, uint32_t *test_bit, double *fpa, double *fpb, std::string *inputfile, std::string *outputfile)
+					   uint16_t *port, int32_t *test_op, uint32_t *test_bit, e_mt_gen_alg *mt_alg, double *fpb, std::string *inputfile, std::string *outputfile)
 {
 
-	uint32_t int_role = 0, int_port = 0, int_testbit = 0;
+	uint32_t int_role = 0, int_port = 0, int_testbit = 0, int_mt_alg = 0;
 
 	parsing_ctx options[] =
 		{{(void *)&int_role, T_NUM, "r", "Role: 0/1", true, false},
@@ -48,7 +48,7 @@ void read_test_options(int32_t *argcp, char ***argvp, e_role *role,
 		 {(void *)address, T_STR, "a", "IP-address, default: localhost", false, false},
 		 {(void *)&int_port, T_NUM, "p", "Port, default: 7766", false, false},
 		 {(void *)test_op, T_NUM, "t", "Single test (leave out for all operations), default: off", false, false},
-		 {(void *)fpa, T_DOUBLE, "x", "FP a", false, false},
+		 {(void *)&int_mt_alg, T_NUM, "x", "Arithmetic multiplication triples algorithm", false, false},
 		 {(void *)fpb, T_DOUBLE, "y", "FP b", false, false},
 		 {(void *)inputfile, T_STR, "f", "Input file containing face embeddings", true, false},
 		 {(void *)outputfile, T_STR, "o", "Output file containing cos sim result", false, false}
@@ -72,11 +72,25 @@ void read_test_options(int32_t *argcp, char ***argvp, e_role *role,
 	}
 
 	*test_bit = int_testbit;
+
+	if (int_mt_alg == 0) {
+		*mt_alg = MT_OT;
+	} else if (int_mt_alg == 1) {
+		*mt_alg = MT_PAILLIER;
+	} else if (int_mt_alg == 2) {
+		*mt_alg = MT_DGK;
+	} else {
+		std::cout << "Invalid MT algorithm" << std::endl;
+		exit(-1);
+	} 
 }
 
 void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t port, seclvl seclvl, uint32_t nvals, uint32_t nthreads,
 							 e_mt_gen_alg mt_alg, e_sharing sharing, double afp, double bfp, std::string inputfile, std::string outputfile)
 {
+
+	std::cout << "SEC LEVEL: " << seclvl.symbits << std::endl;
+	std::cout << "MT_ALG: " << mt_alg << std::endl;
 
 	// for addition we operate on doubles, so set bitlen to 64 bits
 	uint32_t bitlen = 64;
@@ -546,7 +560,7 @@ int main(int argc, char **argv)
 	std::string outputfile;
 
 	read_test_options(&argc, &argv, &role, &bitlen, &nvals, &secparam, &address,
-					  &port, &test_op, &test_bit, &fpa, &fpb, &inputfile, &outputfile);
+					  &port, &test_op, &test_bit, &mt_alg, &fpb, &inputfile, &outputfile);
 
 	std::cout << std::fixed << std::setprecision(10);
 	seclvl seclvl = get_sec_lvl(secparam);
