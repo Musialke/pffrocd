@@ -9,7 +9,6 @@ import random
 import re
 from deepface import DeepFace
 import paramiko
-from concurrent.futures import ThreadPoolExecutor
 import logging
 import datetime
 import json
@@ -188,7 +187,7 @@ def parse_aby_output(s):
 
 def setup_logging():
     # Create a logger
-    logger = logging.getLogger()
+    logger = logging.getLogger("pffrocd")
     logger.setLevel(logging.DEBUG)
 
     # Create a formatter for the log messages
@@ -205,6 +204,8 @@ def setup_logging():
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
+    
+    return logger
 
 # Function to execute a command on a remote host
 def execute_command(host, username, command, private_key_path):
@@ -229,9 +230,6 @@ def execute_command(host, username, command, private_key_path):
     # Close the SSH connection
     ssh.close()
 
-    if output_stderr != '':
-        logging.error("REMOTE EXECUTION OF COMMAND FAILED")
-        logging.error(output_stderr)
     # Return the output of the command
     return output_stdout, output_stderr
 
@@ -318,21 +316,6 @@ def write_embeddings_to_remote_file(hostname, username, private_key_path, remote
         # Close the SSH client connection
         client.close()
 
-def execute_command_parallel(host1, username1, command1, private_key_path1, host2, username2, command2, private_key_path2):
-
-    # Create a thread pool executor
-    with ThreadPoolExecutor() as executor:
-        # Submit the command execution tasks to the executor
-        future1 = executor.submit(execute_command, host1, username1, command1, private_key_path1)
-        future2 = executor.submit(execute_command, host2, username2, command2, private_key_path2)
-
-        # Get the results of the command execution tasks
-        stdout1, stderr1 = future1.result()
-        stdout2, stderr2 = future2.result()
-
-    # Return the outputs of the command execution tasks
-    return stdout1, stderr1, stdout2, stderr2
-
 def get_people_with_multiple_images(root_dir):
     people_folders = os.listdir(root_dir)
     people_with_multiple_images = []
@@ -405,7 +388,12 @@ def get_random_images_except_person(root_dir, excluded_person, num_images):
     return random_image_paths
 
 
-
+def execute_command_parallel_alternative(hosts, user, password, command1, command2):
+    client = ParallelSSHClient(hosts=hosts, user=user, password=password)
+    output = client.run_command('%s', host_args=(command1,command2))
+    client.join(output)
+    del client
+    return output
 
 if __name__ == "__main__":
     # host1 = "192.168.50.55"
@@ -421,6 +409,8 @@ if __name__ == "__main__":
     # share0, share1 = create_shares("/home/kamil/Documents/uni/thesis/pffrocd/lfw/George_W_Bush/George_W_Bush_0001.jpg")
     # print(share0, share1)
 
-    client = ParallelSSHClient(hosts=['192.168.50.190'], user='dietpi')
+    client = ParallelSSHClient(hosts=['192.168.1.66', '192.168.1.95'], user='dietpi', password="kamil123")
     output = client.run_command('ls -l')
-    print(output)
+    for host_out in output:
+        for line in host_out.stdout:
+            print(line)
