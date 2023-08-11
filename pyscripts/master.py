@@ -24,7 +24,7 @@ server_exec_path = config.get('server', 'executable_path')
 server_exec_name = config.get('server', 'executable_name')
 server_pffrocd_path = config.get('server', 'pffrocd_path')
 
-test_mode = config.getboolean('misc', 'test_mode')
+nr_of_people = config.getint('misc', 'nr_of_people')
 sec_lvl = config.getint('misc', 'security_level')
 mt_alg = config.get('misc', 'mt_algorithm')
 niceness = config.getint('misc', 'niceness')
@@ -38,11 +38,8 @@ def run_test():
 
     # get the list of people that have more than one image
     people = pffrocd.get_people_with_multiple_images(root_dir='lfw')
-
-    if test_mode:
-        # if debugging, only use one person
-        people = people[:1]
-        logger.info("RUNNING IN TEST MODE: only using one person")
+    people = people[:nr_of_people]
+    logger.info(f"RUNNING for {len(people)} people")
 
     # list to store data (later saved as a dataframe) see https://stackoverflow.com/a/56746204
     data = []
@@ -79,7 +76,7 @@ def run_test():
 
             # run the face embedding extraction script on the server
             stdout, stderr = pffrocd.execute_command(server_ip, server_username, f"{server_pffrocd_path}/env/bin/python {server_pffrocd_path}/pyscripts/extract_embedding.py -i {server_pffrocd_path}/{img} -o {server_exec_path}/embedding.txt", server_key)
-            extraction_time = stdout
+            extraction_time = float(stdout)
 
             if stderr != '':
                 logger.error("REMOTE EXECUTION OF COMMAND FAILED")
@@ -106,7 +103,7 @@ def run_test():
             sfe_start_time  = time.time()
             output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, "kamil123", command1, command2)
             sfe_time = time.time() - sfe_start_time
-            logger.info(f"Finished! Total sfe time: {total_time} seconds")
+            logger.info(f"Finished! Total sfe time: {sfe_time} seconds")
             server_sfe_output = ''
             for host_output in output:
                 hostname = host_output.host
@@ -115,20 +112,20 @@ def run_test():
                 logger.debug("Host %s: exit code %s, output %s, error %s" % (
                     hostname, host_output.exit_code, stdout, stderr))
                 if hostname == server_ip:
-                    server_sfe_output = stdout
+                    server_sfe_output = ''.join(stdout)
 
             # todo: rerun the routine with powertop to gather energy consumption data
 
 
             # save all results and timing data
-
+            logger.debug(f"{server_sfe_output=}")
             parsed_sfe_output = pffrocd.parse_aby_output(server_sfe_output)
-            cos_dist_sfe = parsed_sfe_output['cos_dist_sfe']
+            cos_dist_sfe = float(parsed_sfe_output['cos_dist_sfe'])
             result = cos_dist_sfe < pffrocd.threshold
             expected_result = ref_img.split('/')[1] == img.split('/')[1]
             cos_dist_np = pffrocd.get_cos_dist_numpy(ref_img_embedding, img_embedding)
-            list_of_sfe_values = parsed_sfe_output.values()
-            to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time, 0, 0, list_of_sfe_values]
+            list_of_sfe_values = list(parsed_sfe_output.values())
+            to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time, 0, 0] + list_of_sfe_values
             logger.debug("To be appended: ")
             logger.debug(to_be_appended)
             data.append(to_be_appended)
