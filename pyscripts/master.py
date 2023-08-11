@@ -4,6 +4,7 @@ The main testing script that connects to the client and server, runs the tests a
 import pffrocd
 import configparser
 import time
+import pandas as pd
 
 """Parse config file"""
 config = configparser.ConfigParser()
@@ -43,12 +44,14 @@ def run_test():
         people = people[:1]
         logger.info("RUNNING IN TEST MODE: only using one person")
 
+    # list to store data (later saved as a dataframe) see https://stackoverflow.com/a/56746204
+    data = []
 
     # run for all the people with multiple images
-    for count, person in enumerate(people):
+    for count_person, person in enumerate(people):
         # get all images from person
         imgs = pffrocd.get_images_in_folder(person)
-        logger.info(f"Currently running for {person} ({count}/{len(people)})")
+        logger.info(f"Currently running for {person} ({count_person}/{len(people)})")
         logger.debug(f"Found {len(imgs)} images for {person}")
 
         # set the first image as the 'reference' image (registered at the service provider) and remove it from the list of images
@@ -71,17 +74,18 @@ def run_test():
         pffrocd.write_share_to_remote_file(server_ip, server_username, server_key, f"{server_exec_path}/share0.txt", share1)
 
         # run the test for each image
-        for img in imgs:
+        for count_img,img in enumerate(imgs):
             logger.debug(f"Running test for {img}")
 
             # run the face embedding extraction script on the server
             stdout, stderr = pffrocd.execute_command(server_ip, server_username, f"{server_pffrocd_path}/env/bin/python {server_pffrocd_path}/pyscripts/extract_embedding.py -i {server_pffrocd_path}/{img} -o {server_exec_path}/embedding.txt", server_key)
+            extraction_time = stdout
 
             if stderr != '':
                 logger.error("REMOTE EXECUTION OF COMMAND FAILED")
                 logger.error(stderr)
 
-            logger.debug(f"Embedding extracted by the server in {stdout} seconds")
+            logger.debug(f"Embedding extracted by the server in {extraction_time} seconds")
             
             # send the files with embeddings to the client and server
             img_embedding = pffrocd.get_embedding(img)
@@ -99,21 +103,39 @@ def run_test():
 
             command1 = f"cd {client_exec_path} ; nice -n {niceness} {client_exec_path}/{client_exec_name} -r 1 -a {server_ip} -f {client_exec_path}/embeddings.txt -s {sec_lvl} -x {mt_alg}"
             command2 = f"cd {server_exec_path} ; nice -n {niceness} {server_exec_path}/{server_exec_name} -r 0 -a {server_ip} -f {server_exec_path}/embeddings.txt -s {sec_lvl} -x {mt_alg}"
-            start_time  = time.time()
+            sfe_start_time  = time.time()
             output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, "kamil123", command1, command2)
-            total_time = time.time() - start_time
+            sfe_time = time.time() - sfe_start_time
             logger.info(f"Finished! Total sfe time: {total_time} seconds")
+            server_sfe_output = ''
             for host_output in output:
                 hostname = host_output.host
                 stdout = list(host_output.stdout)
                 stderr = list(host_output.stderr)
                 logger.debug("Host %s: exit code %s, output %s, error %s" % (
                     hostname, host_output.exit_code, stdout, stderr))
-
-            # todo: save all results and timing data
-
+                if hostname == server_ip:
+                    server_sfe_output = stdout
 
             # todo: rerun the routine with powertop to gather energy consumption data
+
+
+            # save all results and timing data
+
+            parsed_sfe_output = pffrocd.parse_aby_output(server_sfe_output)
+            cos_dist_sfe = parsed_sfe_output['cos_dist_sfe']
+            result = cos_dist_sfe < pffrocd.threshold
+            expected_result = ref_img.split('/')[1] == img.split('/')[1]
+            cos_dist_np = pffrocd.get_cos_dist_numpy(ref_img_embedding, img_embedding)
+            list_of_sfe_values = parsed_sfe_output.values()
+            to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time, 0, 0, list_of_sfe_values]
+            logger.debug("To be appended: ")
+            logger.debug(to_be_appended)
+            data.append(to_be_appended)
+
+    # make and save the dataframe with results        
+    df = pd.DataFrame(data, columns=pffrocd.columns)
+    df.to_csv(f"dfs/{pffrocd.current_datetime}.csv")
 
 
 if __name__ == "__main__":

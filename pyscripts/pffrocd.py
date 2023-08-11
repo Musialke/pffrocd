@@ -13,9 +13,87 @@ import logging
 import datetime
 import json
 from pssh.clients import ParallelSSHClient
+import pandas as pd
+from deepface.commons.distance import findThreshold
 
 current_datetime = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
-logging.getLogger("paramiko").setLevel(logging.WARNING) 
+logging.getLogger("paramiko").setLevel(logging.WARNING)
+
+threshold = findThreshold("SFace", "cosine")
+
+columns = [
+    'ref_img',
+    'other_img',
+    'result',
+    'expected_result',
+    'cos_dist_np',
+    'cos_dist_sfe',
+    'total_time',
+    'sfe_time',
+    'extraction_time',
+    'ram_used',
+    'energy_used',
+    'online_time.bool.local_gates',
+    'online_time.bool.interactive_gates',
+    'online_time.bool.layer_finish',
+    'online_time.yao.local_gates',
+    'online_time.yao.interactive_gates',
+    'online_time.yao.layer_finish',
+    'online_time.yao_rev.local_gates',
+    'online_time.yao_rev.interactive_gates',
+    'online_time.yao_rev.layer_finish',
+    'online_time.arith.local_gates',
+    'online_time.arith.interactive_gates',
+    'online_time.arith.layer_finish',
+    'online_time.splut.local_gates',
+    'online_time.splut.interactive_gates',
+    'online_time.splut.layer_finish',
+    'online_time.communication',
+    'complexities.boolean_sharing.ands',
+    'complexities.boolean_sharing.depth',
+    'complexities.total_vec_and',
+    'complexities.total_non_vec_and',
+    'complexities.xor_vals',
+    'complexities.gates',
+    'complexities.comb_gates',
+    'complexities.combstruct_gates',
+    'complexities.perm_gates',
+    'complexities.subset_gates',
+    'complexities.split_gates',
+    'complexities.yao.ands',
+    'complexities.yao.depth',
+    'complexities.reverse_yao.ands',
+    'complexities.reverse_yao.depth',
+    'complexities.arithmetic_sharing.muls',
+    'complexities.arithmetic_sharing.depth',
+    'complexities.sp_lut_sharing.ot_gates_total',
+    'complexities.sp_lut_sharing.depth',
+    'complexities.total_nr_of_gates',
+    'complexities.total_depth',
+    'timings.total',
+    'timings.init',
+    'timings.circuitgen',
+    'timings.network',
+    'timings.baseots',
+    'timings.setup',
+    'timings.otextension',
+    'timings.garbling',
+    'timings.online',
+    'communication.total.sent',
+    'communication.total.received',
+    'communication.base_ots.sent',
+    'communication.base_ots.received',
+    'communication.setup.sent',
+    'communication.setup.received',
+    'communication.otextension.sent',
+    'communication.otextension.received',
+    'communication.garbling.sent',
+    'communication.garbling.received',
+    'communication.online.sent',
+    'communication.online.received',
+    'cos_dist_ver',
+    'cos_dist_sfe'
+]
 
 def get_config_in_printing_format(config):
     d = {section: dict(config[section]) for section in config.sections()}
@@ -112,76 +190,95 @@ def parse_aby_output(s):
     numbers = re.findall(r"[-+]?(?:\d*\.*\d+)", s) 
 
     # prepare dictionary
-    d = {'online_time': {}, 'complexities': {}, 'communication': {}}
+    d = {}
 
     # online_time
-    some_keys = ['bool', 'yao', 'yao_rev', 'arith', 'splut']
-    a_dict = {'local_gates': '', 'interactive_gates': '', 'layer_finish': ''}
-    d['online_time'] = {key : a_dict.copy() for key in some_keys}
-
-    d['online_time'] |= {'communication': ''}
-
-    d['online_time']['bool']['local_gates'] = numbers[0]
-    d['online_time']['bool']['interactive_gates'] = numbers[1]
-    d['online_time']['bool']['layer_finish'] = numbers[2]
-
-    d['online_time']['yao']['local_gates'] = numbers[3]
-    d['online_time']['yao']['interactive_gates'] = numbers[4]
-    d['online_time']['yao']['layer_finish'] = numbers[5]
-
-    d['online_time']['yao_rev']['local_gates'] = numbers[6]
-    d['online_time']['yao_rev']['interactive_gates'] = numbers[7]
-    d['online_time']['yao_rev']['layer_finish'] = numbers[8]
-
-    d['online_time']['arith']['local_gates'] = numbers[9]
-    d['online_time']['arith']['interactive_gates'] = numbers[10]
-    d['online_time']['arith']['layer_finish'] = numbers[11]
-
-    d['online_time']['splut']['local_gates'] = numbers[12]
-    d['online_time']['splut']['interactive_gates'] = numbers[13]
-    d['online_time']['splut']['layer_finish'] = numbers[14]
-
-    d['online_time']['communication'] = numbers[15]
-
+    d['online_time.bool.local_gates'] = numbers[0]
+    d['online_time.bool.interactive_gates'] = numbers[1]
+    d['online_time.bool.layer_finish'] = numbers[2]
+    
+    d['online_time.yao.local_gates'] = numbers[3]
+    d['online_time.yao.interactive_gates'] = numbers[4]
+    d['online_time.yao.layer_finish'] = numbers[5]
+    
+    d['online_time.yao_rev.local_gates'] = numbers[6]
+    d['online_time.yao_rev.interactive_gates'] = numbers[7]
+    d['online_time.yao_rev.layer_finish'] = numbers[8]
+    
+    d['online_time.arith.local_gates'] = numbers[9]
+    d['online_time.arith.interactive_gates'] = numbers[10]
+    d['online_time.arith.layer_finish'] = numbers[11]
+    
+    d['online_time.splut.local_gates'] = numbers[12]
+    d['online_time.splut.interactive_gates'] = numbers[13]
+    d['online_time.splut.layer_finish'] = numbers[14]
+    
+    d['online_time.communication'] = numbers[15]
+   
 
     # complexities
-    d['complexities'] = {'boolean_sharing': {'ands': numbers[16], 'depth': numbers[18]}}
-    d['complexities'] |= {'total_vec_and': numbers[19], 'total_non_vec_and': numbers[20], 'xor_vals': numbers[21], 'gates': numbers[22],'comb_gates': numbers[23],'combstruct_gates': numbers[24], 'perm_gates': numbers[25], 'subset_gates': numbers[26], 'split_gates': numbers[27]}
-    d['complexities'] |= {'yao':{'ands':numbers[28], 'depth':numbers[29]}}
-    d['complexities'] |= {'reverse_yao':{'ands':numbers[30], 'depth':numbers[31]}}
-    d['complexities'] |= {'arithmetic_sharing':{'muls':numbers[32], 'depth':numbers[33]}}
-    d['complexities'] |= {'sp_lut_sharing':{'ot_gates_total':numbers[34], 'depth':numbers[35]}}
-    d['complexities'] |= {'total_nr_of_gates':numbers[36],'total_depth':numbers[37]}
+    d['complexities.boolean_sharing.ands'] = numbers[16]
+    d['complexities.boolean_sharing.depth'] = numbers[18]
+
+    d['complexities.total_vec_and'] = numbers[19]
+    d['complexities.total_non_vec_and'] = numbers[20]
+    d['complexities.xor_vals'] = numbers[21]
+    d['complexities.gates'] = numbers[22]
+    d['complexities.comb_gates'] = numbers[23]
+    d['complexities.combstruct_gates'] = numbers[24]
+    d['complexities.perm_gates'] = numbers[25]
+    d['complexities.subset_gates'] = numbers[26]
+    d['complexities.split_gates'] = numbers[27]
+
+    d['complexities.yao.ands'] = numbers[28]
+    d['complexities.yao.depth'] = numbers[29]
+
+    d['complexities.reverse_yao.ands'] = numbers[30]
+    d['complexities.reverse_yao.depth'] = numbers[31]
+
+    d['complexities.arithmetic_sharing.muls'] = numbers[32]
+    d['complexities.arithmetic_sharing.depth'] = numbers[33]
+
+    d['complexities.sp_lut_sharing.ot_gates_total'] = numbers[34]
+    d['complexities.sp_lut_sharing.depth'] = numbers[35]
+
+    d['complexities.total_nr_of_gates'] = numbers[36]
+    d['complexities.total_depth'] = numbers[37]
+
 
     # timings
-    d['timings'] = {'total': numbers[38], 'init': numbers[39], 'circuitgen': numbers[40], 'network': numbers[41], 'baseots': numbers[42], 'setup': numbers[43], 'otextension':numbers[44], 'garbling':numbers[45], 'online': numbers[46]}
+    d['timings.total'] = numbers[38]
+    d['timings.init'] = numbers[39]
+    d['timings.circuitgen'] = numbers[40]
+    d['timings.network'] = numbers[41]
+    d['timings.baseots'] = numbers[42]
+    d['timings.setup'] = numbers[43]
+    d['timings.otextension'] = numbers[44]
+    d['timings.garbling'] = numbers[45]
+    d['timings.online'] = numbers[46]
 
     # communication
-    some_keys = ['total', 'base_ots', 'setup', 'otextension', 'garbling', 'online']
-    a_dict = {'sent':'', 'received':''}
-    d['communication'] = {key: a_dict.copy() for key in some_keys}
+    d['communication.total.sent'] = numbers[47]
+    d['communication.total.received'] = numbers[48]
 
-    d['communication']['total']['sent'] = numbers[47]
-    d['communication']['total']['received'] = numbers[48]
+    d['communication.base_ots.sent'] = numbers[49]
+    d['communication.base_ots.received'] = numbers[50]
 
-    d['communication']['base_ots']['sent'] = numbers[49]
-    d['communication']['base_ots']['received'] = numbers[50]
+    d['communication.setup.sent'] = numbers[51]
+    d['communication.setup.received'] = numbers[52]
 
-    d['communication']['setup']['sent'] = numbers[51]
-    d['communication']['setup']['received'] = numbers[52]
+    d['communication.otextension.sent'] = numbers[53]
+    d['communication.otextension.received'] = numbers[54]
 
-    d['communication']['otextension']['sent'] = numbers[53]
-    d['communication']['otextension']['received'] = numbers[54]
+    d['communication.garbling.sent'] = numbers[55]
+    d['communication.garbling.received'] = numbers[56]
 
-    d['communication']['garbling']['sent'] = numbers[55]
-    d['communication']['garbling']['received'] = numbers[56]
+    d['communication.online.sent'] = numbers[57]
+    d['communication.online.received'] = numbers[58]
 
-    d['communication']['online']['sent'] = numbers[57]
-    d['communication']['online']['received'] = numbers[58]
-
+    # results
     d['cos_dist_ver'] = numbers[59]
     d['cos_dist_sfe'] = numbers[60]
-
     return d
 
 
@@ -409,8 +506,12 @@ if __name__ == "__main__":
     # share0, share1 = create_shares("/home/kamil/Documents/uni/thesis/pffrocd/lfw/George_W_Bush/George_W_Bush_0001.jpg")
     # print(share0, share1)
 
-    client = ParallelSSHClient(hosts=['192.168.1.66', '192.168.1.95'], user='dietpi', password="kamil123")
-    output = client.run_command('ls -l')
-    for host_out in output:
-        for line in host_out.stdout:
-            print(line)
+    # client = ParallelSSHClient(hosts=['192.168.1.66', '192.168.1.95'], user='dietpi', password="kamil123")
+    # output = client.run_command('ls -l')
+    # for host_out in output:
+    #     for line in host_out.stdout:
+    #         print(line)
+    with open("/home/kamil/Documents/uni/thesis/pffrocd/sample_aby_output.txt", "r") as f:
+        output = f.read()
+    d = parse_aby_output(output)
+    print(d.keys())
