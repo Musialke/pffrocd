@@ -1,0 +1,101 @@
+2023-08-06 17:09:28,229 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.50.55",
+        "username": "dietpi",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/dietpi/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/dietpi/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.50.190",
+        "username": "dietpi",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/dietpi/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/dietpi/pffrocd"
+    },
+    "misc": {
+        "test_mode": "True"
+    }
+}
+2023-08-06 17:09:28,414 - INFO - RUNNING IN TEST MODE: only using one person
+2023-08-06 17:09:28,414 - INFO - Currently running for lfw/Aaron_Peirsol (0/1)
+2023-08-06 17:09:28,414 - DEBUG - Found 4 images for lfw/Aaron_Peirsol
+2023-08-06 17:09:28,414 - DEBUG - setting image as reference image: lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg
+2023-08-06 17:09:31,577 - DEBUG - Running test for lfw/Aaron_Peirsol/Aaron_Peirsol_0002.jpg
+2023-08-06 17:09:32,237 - DEBUG - Image sent to server
+2023-08-06 17:09:50,537 - DEBUG - Embedding extracted by the server in 14.943751811981201 seconds
+2023-08-06 17:09:50,537 - DEBUG - Running sfe...
+2023-08-06 17:09:51,051 - DEBUG - sfe done
+2023-08-06 17:09:51,051 - DEBUG - Usage: 192.168.50.190
+ -r [Role: 0/1, required]
+ -i [test bit, optional]
+ -n [Number of parallel operation elements, optional]
+ -b [Bit-length, default 32, optional]
+ -s [Symmetric Security Bits, default: 128, optional]
+ -a [IP-address, default: localhost, optional]
+ -p [Port, default: 7766, optional]
+ -t [Single test (leave out for all operations), default: off, optional]
+ -x [FP a, optional]
+ -y [FP b, optional]
+ -f [Input file containing face embeddings, required]
+ -o [Output file containing cos sim result, optional]
+
+Program exiting
+Exiting
+2023-08-06 17:09:51,051 - DEBUG - Usage: 192.168.50.55
+ -r [Role: 0/1, required]
+ -i [test bit, optional]
+ -n [Number of parallel operation elements, optional]
+ -b [Bit-length, default 32, optional]
+ -s [Symmetric Security Bits, default: 128, optional]
+ -a [IP-address, default: localhost, optional]
+ -p [Port, default: 7766, optional]
+ -t [Single test (leave out for all operations), default: off, optional]
+ -x [FP a, optional]
+ -y [FP b, optional]
+ -f [Input file containing face embeddings, required]
+ -o [Output file containing cos sim result, optional]
+
+Program exiting
+Exiting
+2023-08-06 17:09:51,051 - DEBUG - Running test for lfw/Aaron_Peirsol/Aaron_Peirsol_0003.jpg
+2023-08-06 17:09:51,498 - DEBUG - Image sent to server
+2023-08-06 17:10:16,377 - DEBUG - Embedding extracted by the server in 21.679015159606934 seconds
+2023-08-06 17:10:16,378 - DEBUG - Running sfe...
+2023-08-06 17:10:17,126 - DEBUG - sfe done
+2023-08-06 17:10:17,126 - DEBUG - Usage: 192.168.50.190
+ -r [Role: 0/1, required]
+ -i [test bit, optional]
+ -n [Number of parallel operation elements, optional]
+ -b [Bit-length, default 32, optional]
+ -s [Symmetric Security Bits, default: 128, optional]
+ -a [IP-address, default: localhost, optional]
+ -p [Port, default: 7766, optional]
+ -t [Single test (leave out for all operations), default: off, optional]
+ -x [FP a, optional]
+ -y [FP b, optional]
+ -f [Input file containing face embeddings, required]
+ -o [Output file containing cos sim result, optional]
+
+Program exiting
+Exiting
+2023-08-06 17:10:17,126 - DEBUG - Usage: 192.168.50.55
+ -r [Role: 0/1, required]
+ -i [test bit, optional]
+ -n [Number of parallel operation elements, optional]
+ -b [Bit-length, default 32, optional]
+ -s [Symmetric Security Bits, default: 128, optional]
+ -a [IP-address, default: localhost, optional]
+ -p [Port, default: 7766, optional]
+ -t [Single test (leave out for all operations), default: off, optional]
+ -x [FP a, optional]
+ -y [FP b, optional]
+ -f [Input file containing face embeddings, required]
+ -o [Output file containing cos sim result, optional]
+
+Program exiting
+Exiting
+2023-08-06 17:10:17,126 - DEBUG - Running test for lfw/Aaron_Peirsol/Aaron_Peirsol_0004.jpg
+2023-08-06 17:10:17,789 - DEBUG - Image sent to server

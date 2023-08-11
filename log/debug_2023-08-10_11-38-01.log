@@ -1,0 +1,40 @@
+2023-08-10 11:38:02,003 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.50.55",
+        "username": "dietpi",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/dietpi/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/dietpi/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.50.190",
+        "username": "dietpi",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/dietpi/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/dietpi/pffrocd"
+    },
+    "misc": {
+        "test_mode": "True",
+        "security_level": "80",
+        "mt_algorithm": "MT_PAILLIER"
+    }
+}
+2023-08-10 11:38:02,136 - INFO - RUNNING IN TEST MODE: only using one person
+2023-08-10 11:38:02,136 - INFO - Currently running for lfw/Aaron_Peirsol (0/1)
+2023-08-10 11:38:02,137 - DEBUG - Found 4 images for lfw/Aaron_Peirsol
+2023-08-10 11:38:02,137 - DEBUG - setting image as reference image: lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg
+2023-08-10 11:38:05,606 - DEBUG - Running test for lfw/Aaron_Peirsol/Aaron_Peirsol_0002.jpg
+2023-08-10 11:38:27,440 - DEBUG - Embedding extracted by the server in 14.932626485824585 seconds
+2023-08-10 11:38:29,920 - DEBUG - Running sfe...
+2023-08-10 11:38:31,938 - INFO - Finished! Total sfe time: 2.0169453620910645 seconds
+2023-08-10 11:38:31,938 - DEBUG - Host 192.168.50.55: exit code 0, output ['Usage: 80', ' -r [Role: 0/1, required]', ' -i [test bit, optional]', ' -n [Number of parallel operation elements, optional]', ' -b [Bit-length, default 32, optional]', ' -s [Symmetric Security Bits, default: 128, optional]', ' -a [IP-address, default: localhost, optional]', ' -p [Port, default: 7766, optional]', ' -t [Single test (leave out for all operations), default: off, optional]', ' -x [Arithmetic multiplication triples algorithm, optional]', ' -y [FP b, optional]', ' -f [Input file containing face embeddings, required]', ' -o [Output file containing cos sim result, optional]', '', 'Program exiting', 'Exiting'], error ['Argument for parameter wrong. ']
+2023-08-10 11:38:31,938 - DEBUG - Host 192.168.50.190: exit code 0, output ['Usage: 80', ' -r [Role: 0/1, required]', ' -i [test bit, optional]', ' -n [Number of parallel operation elements, optional]', ' -b [Bit-length, default 32, optional]', ' -s [Symmetric Security Bits, default: 128, optional]', ' -a [IP-address, default: localhost, optional]', ' -p [Port, default: 7766, optional]', ' -t [Single test (leave out for all operations), default: off, optional]', ' -x [Arithmetic multiplication triples algorithm, optional]', ' -y [FP b, optional]', ' -f [Input file containing face embeddings, required]', ' -o [Output file containing cos sim result, optional]', '', 'Program exiting', 'Exiting'], error ['Argument for parameter wrong. ']
+2023-08-10 11:38:31,938 - DEBUG - Running test for lfw/Aaron_Peirsol/Aaron_Peirsol_0003.jpg
+2023-08-10 11:38:49,972 - DEBUG - Embedding extracted by the server in 14.880228519439697 seconds
+2023-08-10 11:38:52,860 - DEBUG - Running sfe...
+2023-08-10 11:38:54,532 - INFO - Finished! Total sfe time: 1.6719448566436768 seconds
+2023-08-10 11:38:54,532 - DEBUG - Host 192.168.50.55: exit code 0, output ['Usage: 80', ' -r [Role: 0/1, required]', ' -i [test bit, optional]', ' -n [Number of parallel operation elements, optional]', ' -b [Bit-length, default 32, optional]', ' -s [Symmetric Security Bits, default: 128, optional]', ' -a [IP-address, default: localhost, optional]', ' -p [Port, default: 7766, optional]', ' -t [Single test (leave out for all operations), default: off, optional]', ' -x [Arithmetic multiplication triples algorithm, optional]', ' -y [FP b, optional]', ' -f [Input file containing face embeddings, required]', ' -o [Output file containing cos sim result, optional]', '', 'Program exiting', 'Exiting'], error ['Argument for parameter wrong. ']
+2023-08-10 11:38:54,532 - DEBUG - Host 192.168.50.190: exit code 0, output ['Usage: 80', ' -r [Role: 0/1, required]', ' -i [test bit, optional]', ' -n [Number of parallel operation elements, optional]', ' -b [Bit-length, default 32, optional]', ' -s [Symmetric Security Bits, default: 128, optional]', ' -a [IP-address, default: localhost, optional]', ' -p [Port, default: 7766, optional]', ' -t [Single test (leave out for all operations), default: off, optional]', ' -x [Arithmetic multiplication triples algorithm, optional]', ' -y [FP b, optional]', ' -f [Input file containing face embeddings, required]', ' -o [Output file containing cos sim result, optional]', '', 'Program exiting', 'Exiting'], error ['Argument for parameter wrong. ']
+2023-08-10 11:38:54,532 - DEBUG - Running test for lfw/Aaron_Peirsol/Aaron_Peirsol_0004.jpg

@@ -1,0 +1,195 @@
+2023-08-07 09:22:43,394 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.1.95",
+        "username": "dietpi",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/dietpi/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/dietpi/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.1.66",
+        "username": "dietpi",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/dietpi/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/dietpi/pffrocd"
+    },
+    "misc": {
+        "test_mode": "True"
+    }
+}
+2023-08-07 09:22:43,485 - INFO - RUNNING IN TEST MODE: only using one person
+2023-08-07 09:22:43,485 - INFO - Currently running for lfw/Aaron_Peirsol (0/1)
+2023-08-07 09:22:43,486 - DEBUG - Found 4 images for lfw/Aaron_Peirsol
+2023-08-07 09:22:43,486 - DEBUG - setting image as reference image: lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg
+2023-08-07 09:22:45,385 - DEBUG - Running test for lfw/Aaron_Peirsol/Aaron_Peirsol_0002.jpg
+2023-08-07 09:23:05,476 - DEBUG - Embedding extracted by the server in 16.814262628555298 seconds
+2023-08-07 09:23:07,307 - DEBUG - Running sfe...
+2023-08-07 09:23:07,308 - DEBUG - Make client request for host 192.168.1.95, (host_i, host) in clients: False
+2023-08-07 09:23:07,312 - DEBUG - Make client request for host 192.168.1.66, (host_i, host) in clients: False
+2023-08-07 09:23:07,313 - DEBUG - Connecting to 192.168.1.95:22
+2023-08-07 09:23:07,314 - DEBUG - Connecting to 192.168.1.66:22
+2023-08-07 09:23:07,519 - DEBUG - Agent auth failed with AgentAuthenticationError('No identities match for user %s', b'dietpi') continuing with other authentication methods
+2023-08-07 09:23:07,519 - DEBUG - Trying to authenticate with identity file /home/kamil/.ssh/id_rsa
+2023-08-07 09:23:07,520 - DEBUG - Authentication with identity file /home/kamil/.ssh/id_rsa failed with , continuing with other identities
+2023-08-07 09:23:07,520 - DEBUG - Private key auth failed, trying password
+2023-08-07 09:23:08,067 - DEBUG - Authentication completed successfully - setting session to non-blocking mode
+2023-08-07 09:23:08,119 - DEBUG - Agent auth failed with AgentAuthenticationError('No identities match for user %s', b'dietpi') continuing with other authentication methods
+2023-08-07 09:23:08,119 - DEBUG - Trying to authenticate with identity file /home/kamil/.ssh/id_rsa
+2023-08-07 09:23:08,120 - DEBUG - Authentication with identity file /home/kamil/.ssh/id_rsa failed with , continuing with other identities
+2023-08-07 09:23:08,120 - DEBUG - Private key auth failed, trying password
+2023-08-07 09:23:08,658 - DEBUG - Authentication completed successfully - setting session to non-blocking mode
+2023-08-07 09:23:08,659 - DEBUG - Executing command 'b'cd /home/dietpi/pffrocd/ABY/build/bin ; /home/dietpi/pffrocd/ABY/build/bin/cos_dist_float_scen_simd -r 1 -a 192.168.1.66 -f /home/dietpi/pffrocd/ABY/build/bin/embeddings.txt''
+2023-08-07 09:23:08,741 - DEBUG - Executing command 'b'cd /home/dietpi/pffrocd/ABY/build/bin ; /home/dietpi/pffrocd/ABY/build/bin/cos_dist_float_scen_simd -r 0 -a 192.168.1.66 -f /home/dietpi/pffrocd/ABY/build/bin/embeddings.txt''
+2023-08-07 09:23:58,934 - DEBUG - Closing channel
+2023-08-07 09:23:58,960 - DEBUG - Closing channel
+2023-08-07 09:23:58,960 - DEBUG - Reading from stdout buffer, timeout=None
+2023-08-07 09:23:58,961 - INFO - [192.168.1.95]	INPUT FILE NAME: /home/dietpi/pffrocd/ABY/build/bin/embeddings.txt
+2023-08-07 09:23:58,961 - INFO - [192.168.1.95]	starting reading x and y
+2023-08-07 09:23:58,961 - INFO - [192.168.1.95]	finished reading x and y
+2023-08-07 09:23:58,961 - INFO - [192.168.1.95]	starting reading z
+2023-08-07 09:23:58,962 - INFO - [192.168.1.95]	finished reading z
+2023-08-07 09:23:58,962 - INFO - [192.168.1.95]	CIRCUIT DIRECTORY: /home/dietpi/pffrocd/ABY/bin/circ/
+2023-08-07 09:23:58,962 - INFO - [192.168.1.95]	party created
+2023-08-07 09:23:58,962 - INFO - [192.168.1.95]	circuit retrieved
+2023-08-07 09:23:58,962 - INFO - [192.168.1.95]	here 1
+2023-08-07 09:23:58,962 - INFO - [192.168.1.95]	here 1
+2023-08-07 09:23:58,962 - INFO - [192.168.1.95]	here 1
+2023-08-07 09:23:58,963 - INFO - [192.168.1.95]	here 1
+2023-08-07 09:23:58,963 - INFO - [192.168.1.95]	verification values computed
+2023-08-07 09:23:58,963 - INFO - [192.168.1.95]	assigning ingates
+2023-08-07 09:23:58,963 - INFO - [192.168.1.95]	finished assigning ingates
+2023-08-07 09:23:58,963 - INFO - [192.168.1.95]	multiplied
+2023-08-07 09:23:58,963 - INFO - [192.168.1.95]	finished computing x dot y
+2023-08-07 09:23:58,963 - INFO - [192.168.1.95]	multiplied
+2023-08-07 09:23:58,964 - INFO - [192.168.1.95]	finished computing norm(x)
+2023-08-07 09:23:58,964 - INFO - [192.168.1.95]	multiplied
+2023-08-07 09:23:58,964 - INFO - [192.168.1.95]	finished computing norm(y)
+2023-08-07 09:23:58,964 - INFO - [192.168.1.95]	finished computing cos dist
+2023-08-07 09:23:58,964 - INFO - [192.168.1.95]	Online time is distributed as follows: 
+2023-08-07 09:23:58,965 - INFO - [192.168.1.95]	Bool: local gates: 1859.9680000000, interactive gates: 2204.1100000000, layer finish: 1513.7850000000
+2023-08-07 09:23:58,965 - INFO - [192.168.1.95]	Yao: local gates: 23.7070000000, interactive gates: 18.6130000000, layer finish: 6.3450000000
+2023-08-07 09:23:58,965 - INFO - [192.168.1.95]	Yao Rev: local gates: 26.9720000000, interactive gates: 20.2740000000, layer finish: 6.5020000000
+2023-08-07 09:23:58,965 - INFO - [192.168.1.95]	Arith: local gates: 28.0390000000, interactive gates: 20.6290000000, layer finish: 22.6590000000
+2023-08-07 09:23:58,965 - INFO - [192.168.1.95]	SPLUT: local gates: 23.9940000000, interactive gates: 25.3360000000, layer finish: 138.7410000000
+2023-08-07 09:23:58,965 - INFO - [192.168.1.95]	Communication: 14274.7460000000
+2023-08-07 09:23:58,966 - INFO - [192.168.1.95]	
+2023-08-07 09:23:58,966 - INFO - [192.168.1.95]	Complexities: 
+2023-08-07 09:23:58,966 - INFO - [192.168.1.95]	Boolean Sharing: ANDs: 5971636 (1-bit) ; Depth: 10918
+2023-08-07 09:23:58,966 - INFO - [192.168.1.95]	Total Vec AND: 5971636
+2023-08-07 09:23:58,966 - INFO - [192.168.1.95]	Total Non-Vec AND: 5971636
+2023-08-07 09:23:58,967 - INFO - [192.168.1.95]	XOR vals: 5892966 gates: 1383450
+2023-08-07 09:23:58,967 - INFO - [192.168.1.95]	Comb gates: 0, CombStruct gates: 0, Perm gates: 0, Subset gates: 24576, Split gates: 0
+2023-08-07 09:23:58,967 - INFO - [192.168.1.95]	Yao: ANDs: 0 ; Depth: 0
+2023-08-07 09:23:58,967 - INFO - [192.168.1.95]	Reverse Yao: ANDs: 0 ; Depth: 0
+2023-08-07 09:23:58,967 - INFO - [192.168.1.95]	Arithmetic Sharing: MULs: 0 ; Depth: 0
+2023-08-07 09:23:58,968 - INFO - [192.168.1.95]	SP-LUT Sharing: OT-gates: Total OT gates = 0; Depth: 1
+2023-08-07 09:23:58,968 - INFO - [192.168.1.95]	Total number of gates: 3163722 Total depth: 10918
+2023-08-07 09:23:58,968 - INFO - [192.168.1.95]	Timings: 
+2023-08-07 09:23:58,968 - INFO - [192.168.1.95]	Total =		34304.4630000000 ms
+2023-08-07 09:23:58,968 - INFO - [192.168.1.95]	Init =		0.3090000000 ms
+2023-08-07 09:23:58,968 - INFO - [192.168.1.95]	CircuitGen =	0.3560000000 ms
+2023-08-07 09:23:58,969 - INFO - [192.168.1.95]	Network =	1764.7290000000 ms
+2023-08-07 09:23:58,969 - INFO - [192.168.1.95]	BaseOTs =	2092.6320000000 ms
+2023-08-07 09:23:58,969 - INFO - [192.168.1.95]	Setup =		14031.4310000000 ms
+2023-08-07 09:23:58,969 - INFO - [192.168.1.95]	OTExtension =	13929.2810000000 ms
+2023-08-07 09:23:58,969 - INFO - [192.168.1.95]	Garbling =	0.0090000000 ms
+2023-08-07 09:23:58,970 - INFO - [192.168.1.95]	Online =	20273.0230000000 ms
+2023-08-07 09:23:58,970 - INFO - [192.168.1.95]	
+2023-08-07 09:23:58,970 - INFO - [192.168.1.95]	Communication: 
+2023-08-07 09:23:58,970 - INFO - [192.168.1.95]	Total Sent / Rcv	98545454  bytes / 98546478 bytes
+2023-08-07 09:23:58,970 - INFO - [192.168.1.95]	BaseOTs Sent / Rcv	49956  bytes / 49956 bytes
+2023-08-07 09:23:58,971 - INFO - [192.168.1.95]	Setup Sent / Rcv	96945321  bytes / 96945321 bytes
+2023-08-07 09:23:58,971 - INFO - [192.168.1.95]	OTExtension Sent / Rcv	96945321  bytes / 96945321 bytes
+2023-08-07 09:23:58,971 - INFO - [192.168.1.95]	Garbling Sent / Rcv	0  bytes / 0 bytes
+2023-08-07 09:23:58,971 - INFO - [192.168.1.95]	Online Sent / Rcv	1600133  bytes / 1601157 bytes
+2023-08-07 09:23:58,971 - INFO - [192.168.1.95]	
+2023-08-07 09:23:58,972 - INFO - [192.168.1.95]	cos_dist_ver: 0.2064672729
+2023-08-07 09:23:58,972 - INFO - [192.168.1.95]	cos_dist: 0.2064672729
+2023-08-07 09:23:58,972 - DEBUG - Reading from stderr buffer, timeout=None
+2023-08-07 09:23:58,972 - DEBUG - Host 192.168.1.95: exit code 0, output ['INPUT FILE NAME: /home/dietpi/pffrocd/ABY/build/bin/embeddings.txt', 'starting reading x and y', 'finished reading x and y', 'starting reading z', 'finished reading z', 'CIRCUIT DIRECTORY: /home/dietpi/pffrocd/ABY/bin/circ/', 'party created', 'circuit retrieved', 'here 1', 'here 1', 'here 1', 'here 1', 'verification values computed', 'assigning ingates', 'finished assigning ingates', 'multiplied', 'finished computing x dot y', 'multiplied', 'finished computing norm(x)', 'multiplied', 'finished computing norm(y)', 'finished computing cos dist', 'Online time is distributed as follows: ', 'Bool: local gates: 1859.9680000000, interactive gates: 2204.1100000000, layer finish: 1513.7850000000', 'Yao: local gates: 23.7070000000, interactive gates: 18.6130000000, layer finish: 6.3450000000', 'Yao Rev: local gates: 26.9720000000, interactive gates: 20.2740000000, layer finish: 6.5020000000', 'Arith: local gates: 28.0390000000, interactive gates: 20.6290000000, layer finish: 22.6590000000', 'SPLUT: local gates: 23.9940000000, interactive gates: 25.3360000000, layer finish: 138.7410000000', 'Communication: 14274.7460000000', '', 'Complexities: ', 'Boolean Sharing: ANDs: 5971636 (1-bit) ; Depth: 10918', 'Total Vec AND: 5971636', 'Total Non-Vec AND: 5971636', 'XOR vals: 5892966 gates: 1383450', 'Comb gates: 0, CombStruct gates: 0, Perm gates: 0, Subset gates: 24576, Split gates: 0', 'Yao: ANDs: 0 ; Depth: 0', 'Reverse Yao: ANDs: 0 ; Depth: 0', 'Arithmetic Sharing: MULs: 0 ; Depth: 0', 'SP-LUT Sharing: OT-gates: Total OT gates = 0; Depth: 1', 'Total number of gates: 3163722 Total depth: 10918', 'Timings: ', 'Total =\t\t34304.4630000000 ms', 'Init =\t\t0.3090000000 ms', 'CircuitGen =\t0.3560000000 ms', 'Network =\t1764.7290000000 ms', 'BaseOTs =\t2092.6320000000 ms', 'Setup =\t\t14031.4310000000 ms', 'OTExtension =\t13929.2810000000 ms', 'Garbling =\t0.0090000000 ms', 'Online =\t20273.0230000000 ms', '', 'Communication: ', 'Total Sent / Rcv\t98545454  bytes / 98546478 bytes', 'BaseOTs Sent / Rcv\t49956  bytes / 49956 bytes', 'Setup Sent / Rcv\t96945321  bytes / 96945321 bytes', 'OTExtension Sent / Rcv\t96945321  bytes / 96945321 bytes', 'Garbling Sent / Rcv\t0  bytes / 0 bytes', 'Online Sent / Rcv\t1600133  bytes / 1601157 bytes', '', 'cos_dist_ver: 0.2064672729', 'cos_dist: 0.2064672729'], error []
+2023-08-07 09:23:58,972 - DEBUG - Reading from stdout buffer, timeout=None
+2023-08-07 09:23:58,973 - INFO - [192.168.1.66]	INPUT FILE NAME: /home/dietpi/pffrocd/ABY/build/bin/embeddings.txt
+2023-08-07 09:23:58,973 - INFO - [192.168.1.66]	starting reading x and y
+2023-08-07 09:23:58,973 - INFO - [192.168.1.66]	finished reading x and y
+2023-08-07 09:23:58,973 - INFO - [192.168.1.66]	starting reading z
+2023-08-07 09:23:58,973 - INFO - [192.168.1.66]	finished reading z
+2023-08-07 09:23:58,973 - INFO - [192.168.1.66]	CIRCUIT DIRECTORY: /home/dietpi/pffrocd/ABY/bin/circ/
+2023-08-07 09:23:58,973 - INFO - [192.168.1.66]	party created
+2023-08-07 09:23:58,973 - INFO - [192.168.1.66]	circuit retrieved
+2023-08-07 09:23:58,974 - INFO - [192.168.1.66]	here 1
+2023-08-07 09:23:58,974 - INFO - [192.168.1.66]	here 1
+2023-08-07 09:23:58,974 - INFO - [192.168.1.66]	here 1
+2023-08-07 09:23:58,974 - INFO - [192.168.1.66]	here 1
+2023-08-07 09:23:58,974 - INFO - [192.168.1.66]	verification values computed
+2023-08-07 09:23:58,974 - INFO - [192.168.1.66]	assigning ingates
+2023-08-07 09:23:58,974 - INFO - [192.168.1.66]	finished assigning ingates
+2023-08-07 09:23:58,974 - INFO - [192.168.1.66]	multiplied
+2023-08-07 09:23:58,974 - INFO - [192.168.1.66]	finished computing x dot y
+2023-08-07 09:23:58,975 - INFO - [192.168.1.66]	multiplied
+2023-08-07 09:23:58,975 - INFO - [192.168.1.66]	finished computing norm(x)
+2023-08-07 09:23:58,975 - INFO - [192.168.1.66]	multiplied
+2023-08-07 09:23:58,975 - INFO - [192.168.1.66]	finished computing norm(y)
+2023-08-07 09:23:58,975 - INFO - [192.168.1.66]	finished computing cos dist
+2023-08-07 09:23:58,975 - INFO - [192.168.1.66]	Online time is distributed as follows: 
+2023-08-07 09:23:58,975 - INFO - [192.168.1.66]	Bool: local gates: 1817.1200000000, interactive gates: 2158.7610000000, layer finish: 1501.0310000000
+2023-08-07 09:23:58,976 - INFO - [192.168.1.66]	Yao: local gates: 24.6150000000, interactive gates: 17.8080000000, layer finish: 7.7780000000
+2023-08-07 09:23:58,976 - INFO - [192.168.1.66]	Yao Rev: local gates: 22.3190000000, interactive gates: 18.1090000000, layer finish: 8.6750000000
+2023-08-07 09:23:58,976 - INFO - [192.168.1.66]	Arith: local gates: 30.1820000000, interactive gates: 22.6810000000, layer finish: 27.1160000000
+2023-08-07 09:23:58,976 - INFO - [192.168.1.66]	SPLUT: local gates: 26.0250000000, interactive gates: 21.1800000000, layer finish: 140.1900000000
+2023-08-07 09:23:58,976 - INFO - [192.168.1.66]	Communication: 14376.8940000000
+2023-08-07 09:23:58,977 - INFO - [192.168.1.66]	
+2023-08-07 09:23:58,977 - INFO - [192.168.1.66]	Complexities: 
+2023-08-07 09:23:58,977 - INFO - [192.168.1.66]	Boolean Sharing: ANDs: 5971636 (1-bit) ; Depth: 10918
+2023-08-07 09:23:58,977 - INFO - [192.168.1.66]	Total Vec AND: 5971636
+2023-08-07 09:23:58,977 - INFO - [192.168.1.66]	Total Non-Vec AND: 5971636
+2023-08-07 09:23:58,978 - INFO - [192.168.1.66]	XOR vals: 5892966 gates: 1383450
+2023-08-07 09:23:58,978 - INFO - [192.168.1.66]	Comb gates: 0, CombStruct gates: 0, Perm gates: 0, Subset gates: 24576, Split gates: 0
+2023-08-07 09:23:58,978 - INFO - [192.168.1.66]	Yao: ANDs: 0 ; Depth: 0
+2023-08-07 09:23:58,978 - INFO - [192.168.1.66]	Reverse Yao: ANDs: 0 ; Depth: 0
+2023-08-07 09:23:58,978 - INFO - [192.168.1.66]	Arithmetic Sharing: MULs: 0 ; Depth: 0
+2023-08-07 09:23:58,979 - INFO - [192.168.1.66]	SP-LUT Sharing: OT-gates: Total OT gates = 0; Depth: 1
+2023-08-07 09:23:58,979 - INFO - [192.168.1.66]	Total number of gates: 3163722 Total depth: 10918
+2023-08-07 09:23:58,979 - INFO - [192.168.1.66]	Timings: 
+2023-08-07 09:23:58,979 - INFO - [192.168.1.66]	Total =		34307.8010000000 ms
+2023-08-07 09:23:58,980 - INFO - [192.168.1.66]	Init =		0.4490000000 ms
+2023-08-07 09:23:58,980 - INFO - [192.168.1.66]	CircuitGen =	0.3860000000 ms
+2023-08-07 09:23:58,980 - INFO - [192.168.1.66]	Network =	22.0860000000 ms
+2023-08-07 09:23:58,980 - INFO - [192.168.1.66]	BaseOTs =	2098.2130000000 ms
+2023-08-07 09:23:58,980 - INFO - [192.168.1.66]	Setup =		14031.8340000000 ms
+2023-08-07 09:23:58,980 - INFO - [192.168.1.66]	OTExtension =	13965.8760000000 ms
+2023-08-07 09:23:58,981 - INFO - [192.168.1.66]	Garbling =	0.0090000000 ms
+2023-08-07 09:23:58,981 - INFO - [192.168.1.66]	Online =	20275.9570000000 ms
+2023-08-07 09:23:58,981 - INFO - [192.168.1.66]	
+2023-08-07 09:23:58,981 - INFO - [192.168.1.66]	Communication: 
+2023-08-07 09:23:58,981 - INFO - [192.168.1.66]	Total Sent / Rcv	98546487  bytes / 98545454 bytes
+2023-08-07 09:23:58,982 - INFO - [192.168.1.66]	BaseOTs Sent / Rcv	49947  bytes / 49956 bytes
+2023-08-07 09:23:58,982 - INFO - [192.168.1.66]	Setup Sent / Rcv	96945330  bytes / 96945321 bytes
+2023-08-07 09:23:58,982 - INFO - [192.168.1.66]	OTExtension Sent / Rcv	96945312  bytes / 96945321 bytes
+2023-08-07 09:23:58,982 - INFO - [192.168.1.66]	Garbling Sent / Rcv	0  bytes / 0 bytes
+2023-08-07 09:23:58,983 - INFO - [192.168.1.66]	Online Sent / Rcv	1601157  bytes / 1600133 bytes
+2023-08-07 09:23:58,983 - INFO - [192.168.1.66]	
+2023-08-07 09:23:58,983 - INFO - [192.168.1.66]	cos_dist_ver: 0.2064672729
+2023-08-07 09:23:58,984 - INFO - [192.168.1.66]	cos_dist: 0.2064672729
+2023-08-07 09:23:58,984 - DEBUG - Reading from stderr buffer, timeout=None
+2023-08-07 09:23:58,984 - DEBUG - Host 192.168.1.66: exit code 0, output ['INPUT FILE NAME: /home/dietpi/pffrocd/ABY/build/bin/embeddings.txt', 'starting reading x and y', 'finished reading x and y', 'starting reading z', 'finished reading z', 'CIRCUIT DIRECTORY: /home/dietpi/pffrocd/ABY/bin/circ/', 'party created', 'circuit retrieved', 'here 1', 'here 1', 'here 1', 'here 1', 'verification values computed', 'assigning ingates', 'finished assigning ingates', 'multiplied', 'finished computing x dot y', 'multiplied', 'finished computing norm(x)', 'multiplied', 'finished computing norm(y)', 'finished computing cos dist', 'Online time is distributed as follows: ', 'Bool: local gates: 1817.1200000000, interactive gates: 2158.7610000000, layer finish: 1501.0310000000', 'Yao: local gates: 24.6150000000, interactive gates: 17.8080000000, layer finish: 7.7780000000', 'Yao Rev: local gates: 22.3190000000, interactive gates: 18.1090000000, layer finish: 8.6750000000', 'Arith: local gates: 30.1820000000, interactive gates: 22.6810000000, layer finish: 27.1160000000', 'SPLUT: local gates: 26.0250000000, interactive gates: 21.1800000000, layer finish: 140.1900000000', 'Communication: 14376.8940000000', '', 'Complexities: ', 'Boolean Sharing: ANDs: 5971636 (1-bit) ; Depth: 10918', 'Total Vec AND: 5971636', 'Total Non-Vec AND: 5971636', 'XOR vals: 5892966 gates: 1383450', 'Comb gates: 0, CombStruct gates: 0, Perm gates: 0, Subset gates: 24576, Split gates: 0', 'Yao: ANDs: 0 ; Depth: 0', 'Reverse Yao: ANDs: 0 ; Depth: 0', 'Arithmetic Sharing: MULs: 0 ; Depth: 0', 'SP-LUT Sharing: OT-gates: Total OT gates = 0; Depth: 1', 'Total number of gates: 3163722 Total depth: 10918', 'Timings: ', 'Total =\t\t34307.8010000000 ms', 'Init =\t\t0.4490000000 ms', 'CircuitGen =\t0.3860000000 ms', 'Network =\t22.0860000000 ms', 'BaseOTs =\t2098.2130000000 ms', 'Setup =\t\t14031.8340000000 ms', 'OTExtension =\t13965.8760000000 ms', 'Garbling =\t0.0090000000 ms', 'Online =\t20275.9570000000 ms', '', 'Communication: ', 'Total Sent / Rcv\t98546487  bytes / 98545454 bytes', 'BaseOTs Sent / Rcv\t49947  bytes / 49956 bytes', 'Setup Sent / Rcv\t96945330  bytes / 96945321 bytes', 'OTExtension Sent / Rcv\t96945312  bytes / 96945321 bytes', 'Garbling Sent / Rcv\t0  bytes / 0 bytes', 'Online Sent / Rcv\t1601157  bytes / 1600133 bytes', '', 'cos_dist_ver: 0.2064672729', 'cos_dist: 0.2064672729'], error []
+2023-08-07 09:23:58,985 - DEBUG - Running test for lfw/Aaron_Peirsol/Aaron_Peirsol_0003.jpg
+2023-08-07 09:24:19,129 - DEBUG - Embedding extracted by the server in 16.86198854446411 seconds
+2023-08-07 09:24:20,995 - DEBUG - Running sfe...
+2023-08-07 09:24:20,995 - DEBUG - Make client request for host 192.168.1.95, (host_i, host) in clients: False
+2023-08-07 09:24:20,996 - DEBUG - Make client request for host 192.168.1.66, (host_i, host) in clients: False
+2023-08-07 09:24:20,998 - DEBUG - Connecting to 192.168.1.95:22
+2023-08-07 09:24:20,999 - DEBUG - Connecting to 192.168.1.66:22
+2023-08-07 09:24:21,202 - DEBUG - Agent auth failed with AgentAuthenticationError('No identities match for user %s', b'dietpi') continuing with other authentication methods
+2023-08-07 09:24:21,202 - DEBUG - Trying to authenticate with identity file /home/kamil/.ssh/id_rsa
+2023-08-07 09:24:21,202 - DEBUG - Authentication with identity file /home/kamil/.ssh/id_rsa failed with , continuing with other identities
+2023-08-07 09:24:21,202 - DEBUG - Private key auth failed, trying password
+2023-08-07 09:24:21,749 - DEBUG - Authentication completed successfully - setting session to non-blocking mode
+2023-08-07 09:24:21,801 - DEBUG - Agent auth failed with AgentAuthenticationError('No identities match for user %s', b'dietpi') continuing with other authentication methods
+2023-08-07 09:24:21,801 - DEBUG - Trying to authenticate with identity file /home/kamil/.ssh/id_rsa
+2023-08-07 09:24:21,802 - DEBUG - Authentication with identity file /home/kamil/.ssh/id_rsa failed with , continuing with other identities
+2023-08-07 09:24:21,802 - DEBUG - Private key auth failed, trying password
+2023-08-07 09:24:22,339 - DEBUG - Authentication completed successfully - setting session to non-blocking mode
+2023-08-07 09:24:22,341 - DEBUG - Executing command 'b'cd /home/dietpi/pffrocd/ABY/build/bin ; /home/dietpi/pffrocd/ABY/build/bin/cos_dist_float_scen_simd -r 1 -a 192.168.1.66 -f /home/dietpi/pffrocd/ABY/build/bin/embeddings.txt''
+2023-08-07 09:24:22,425 - DEBUG - Executing command 'b'cd /home/dietpi/pffrocd/ABY/build/bin ; /home/dietpi/pffrocd/ABY/build/bin/cos_dist_float_scen_simd -r 0 -a 192.168.1.66 -f /home/dietpi/pffrocd/ABY/build/bin/embeddings.txt''

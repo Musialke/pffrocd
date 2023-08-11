@@ -137,7 +137,7 @@ def run_sfe(x, y, y_0=None, y_1=None):
     return output
 
 def get_embedding(imagepath):
-    return np.array(DeepFace.represent(img_path = imagepath, model_name="SFace", enforce_detection=True)[0]["embedding"])
+    return np.array(DeepFace.represent(img_path = imagepath, model_name="SFace", enforce_detection=False)[0]["embedding"])
 
 def get_two_random_embeddings(same_person):
     print(os.getcwd())

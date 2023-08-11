@@ -1,14 +1,24 @@
 """
 The main testing script that connects to the client and server, runs the tests and collects data
 """
+import os
 import pffrocd
 import configparser
 import time
 import pandas as pd
 
+sec_lvl = None
+mt_alg = None
+
+
 """Parse config file"""
 config = configparser.ConfigParser()
 config.read('config.ini')
+
+# override config if parameters already provided
+def orverride_config(sec_lvl, mt_alg):
+        config.set('misc', 'security_level', str(sec_lvl))
+        config.set('misc', 'mt_algorithm', str(mt_alg))
 
 client_ip = config.get('client', 'ip_address')
 client_username = config.get('client', 'username')
@@ -25,12 +35,15 @@ server_exec_name = config.get('server', 'executable_name')
 server_pffrocd_path = config.get('server', 'pffrocd_path')
 
 nr_of_people = config.getint('misc', 'nr_of_people')
-sec_lvl = config.getint('misc', 'security_level')
-mt_alg = config.get('misc', 'mt_algorithm')
 niceness = config.getint('misc', 'niceness')
 
 
+
+
+
 def run_test():
+    sec_lvl = config.getint('misc', 'security_level')
+    mt_alg = config.getint('misc', 'mt_algorithm')
     logger = pffrocd.setup_logging()
 
     # print all config options to the debug log
@@ -118,7 +131,6 @@ def run_test():
 
 
             # save all results and timing data
-            logger.debug(f"{server_sfe_output=}")
             parsed_sfe_output = pffrocd.parse_aby_output(server_sfe_output)
             cos_dist_sfe = float(parsed_sfe_output['cos_dist_sfe'])
             result = cos_dist_sfe < pffrocd.threshold
@@ -126,13 +138,13 @@ def run_test():
             cos_dist_np = pffrocd.get_cos_dist_numpy(ref_img_embedding, img_embedding)
             list_of_sfe_values = list(parsed_sfe_output.values())
             to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time, 0, 0] + list_of_sfe_values
-            logger.debug("To be appended: ")
-            logger.debug(to_be_appended)
             data.append(to_be_appended)
-
-    # make and save the dataframe with results        
-    df = pd.DataFrame(data, columns=pffrocd.columns)
-    df.to_csv(f"dfs/{pffrocd.current_datetime}.csv")
+        # make and iteratively save the dataframe with results        
+        df = pd.DataFrame(data, columns=pffrocd.columns)
+        output_path = f"dfs/{pffrocd.current_datetime}.csv"
+        # append dataframe to file, only write headers if file does not exist yet
+        df.to_csv(output_path, mode='a', header=not os.path.exists(output_path))
+        data = []
 
 
 if __name__ == "__main__":

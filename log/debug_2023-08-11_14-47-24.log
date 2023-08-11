@@ -1,0 +1,35 @@
+2023-08-11 14:47:24,238 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "10.0.0.167",
+        "username": "dietpi",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/dietpi/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/dietpi/pffrocd"
+    },
+    "server": {
+        "ip_address": "10.0.0.154",
+        "username": "dietpi",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/dietpi/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/dietpi/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1",
+        "security_level": "80",
+        "mt_algorithm": "0",
+        "niceness": "-20"
+    }
+}
+2023-08-11 14:47:24,340 - INFO - RUNNING for 1 people
+2023-08-11 14:47:24,341 - INFO - Currently running for lfw/Aaron_Peirsol (0/1)
+2023-08-11 14:47:24,341 - DEBUG - Found 4 images for lfw/Aaron_Peirsol
+2023-08-11 14:47:24,341 - DEBUG - setting image as reference image: lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg
+2023-08-11 14:47:25,941 - DEBUG - Running test for lfw/Aaron_Peirsol/Aaron_Peirsol_0002.jpg
+2023-08-11 14:47:43,808 - DEBUG - Embedding extracted by the server in 14.933659315109253 seconds
+2023-08-11 14:47:45,181 - DEBUG - Running sfe...
+2023-08-11 14:48:31,189 - INFO - Finished! Total sfe time: 46.00790214538574 seconds
+2023-08-11 14:48:31,189 - DEBUG - Host 10.0.0.167: exit code 0, output ['Online time is distributed as follows: ', 'Bool: local gates: 1905.7920000000, interactive gates: 2226.4570000000, layer finish: 1513.5350000000', 'Yao: local gates: 22.9840000000, interactive gates: 20.8580000000, layer finish: 7.0960000000', 'Yao Rev: local gates: 21.8560000000, interactive gates: 16.6960000000, layer finish: 10.4800000000', 'Arith: local gates: 21.2870000000, interactive gates: 21.6600000000, layer finish: 25.5580000000', 'SPLUT: local gates: 22.4620000000, interactive gates: 22.5270000000, layer finish: 141.7530000000', 'Communication: 14253.4200000000', '', 'Complexities: ', 'Boolean Sharing: ANDs: 5971636 (1-bit) ; Depth: 10918', 'Total Vec AND: 5971636', 'Total Non-Vec AND: 5971636', 'XOR vals: 5892966 gates: 1383450', 'Comb gates: 0, CombStruct gates: 0, Perm gates: 0, Subset gates: 24576, Split gates: 0', 'Yao: ANDs: 0 ; Depth: 0', 'Reverse Yao: ANDs: 0 ; Depth: 0', 'Arithmetic Sharing: MULs: 0 ; Depth: 0', 'SP-LUT Sharing: OT-gates: Total OT gates = 0; Depth: 1', 'Total number of gates: 3163722 Total depth: 10918', 'Timings: ', 'Total =\t\t32266.8660000000 ms', 'Init =\t\t0.3300000000 ms', 'CircuitGen =\t0.3170000000 ms', 'Network =\t176.7450000000 ms', 'BaseOTs =\t133.7720000000 ms', 'Setup =\t\t11934.6140000000 ms', 'OTExtension =\t11855.7880000000 ms', 'Garbling =\t0.0070000000 ms', 'Online =\t20332.2420000000 ms', '', 'Communication: ', 'Total Sent / Rcv\t62191406  bytes / 62192430 bytes', 'BaseOTs Sent / Rcv\t10532  bytes / 10532 bytes', 'Setup Sent / Rcv\t60591273  bytes / 60591273 bytes', 'OTExtension Sent / Rcv\t60591273  bytes / 60591273 bytes', 'Garbling Sent / Rcv\t0  bytes / 0 bytes', 'Online Sent / Rcv\t1600133  bytes / 1601157 bytes', '', 'cos_dist_ver: 0.2064672729', 'cos_dist: 1.0000000000'], error []
+2023-08-11 14:48:31,190 - DEBUG - Host 10.0.0.154: exit code 0, output ['Online time is distributed as follows: ', 'Bool: local gates: 1893.6150000000, interactive gates: 2222.4840000000, layer finish: 1540.5400000000', 'Yao: local gates: 26.9690000000, interactive gates: 20.0370000000, layer finish: 9.0090000000', 'Yao Rev: local gates: 22.9900000000, interactive gates: 22.8490000000, layer finish: 6.3910000000', 'Arith: local gates: 29.1960000000, interactive gates: 21.8900000000, layer finish: 35.7530000000', 'SPLUT: local gates: 25.6590000000, interactive gates: 21.8790000000, layer finish: 132.1090000000', 'Communication: 14221.7260000000', '', 'Complexities: ', 'Boolean Sharing: ANDs: 5971636 (1-bit) ; Depth: 10918', 'Total Vec AND: 5971636', 'Total Non-Vec AND: 5971636', 'XOR vals: 5892966 gates: 1383450', 'Comb gates: 0, CombStruct gates: 0, Perm gates: 0, Subset gates: 24576, Split gates: 0', 'Yao: ANDs: 0 ; Depth: 0', 'Reverse Yao: ANDs: 0 ; Depth: 0', 'Arithmetic Sharing: MULs: 0 ; Depth: 0', 'SP-LUT Sharing: OT-gates: Total OT gates = 0; Depth: 1', 'Total number of gates: 3163722 Total depth: 10918', 'Timings: ', 'Total =\t\t32270.6150000000 ms', 'Init =\t\t0.3410000000 ms', 'CircuitGen =\t0.3130000000 ms', 'Network =\t22.3590000000 ms', 'BaseOTs =\t140.0580000000 ms', 'Setup =\t\t11935.8450000000 ms', 'OTExtension =\t11876.4750000000 ms', 'Garbling =\t0.0080000000 ms', 'Online =\t20334.7630000000 ms', '', 'Communication: ', 'Total Sent / Rcv\t62192439  bytes / 62191406 bytes', 'BaseOTs Sent / Rcv\t10523  bytes / 10532 bytes', 'Setup Sent / Rcv\t60591282  bytes / 60591273 bytes', 'OTExtension Sent / Rcv\t60591273  bytes / 60591273 bytes', 'Garbling Sent / Rcv\t0  bytes / 0 bytes', 'Online Sent / Rcv\t1601157  bytes / 1600133 bytes', '', 'cos_dist_ver: 0.2064672729', 'cos_dist: 1.0000000000'], error []
+2023-08-11 14:48:31,190 - DEBUG - server_sfe_output='Online time is distributed as follows: Bool: local gates: 1893.6150000000, interactive gates: 2222.4840000000, layer finish: 1540.5400000000Yao: local gates: 26.9690000000, interactive gates: 20.0370000000, layer finish: 9.0090000000Yao Rev: local gates: 22.9900000000, interactive gates: 22.8490000000, layer finish: 6.3910000000Arith: local gates: 29.1960000000, interactive gates: 21.8900000000, layer finish: 35.7530000000SPLUT: local gates: 25.6590000000, interactive gates: 21.8790000000, layer finish: 132.1090000000Communication: 14221.7260000000Complexities: Boolean Sharing: ANDs: 5971636 (1-bit) ; Depth: 10918Total Vec AND: 5971636Total Non-Vec AND: 5971636XOR vals: 5892966 gates: 1383450Comb gates: 0, CombStruct gates: 0, Perm gates: 0, Subset gates: 24576, Split gates: 0Yao: ANDs: 0 ; Depth: 0Reverse Yao: ANDs: 0 ; Depth: 0Arithmetic Sharing: MULs: 0 ; Depth: 0SP-LUT Sharing: OT-gates: Total OT gates = 0; Depth: 1Total number of gates: 3163722 Total depth: 10918Timings: Total =\t\t32270.6150000000 msInit =\t\t0.3410000000 msCircuitGen =\t0.3130000000 msNetwork =\t22.3590000000 msBaseOTs =\t140.0580000000 msSetup =\t\t11935.8450000000 msOTExtension =\t11876.4750000000 msGarbling =\t0.0080000000 msOnline =\t20334.7630000000 msCommunication: Total Sent / Rcv\t62192439  bytes / 62191406 bytesBaseOTs Sent / Rcv\t10523  bytes / 10532 bytesSetup Sent / Rcv\t60591282  bytes / 60591273 bytesOTExtension Sent / Rcv\t60591273  bytes / 60591273 bytesGarbling Sent / Rcv\t0  bytes / 0 bytesOnline Sent / Rcv\t1601157  bytes / 1600133 bytescos_dist_ver: 0.2064672729cos_dist: 1.0000000000'
