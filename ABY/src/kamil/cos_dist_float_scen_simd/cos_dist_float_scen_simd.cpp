@@ -34,7 +34,7 @@
 
 void read_test_options(int32_t *argcp, char ***argvp, e_role *role,
 					   uint32_t *bitlen, uint32_t *nvals, uint32_t *secparam, std::string *address,
-					   uint16_t *port, int32_t *test_op, uint32_t *test_bit, e_mt_gen_alg *mt_alg, double *fpb, std::string *inputfile, std::string *outputfile)
+					   uint16_t *port, int32_t *test_op, uint32_t *test_bit, e_mt_gen_alg *mt_alg, uint32_t *debug, std::string *inputfile, std::string *outputfile)
 {
 
 	uint32_t int_role = 0, int_port = 0, int_testbit = 0, int_mt_alg = 0;
@@ -49,7 +49,7 @@ void read_test_options(int32_t *argcp, char ***argvp, e_role *role,
 		 {(void *)&int_port, T_NUM, "p", "Port, default: 7766", false, false},
 		 {(void *)test_op, T_NUM, "t", "Single test (leave out for all operations), default: off", false, false},
 		 {(void *)&int_mt_alg, T_NUM, "x", "Arithmetic multiplication triples algorithm", false, false},
-		 {(void *)fpb, T_DOUBLE, "y", "FP b", false, false},
+		 {(void *)debug, T_NUM, "d", "debug mode (more printing) (0/1)", false, false},
 		 {(void *)inputfile, T_STR, "f", "Input file containing face embeddings", true, false},
 		 {(void *)outputfile, T_STR, "o", "Output file containing cos sim result", false, false}
 		};
@@ -81,16 +81,16 @@ void read_test_options(int32_t *argcp, char ***argvp, e_role *role,
 		*mt_alg = MT_DGK;
 	} else {
 		std::cout << "Invalid MT algorithm" << std::endl;
-		exit(-1);
+		exit(EXIT_FAILURE);
 	} 
 }
 
 void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t port, seclvl seclvl, uint32_t nvals, uint32_t nthreads,
-							 e_mt_gen_alg mt_alg, e_sharing sharing, double afp, double bfp, std::string inputfile, std::string outputfile)
+							 e_mt_gen_alg mt_alg, e_sharing sharing, uint32_t debug, std::string inputfile, std::string outputfile)
 {
 
-	std::cout << "SEC LEVEL: " << seclvl.symbits << std::endl;
-	std::cout << "MT_ALG: " << mt_alg << std::endl;
+	// std::cout << "SEC LEVEL: " << seclvl.symbits << std::endl;
+	// std::cout << "MT_ALG: " << mt_alg << std::endl;
 
 	// for addition we operate on doubles, so set bitlen to 64 bits
 	uint32_t bitlen = 64;
@@ -108,11 +108,11 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	std::fstream infile(inputfile);
 
-	std::cout << "INPUT FILE NAME: " << inputfile << std::endl;
+	// std::cout << "INPUT FILE NAME: " << inputfile << std::endl;
 
 	double x, y;
 
-	std::cout << "starting reading x and y" << std::endl;
+	// std::cout << "starting reading x and y" << std::endl;
 
 	while (infile >> x >> y) {
 		// std::cout << "x: " << x << " | y: "<< y << std::endl;
@@ -120,7 +120,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		yembeddings.push_back(y);
 	}
 
-	std::cout<<"finished reading x and y" << std::endl;
+	// std::cout<<"finished reading x and y" << std::endl;
 
 	assert(xembeddings.size() == nvals);
 	assert(yembeddings.size() == nvals);
@@ -134,25 +134,25 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	double z;
 
-	std::cout << "starting reading z" << std::endl;
+	// std::cout << "starting reading z" << std::endl;
 
 	while(infile_share >> z) {
 		// std::cout << "z: " << z << std::endl;
 		share_embeddings.push_back(z);
 	}
 
-	std::cout<<"finished reading z" << std::endl;
+	// std::cout<<"finished reading z" << std::endl;
 
 	assert(share_embeddings.size() == nvals);
 
 
 	std::string circuit_dir = "/home/dietpi/pffrocd/ABY/bin/circ/";
 
-	std::cout << "CIRCUIT DIRECTORY: " << circuit_dir << std::endl;
+	// std::cout << "CIRCUIT DIRECTORY: " << circuit_dir << std::endl;
 
 	ABYParty *party = new ABYParty(role, address, port, seclvl, bitlen, nthreads, mt_alg, 100000, circuit_dir);
 
-	std::cout << "party created" << std::endl;
+	// std::cout << "party created" << std::endl;
 
 
 	std::vector<Sharing *> &sharings = party->GetSharings();
@@ -161,14 +161,14 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	ArithmeticCircuit *ac = (ArithmeticCircuit *)sharings[S_ARITH]->GetCircuitBuildRoutine();
 	Circuit *yc = (BooleanCircuit *)sharings[S_YAO]->GetCircuitBuildRoutine();
 
-	std::cout << "circuit retrieved" << std::endl;
-	std::cout << "here 1" << std::endl;
+	// std::cout << "circuit retrieved" << std::endl;
+	// std::cout << "here 1" << std::endl;
 
 	// arrays of integer pointers to doubles
 	uint64_t xvals[nvals];
 	uint64_t yvals[nvals];
 	uint64_t sharevals[nvals];
-	std::cout << "here 1" << std::endl;
+	// std::cout << "here 1" << std::endl;
 
 	// verification in plaintext
 	double ver_x_times_y[nvals];
@@ -177,7 +177,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	double ver_x_dot_y = 0;
 	double ver_norm_x = 0;
 	double ver_norm_y = 0;
-	std::cout << "here 1" << std::endl;
+	// std::cout << "here 1" << std::endl;
 
 	// S_c(X,Y) = (X \dot Y) / (norm(X) * norm(Y))
 
@@ -206,14 +206,14 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		ver_norm_y += ver_y_times_y[i];
 	}
 
-	std::cout << "here 1" << std::endl;
+	// std::cout << "here 1" << std::endl;
 
 	ver_norm_x = sqrt(ver_norm_x);
 	ver_norm_y = sqrt(ver_norm_y);
 
 	double ver_cos_sim = 1 - (ver_x_dot_y / (ver_norm_x * ver_norm_y));
 
-	std::cout << "verification values computed" << std::endl;
+	// std::cout << "verification values computed" << std::endl;
 
 	// shr_server_set[0] = bc->PutSIMDINGate(nvals, xvals, bitlen, SERVER);
 	// shr_client_set[0] = bc->PutSIMDINGate(nvals, yvals, bitlen, CLIENT);
@@ -227,7 +227,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	// Input of the current face captured by the drone
 
-	std::cout << "assigning ingates" << std::endl;
+	// std::cout << "assigning ingates" << std::endl;
 
 	if(role == SERVER) {
 		s_xin = bc->PutSIMDINGate(nvals, xvals, bitlen, SERVER);
@@ -249,11 +249,11 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// 	std::cout << "s_product_splitbitlen: " << shr_out[i]->get_bitlength() << std::endl;
 	// }
 
-	std::cout << "finished assigning ingates" << std::endl;
+	// std::cout << "finished assigning ingates" << std::endl;
 
 	share *s_x_times_y = bc->PutFPGate(s_xin, s_yin, MUL, bitlen, nvals, no_status);
 
-	std::cout << "multiplied" << std::endl;
+	// std::cout << "multiplied" << std::endl;
 	// bc->PutPrintValueGate(s_x_times_y, "s_x_times_y");
 	// share *s_x_times_y_out = bc->PutOUTGate(s_x_times_y, ALL);
 
@@ -288,7 +288,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		//bc->PutPrintValueGate(s_x_dot_y, "s_x_dot_y");
 	}
 
-	std::cout << "finished computing x dot y" << std::endl;
+	// std::cout << "finished computing x dot y" << std::endl;
 	//bc->PutPrintValueGate(s_x_dot_y, "s_x_dot_y");
 	// share *s_x_dot_y_out = bc->PutOUTGate(s_x_dot_y, SERVER);
 
@@ -298,7 +298,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	share *s_x_times_x = bc->PutFPGate(s_xin, s_xin, MUL, bitlen, nvals, no_status);
 	// bc->PutPrintValueGate(s_x_times_x, "s_x_times_x");
 
-	std::cout << "multiplied" << std::endl;
+	// std::cout << "multiplied" << std::endl;
 
 
 	posids[0] = 0;
@@ -325,7 +325,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	s_norm_x = bc->PutFPGate(s_norm_x, SQRT);
 
-	std::cout << "finished computing norm(x)" << std::endl;
+	// std::cout << "finished computing norm(x)" << std::endl;
 	// bc->PutPrintValueGate(s_norm_x, "s_norm_x");
 
 	// share *s_norm_x_out = bc->PutOUTGate(s_norm_x, SERVER);
@@ -336,7 +336,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	share *s_y_times_y = bc->PutFPGate(s_yin, s_yin, MUL, bitlen, nvals, no_status);
 	// bc->PutPrintValueGate(s_y_times_y, "s_y_times_y");
 
-	std::cout << "multiplied" << std::endl;
+	// std::cout << "multiplied" << std::endl;
 
 
 	posids[0] = 0;
@@ -364,7 +364,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	s_norm_y = bc->PutFPGate(s_norm_y, SQRT);
 	// bc->PutPrintValueGate(s_norm_y, "s_norm_y");
 
-	std::cout << "finished computing norm(y)" << std::endl;
+	// std::cout << "finished computing norm(y)" << std::endl;
 
 	// share *s_norm_y_out = bc->PutOUTGate(s_norm_y, SERVER);
 
@@ -377,7 +377,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	share *s_cos_sim_out = bc->PutOUTGate(s_cos_sim, ALL);
 
-	std::cout << "finished computing cos dist" << std::endl;
+	// std::cout << "finished computing cos dist" << std::endl;
 
 	// for (int i = 1; i<2; i++) {
 	// 	posids[0] = i;
@@ -555,17 +555,17 @@ int main(int argc, char **argv)
 	int32_t test_op = -1;
 	e_mt_gen_alg mt_alg = MT_OT;
 	uint32_t test_bit = 0;
-	double fpa = 10.52, fpb = 1.30;
+	uint32_t debug = 0;
 	std::string inputfile;
 	std::string outputfile;
 
 	read_test_options(&argc, &argv, &role, &bitlen, &nvals, &secparam, &address,
-					  &port, &test_op, &test_bit, &mt_alg, &fpb, &inputfile, &outputfile);
+					  &port, &test_op, &test_bit, &mt_alg, &debug, &inputfile, &outputfile);
 
 	std::cout << std::fixed << std::setprecision(10);
 	seclvl seclvl = get_sec_lvl(secparam);
 
-	test_verilog_add64_SIMD(role, address, port, seclvl, nvals, nthreads, mt_alg, S_BOOL, fpa, fpb, inputfile, outputfile);
+	test_verilog_add64_SIMD(role, address, port, seclvl, nvals, nthreads, mt_alg, S_BOOL, debug, inputfile, outputfile);
 
 	return 0;
 }
