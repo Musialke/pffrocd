@@ -1,0 +1,31 @@
+2023-08-11 17:13:11,936 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "10.0.0.167",
+        "username": "dietpi",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/dietpi/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/dietpi/pffrocd"
+    },
+    "server": {
+        "ip_address": "10.0.0.154",
+        "username": "dietpi",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/dietpi/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/dietpi/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1",
+        "security_level": "80",
+        "mt_algorithm": "0",
+        "niceness": "-20"
+    }
+}
+2023-08-11 17:13:12,032 - INFO - RUNNING for 1 people
+2023-08-11 17:13:12,032 - INFO - Currently running for lfw/Aaron_Peirsol (1/1)
+2023-08-11 17:13:12,032 - DEBUG - Found 4 images for lfw/Aaron_Peirsol
+2023-08-11 17:13:12,032 - DEBUG - setting image as reference image: lfw/Aaron_Peirsol/Aaron_Peirsol_0001.jpg
+2023-08-11 17:13:13,720 - DEBUG - Running test for lfw/Aaron_Peirsol/Aaron_Peirsol_0002.jpg
+2023-08-11 17:13:33,521 - DEBUG - Embedding extracted by the server in 16.72855281829834 seconds
+2023-08-11 17:13:35,031 - DEBUG - Running sfe...

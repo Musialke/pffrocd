@@ -16,7 +16,6 @@ from pssh.clients import ParallelSSHClient
 import pandas as pd
 from deepface.commons.distance import findThreshold
 
-current_datetime = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
 logging.getLogger("paramiko").setLevel(logging.WARNING)
 
 threshold = findThreshold("SFace", "cosine")
@@ -282,9 +281,10 @@ def parse_aby_output(s):
     return d
 
 
-def setup_logging():
+def setup_logging(name):
     # Create a logger
     logger = logging.getLogger("pffrocd")
+    logger.handlers.clear()
     logger.setLevel(logging.DEBUG)
 
     # Create a formatter for the log messages
@@ -297,7 +297,7 @@ def setup_logging():
     logger.addHandler(stdout_handler)
 
     # Create a handler for logging to a file (debug level)
-    file_handler = logging.FileHandler(f'log/debug_{current_datetime}.log')
+    file_handler = logging.FileHandler(f'log/debug_{name}.log')
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)

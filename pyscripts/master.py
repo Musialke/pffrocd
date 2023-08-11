@@ -1,6 +1,7 @@
 """
 The main testing script that connects to the client and server, runs the tests and collects data
 """
+import datetime
 import os
 import pffrocd
 import configparser
@@ -42,9 +43,10 @@ niceness = config.getint('misc', 'niceness')
 
 
 def run_test():
+    current_datetime = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     sec_lvl = config.getint('misc', 'security_level')
     mt_alg = config.getint('misc', 'mt_algorithm')
-    logger = pffrocd.setup_logging()
+    logger = pffrocd.setup_logging(current_datetime)
 
     # print all config options to the debug log
     logger.debug(f"pffrocd config: {pffrocd.get_config_in_printing_format(config)}")
@@ -61,7 +63,7 @@ def run_test():
     for count_person, person in enumerate(people):
         # get all images from person
         imgs = pffrocd.get_images_in_folder(person)
-        logger.info(f"Currently running for {person} ({count_person}/{len(people)})")
+        logger.info(f"Currently running for {person} ({count_person+1}/{len(people)})")
         logger.debug(f"Found {len(imgs)} images for {person}")
 
         # set the first image as the 'reference' image (registered at the service provider) and remove it from the list of images
@@ -116,7 +118,7 @@ def run_test():
             sfe_start_time  = time.time()
             output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, "kamil123", command1, command2)
             sfe_time = time.time() - sfe_start_time
-            logger.info(f"Finished! Total sfe time: {sfe_time} seconds")
+            logger.info(f"Finished! Total sfe time: {sfe_time} seconds ({count_img+1}/{len(imgs)})")
             server_sfe_output = ''
             for host_output in output:
                 hostname = host_output.host
@@ -141,7 +143,7 @@ def run_test():
             data.append(to_be_appended)
         # make and iteratively save the dataframe with results        
         df = pd.DataFrame(data, columns=pffrocd.columns)
-        output_path = f"dfs/{pffrocd.current_datetime}.csv"
+        output_path = f"dfs/{current_datetime}.csv"
         # append dataframe to file, only write headers if file does not exist yet
         df.to_csv(output_path, mode='a', header=not os.path.exists(output_path))
         data = []
