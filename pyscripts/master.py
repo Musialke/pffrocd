@@ -134,9 +134,11 @@ def run_test():
 
             # save all results and timing data
             parsed_sfe_output = pffrocd.parse_aby_output(server_sfe_output)
+            if not parsed_sfe_output:
+                continue
             cos_dist_sfe = float(parsed_sfe_output['cos_dist_sfe'])
             result = cos_dist_sfe < pffrocd.threshold
-            expected_result = ref_img.split('/')[1] == img.split('/')[1]
+            expected_result = ref_img.split('/')[1] == img.split('/')[1] # check if the images belong to the same person
             cos_dist_np = pffrocd.get_cos_dist_numpy(ref_img_embedding, img_embedding)
             list_of_sfe_values = list(parsed_sfe_output.values())
             to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time, 0, 0] + list_of_sfe_values
