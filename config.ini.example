@@ -1,27 +1,34 @@
 [client]
-ip_address = 192.168.0.1
-username = dietpi
+ip_address = 
+username = 
 # path to a private ssh key used to connect to the client
 private_ssh_key_path = /home/user/.ssh/id_rsa
 # location of the the sfe executable
-executable_path = /home/dietpi/pffrocd/ABY/build/bin
+executable_path = /home/user/pffrocd/ABY/build/bin
 # name of the sfe executable
 executable_name = cos_dist_float_scen_simd
 pffrocd_path = /home/user/pffrocd
-
 
 [server]
-ip_address = 192.168.0.2
-username = dietpi
-# path to a private ssh key used to connect to the server
+ip_address = 
+username = 
+# path to a private ssh key used to connect to the client
 private_ssh_key_path = /home/user/.ssh/id_rsa
 # location of the the sfe executable
-executable_path = /home/dietpi/pffrocd/ABY/build/bin
+executable_path = /home/user/pffrocd/ABY/build/bin
 # name of the sfe executable
 executable_name = cos_dist_float_scen_simd
 pffrocd_path = /home/user/pffrocd
 
-
 [misc]
-# Use this to for a test run. Only runs the tests with one person
-test_mode = False
+# How many people to test for. Number between 1 and 1680
+nr_of_people = 1000
+# Security level of ABY. Available options: 80, 112, 128, 192, 256 (128 is ABY default)
+security_level = 112
+# Multiplication triple algorithm. Available options: 0 (MT_OT), 1 (MT_PAILLIER), 2 (MT_DGK)
+mt_algorithm = 0
+# Priority of the sfe process (default -20 -> highest priority)
+# Important: need to modify limits.conf to change prio of process as non-root, see https://unix.stackexchange.com/a/358332
+niceness = -20
+# starting person: in case you need to start with a specific person, not from zero
+starting_person = 15

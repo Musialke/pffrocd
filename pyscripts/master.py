@@ -37,6 +37,7 @@ server_pffrocd_path = config.get('server', 'pffrocd_path')
 
 nr_of_people = config.getint('misc', 'nr_of_people')
 niceness = config.getint('misc', 'niceness')
+starting_person = config.getint('misc', 'starting_person')
 
 
 
@@ -53,7 +54,7 @@ def run_test():
 
     # get the list of people that have more than one image
     people = pffrocd.get_people_with_multiple_images(root_dir='lfw')
-    people = people[:nr_of_people]
+    people = people[starting_person:nr_of_people]
     logger.info(f"RUNNING for {len(people)} people")
 
     # list to store data (later saved as a dataframe) see https://stackoverflow.com/a/56746204
