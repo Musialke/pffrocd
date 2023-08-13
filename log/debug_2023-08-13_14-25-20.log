@@ -1,0 +1,30 @@
+2023-08-13 14:25:20,973 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.50.55",
+        "username": "dietpi",
+        "private_ssh_key_path": "/home/dietpi/.ssh/id_rsa",
+        "executable_path": "/home/dietpi/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/dietpi/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.50.55",
+        "username": "dietpi",
+        "private_ssh_key_path": "/home/dietpi/.ssh/id_rsa",
+        "executable_path": "/home/dietpi/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/dietpi/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1000",
+        "security_level": "112",
+        "mt_algorithm": "0",
+        "niceness": "-20",
+        "starting_person": "30"
+    }
+}
+2023-08-13 14:25:25,976 - INFO - RUNNING for 970 people
+2023-08-13 14:25:25,979 - INFO - Currently running for lfw/Alan_Ball (1/970)
+2023-08-13 14:25:25,987 - DEBUG - Found 2 images for lfw/Alan_Ball
+2023-08-13 14:25:25,987 - DEBUG - setting image as reference image: lfw/Alan_Ball/Alan_Ball_0001.jpg
+2023-08-13 14:25:35,835 - DEBUG - Running test for lfw/Alan_Ball/Alan_Ball_0002.jpg

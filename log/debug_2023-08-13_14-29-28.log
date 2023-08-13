@@ -1,0 +1,48 @@
+2023-08-13 14:29:28,742 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.50.55",
+        "username": "dietpi",
+        "private_ssh_key_path": "/home/dietpi/.ssh/id_rsa",
+        "executable_path": "/home/dietpi/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/dietpi/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.50.55",
+        "username": "dietpi",
+        "private_ssh_key_path": "/home/dietpi/.ssh/id_rsa",
+        "executable_path": "/home/dietpi/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/dietpi/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1000",
+        "security_level": "112",
+        "mt_algorithm": "0",
+        "niceness": "-20",
+        "starting_person": "30"
+    }
+}
+2023-08-13 14:29:29,888 - INFO - RUNNING for 970 people
+2023-08-13 14:29:29,889 - INFO - Currently running for lfw/Alan_Ball (1/970)
+2023-08-13 14:29:29,890 - DEBUG - Found 2 images for lfw/Alan_Ball
+2023-08-13 14:29:29,890 - DEBUG - setting image as reference image: lfw/Alan_Ball/Alan_Ball_0001.jpg
+2023-08-13 14:29:37,906 - DEBUG - Running test for lfw/Alan_Ball/Alan_Ball_0002.jpg
+2023-08-13 14:29:56,506 - DEBUG - Stdout of extracting embedding: 
+2023-08-13 14:29:56,507 - DEBUG - Stderr of extracting embedding: Traceback (most recent call last):
+  File "/home/dietpi/pffrocd/pyscripts/extract_embedding.py", line 21, in <module>
+    embedding = DeepFace.represent(input_image, model_name='SFace', enforce_detection=False)[0]["embedding"]
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dietpi/pffrocd/env/lib/python3.11/site-packages/deepface/DeepFace.py", line 639, in represent
+    model = build_model(model_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dietpi/pffrocd/env/lib/python3.11/site-packages/deepface/DeepFace.py", line 80, in build_model
+    model = model()
+            ^^^^^^^
+  File "/home/dietpi/pffrocd/env/lib/python3.11/site-packages/deepface/basemodels/SFace.py", line 51, in load_model
+    model = SFaceModel(model_path=file_name)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dietpi/pffrocd/env/lib/python3.11/site-packages/deepface/basemodels/SFace.py", line 19, in __init__
+    self.model = cv.FaceRecognizerSF.create(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+cv2.error: OpenCV(4.7.0) /io/opencv/modules/dnn/src/onnx/onnx_importer.cpp:275: error: (-210:Unsupported format or combination of formats) Failed to parse ONNX model: /home/dietpi/.deepface/weights/face_recognition_sface_2021dec.onnx in function 'ONNXImporter'
