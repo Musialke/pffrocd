@@ -30,6 +30,19 @@ pip3 install -r requirements.txt
 python3 pyscripts/cos_dist_float_nscen_simd.py
 ```
 
+### Possible errors and solutions:
+
+`ImportError: libGL.so.1: cannot open shared object file: No such file or directory`
+fix:
+```sh
+sudo apt update && sudo apt install ffmpeg libsm6 libxext6  -y
+```
+
+`v2.error: OpenCV(4.7.0) /io/opencv/modules/dnn/src/onnx/onnx_importer.cpp:275: error: (-210:Unsupported format or combination of formats) Failed to parse ONNX model: /home/dietpi/.deepface/weights/face_recognition_sface_2021dec.onnx in function 'ONNXImporter'` 
+Link to weights for SFace is missing. fix:
+```sh
+mkdir -p ~/.deepface/weights/ && cp face_recognition_sface_2021dec.onnx ~/.deepface/weights/
+```
 ### Examples explanation:
 
 
