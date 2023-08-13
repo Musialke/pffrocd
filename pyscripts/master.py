@@ -92,6 +92,8 @@ def run_test():
 
             # run the face embedding extraction script on the server
             stdout, stderr = pffrocd.execute_command(server_ip, server_username, f"{server_pffrocd_path}/env/bin/python {server_pffrocd_path}/pyscripts/extract_embedding.py -i {server_pffrocd_path}/{img} -o {server_exec_path}/embedding.txt", server_key)
+            logger.debug(f"Stdout of extracting embedding: {stdout}")
+            logger.debug(f"Stderr of extracting embedding: {stderr}")
             extraction_time = float(stdout)
 
             if stderr != '':
