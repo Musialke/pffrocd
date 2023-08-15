@@ -1,6 +1,30 @@
 # pffrocd
 Privacy-Friendly Face Recognition On Constrained Devices
 
+## Complete guide to set up a host for tests:
+
+Required:
+
+`python3 python3.10-venv g++ make cmake libgmp-dev libssl-dev libboost-all-dev`
+
+1. Clone the repo after adding the machine's ssh key as a deploy key
+
+```sh
+git clone git@github.com:Musialke/pffrocd.git
+cd pffrocd 
+```
+2. Create a virtualenv in the folder (assuming Python3 with venv is installed) and activate it
+
+```sh
+python3 -m venv env
+. env/bin/activate
+```
+3. Install required packages
+
+```sh
+pip install -vr requirements.txt
+```
+
 ## SFE
 
 Setting up:
@@ -16,7 +40,7 @@ To run the examples run the corresponding python script located in `pyscripts/`
 
 1. Unpack the split database with face images by running
 ```sh
-cat lfw.tgz.parta* | tar -xz
+cat lfw.tgz.parta* | tar -xzv
 ```
 2. Make sure you have Python3 on your system with venv installed
 3. Create a new virtual environment, activate it and install required packages
