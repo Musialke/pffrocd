@@ -1,0 +1,154 @@
+2023-08-16 21:01:15,995 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.1.105",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_rsa",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.1.110",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_rsa",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1000",
+        "security_level": "112",
+        "mt_algorithm": "0",
+        "niceness": "-20",
+        "starting_person": "1"
+    }
+}
+2023-08-16 21:01:16,640 - INFO - RUNNING for 999 people
+2023-08-16 21:01:16,641 - INFO - Currently running for lfw/Aaron_Sorkin (1/999)
+2023-08-16 21:01:16,641 - DEBUG - Found 2 images for lfw/Aaron_Sorkin
+2023-08-16 21:01:16,641 - DEBUG - setting image as reference image: lfw/Aaron_Sorkin/Aaron_Sorkin_0001.jpg
+2023-08-16 21:01:21,227 - DEBUG - Running test for lfw/Aaron_Sorkin/Aaron_Sorkin_0002.jpg
+2023-08-16 21:01:28,202 - DEBUG - Stdout of extracting embedding: 4.988504648208618
+2023-08-16 21:01:28,202 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 21:01:28,203 - DEBUG - Embedding extracted by the server in 4.988504648208618 seconds
+2023-08-16 21:01:31,830 - DEBUG - Running sfe...
+2023-08-16 21:01:32,368 - INFO - Finished! Total sfe time: 0.5368189811706543 seconds (1/2)
+2023-08-16 21:01:32,369 - DEBUG - Host 192.168.1.105: exit code 0, output [], error ['nice: cannot set niceness: Permission denied']
+2023-08-16 21:01:32,369 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ['nice: cannot set niceness: Permission denied', "cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 21:01:32,370 - DEBUG - Running test for lfw/Justin_Gatlin/Justin_Gatlin_0002.jpg
+2023-08-16 21:01:36,097 - DEBUG - Stdout of extracting embedding: 1.9163196086883545
+2023-08-16 21:01:36,098 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 21:01:36,099 - DEBUG - Embedding extracted by the server in 1.9163196086883545 seconds
+2023-08-16 21:01:39,555 - DEBUG - Running sfe...
+2023-08-16 21:01:40,067 - INFO - Finished! Total sfe time: 0.5119533538818359 seconds (2/2)
+2023-08-16 21:01:40,068 - DEBUG - Host 192.168.1.105: exit code 0, output [], error ['nice: cannot set niceness: Permission denied']
+2023-08-16 21:01:40,069 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ['nice: cannot set niceness: Permission denied', "cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 21:01:40,097 - INFO - Currently running for lfw/Abdel_Nasser_Assidi (2/999)
+2023-08-16 21:01:40,097 - DEBUG - Found 2 images for lfw/Abdel_Nasser_Assidi
+2023-08-16 21:01:40,097 - DEBUG - setting image as reference image: lfw/Abdel_Nasser_Assidi/Abdel_Nasser_Assidi_0001.jpg
+2023-08-16 21:01:43,721 - DEBUG - Running test for lfw/Abdel_Nasser_Assidi/Abdel_Nasser_Assidi_0002.jpg
+2023-08-16 21:01:47,348 - DEBUG - Stdout of extracting embedding: 1.9225358963012695
+2023-08-16 21:01:47,349 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 21:01:47,349 - DEBUG - Embedding extracted by the server in 1.9225358963012695 seconds
+2023-08-16 21:01:51,005 - DEBUG - Running sfe...
+2023-08-16 21:01:51,524 - INFO - Finished! Total sfe time: 0.518214225769043 seconds (1/2)
+2023-08-16 21:01:51,525 - DEBUG - Host 192.168.1.105: exit code 0, output [], error ['nice: cannot set niceness: Permission denied']
+2023-08-16 21:01:51,526 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ['nice: cannot set niceness: Permission denied', "cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 21:01:51,526 - DEBUG - Running test for lfw/Doug_Wilson/Doug_Wilson_0001.jpg
+2023-08-16 21:01:55,208 - DEBUG - Stdout of extracting embedding: 1.908463954925537
+2023-08-16 21:01:55,209 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 21:01:55,209 - DEBUG - Embedding extracted by the server in 1.908463954925537 seconds
+2023-08-16 21:01:58,740 - DEBUG - Running sfe...
+2023-08-16 21:01:59,208 - INFO - Finished! Total sfe time: 0.46768784523010254 seconds (2/2)
+2023-08-16 21:01:59,209 - DEBUG - Host 192.168.1.105: exit code 0, output [], error ['nice: cannot set niceness: Permission denied']
+2023-08-16 21:01:59,209 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ['nice: cannot set niceness: Permission denied', "cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 21:01:59,218 - INFO - Currently running for lfw/Abdoulaye_Wade (3/999)
+2023-08-16 21:01:59,219 - DEBUG - Found 4 images for lfw/Abdoulaye_Wade
+2023-08-16 21:01:59,219 - DEBUG - setting image as reference image: lfw/Abdoulaye_Wade/Abdoulaye_Wade_0001.jpg
+2023-08-16 21:02:02,748 - DEBUG - Running test for lfw/Abdoulaye_Wade/Abdoulaye_Wade_0002.jpg
+2023-08-16 21:02:06,391 - DEBUG - Stdout of extracting embedding: 1.9031786918640137
+2023-08-16 21:02:06,392 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 21:02:06,392 - DEBUG - Embedding extracted by the server in 1.9031786918640137 seconds
+2023-08-16 21:02:09,919 - DEBUG - Running sfe...
+2023-08-16 21:02:10,343 - INFO - Finished! Total sfe time: 0.42318248748779297 seconds (1/6)
+2023-08-16 21:02:10,344 - DEBUG - Host 192.168.1.105: exit code 0, output [], error ['nice: cannot set niceness: Permission denied']
+2023-08-16 21:02:10,344 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ['nice: cannot set niceness: Permission denied', "cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 21:02:10,345 - DEBUG - Running test for lfw/Abdoulaye_Wade/Abdoulaye_Wade_0003.jpg
+2023-08-16 21:02:13,977 - DEBUG - Stdout of extracting embedding: 1.9122233390808105
+2023-08-16 21:02:13,977 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 21:02:13,977 - DEBUG - Embedding extracted by the server in 1.9122233390808105 seconds
+2023-08-16 21:02:17,564 - DEBUG - Running sfe...
+2023-08-16 21:02:18,158 - INFO - Finished! Total sfe time: 0.5937831401824951 seconds (2/6)
+2023-08-16 21:02:18,159 - DEBUG - Host 192.168.1.105: exit code 0, output [], error ['nice: cannot set niceness: Permission denied']
+2023-08-16 21:02:18,160 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ['nice: cannot set niceness: Permission denied', "cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 21:02:18,160 - DEBUG - Running test for lfw/Abdoulaye_Wade/Abdoulaye_Wade_0004.jpg
+2023-08-16 21:02:21,861 - DEBUG - Stdout of extracting embedding: 1.9141876697540283
+2023-08-16 21:02:21,861 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 21:02:21,861 - DEBUG - Embedding extracted by the server in 1.9141876697540283 seconds
+2023-08-16 21:02:25,768 - DEBUG - Running sfe...
+2023-08-16 21:02:26,255 - INFO - Finished! Total sfe time: 0.48635268211364746 seconds (3/6)
+2023-08-16 21:02:26,255 - DEBUG - Host 192.168.1.105: exit code 0, output [], error ['nice: cannot set niceness: Permission denied']
+2023-08-16 21:02:26,256 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ['nice: cannot set niceness: Permission denied', "cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 21:02:26,256 - DEBUG - Running test for lfw/Thomas_Weston/Thomas_Weston_0001.jpg
+2023-08-16 21:02:29,921 - DEBUG - Stdout of extracting embedding: 1.9084179401397705
+2023-08-16 21:02:29,922 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 21:02:29,922 - DEBUG - Embedding extracted by the server in 1.9084179401397705 seconds
+2023-08-16 21:02:33,431 - DEBUG - Running sfe...
+2023-08-16 21:02:33,946 - INFO - Finished! Total sfe time: 0.5147533416748047 seconds (4/6)
+2023-08-16 21:02:33,947 - DEBUG - Host 192.168.1.105: exit code 0, output [], error ['nice: cannot set niceness: Permission denied']
+2023-08-16 21:02:33,947 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ['nice: cannot set niceness: Permission denied', "cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 21:02:33,947 - DEBUG - Running test for lfw/Scott_Sullivan/Scott_Sullivan_0002.jpg
+2023-08-16 21:02:37,643 - DEBUG - Stdout of extracting embedding: 1.9196317195892334
+2023-08-16 21:02:37,644 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 21:02:37,644 - DEBUG - Embedding extracted by the server in 1.9196317195892334 seconds
+2023-08-16 21:02:41,195 - DEBUG - Running sfe...
+2023-08-16 21:02:41,666 - INFO - Finished! Total sfe time: 0.47061681747436523 seconds (5/6)
+2023-08-16 21:02:41,667 - DEBUG - Host 192.168.1.105: exit code 0, output [], error ['nice: cannot set niceness: Permission denied']
+2023-08-16 21:02:41,667 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ['nice: cannot set niceness: Permission denied', "cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 21:02:41,667 - DEBUG - Running test for lfw/Tom_Coverdale/Tom_Coverdale_0001.jpg
+2023-08-16 21:02:45,304 - DEBUG - Stdout of extracting embedding: 1.921677827835083
+2023-08-16 21:02:45,304 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 21:02:45,305 - DEBUG - Embedding extracted by the server in 1.921677827835083 seconds
+2023-08-16 21:02:48,773 - DEBUG - Running sfe...
+2023-08-16 21:02:49,256 - INFO - Finished! Total sfe time: 0.4819200038909912 seconds (6/6)
+2023-08-16 21:02:49,257 - DEBUG - Host 192.168.1.105: exit code 0, output [], error ['nice: cannot set niceness: Permission denied']
+2023-08-16 21:02:49,258 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ['nice: cannot set niceness: Permission denied', "cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 21:02:49,267 - INFO - Currently running for lfw/Abdullah (4/999)
+2023-08-16 21:02:49,268 - DEBUG - Found 4 images for lfw/Abdullah
+2023-08-16 21:02:49,268 - DEBUG - setting image as reference image: lfw/Abdullah/Abdullah_0001.jpg
+2023-08-16 21:02:52,922 - DEBUG - Running test for lfw/Abdullah/Abdullah_0002.jpg
+2023-08-16 21:02:56,573 - DEBUG - Stdout of extracting embedding: 1.9127898216247559
+2023-08-16 21:02:56,574 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 21:02:56,575 - DEBUG - Embedding extracted by the server in 1.9127898216247559 seconds
+2023-08-16 21:03:00,166 - DEBUG - Running sfe...
+2023-08-16 21:03:00,697 - INFO - Finished! Total sfe time: 0.5299670696258545 seconds (1/6)
+2023-08-16 21:03:00,697 - DEBUG - Host 192.168.1.105: exit code 0, output [], error ['nice: cannot set niceness: Permission denied']
+2023-08-16 21:03:00,698 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ['nice: cannot set niceness: Permission denied', "cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 21:03:00,698 - DEBUG - Running test for lfw/Abdullah/Abdullah_0003.jpg
+2023-08-16 21:03:04,339 - DEBUG - Stdout of extracting embedding: 1.9186396598815918
+2023-08-16 21:03:04,340 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 21:03:04,340 - DEBUG - Embedding extracted by the server in 1.9186396598815918 seconds
+2023-08-16 21:03:07,931 - DEBUG - Running sfe...
+2023-08-16 21:03:08,458 - INFO - Finished! Total sfe time: 0.5266327857971191 seconds (2/6)
+2023-08-16 21:03:08,459 - DEBUG - Host 192.168.1.105: exit code 0, output [], error ['nice: cannot set niceness: Permission denied']
+2023-08-16 21:03:08,459 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ['nice: cannot set niceness: Permission denied', "cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 21:03:08,460 - DEBUG - Running test for lfw/Abdullah/Abdullah_0004.jpg
+2023-08-16 21:03:12,126 - DEBUG - Stdout of extracting embedding: 1.9157545566558838
+2023-08-16 21:03:12,127 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 21:03:12,127 - DEBUG - Embedding extracted by the server in 1.9157545566558838 seconds
+2023-08-16 21:03:15,660 - DEBUG - Running sfe...
+2023-08-16 21:03:16,235 - INFO - Finished! Total sfe time: 0.5738625526428223 seconds (3/6)
+2023-08-16 21:03:16,235 - DEBUG - Host 192.168.1.105: exit code 0, output [], error ['nice: cannot set niceness: Permission denied']
+2023-08-16 21:03:16,236 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ['nice: cannot set niceness: Permission denied', "cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 21:03:16,236 - DEBUG - Running test for lfw/Dolly_Parton/Dolly_Parton_0001.jpg
+2023-08-16 21:03:19,939 - DEBUG - Stdout of extracting embedding: 1.9210469722747803
+2023-08-16 21:03:19,939 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 21:03:19,939 - DEBUG - Embedding extracted by the server in 1.9210469722747803 seconds
+2023-08-16 21:03:23,429 - DEBUG - Running sfe...
+2023-08-16 21:03:23,903 - INFO - Finished! Total sfe time: 0.47330737113952637 seconds (4/6)
+2023-08-16 21:03:23,904 - DEBUG - Host 192.168.1.105: exit code 0, output [], error ['nice: cannot set niceness: Permission denied']
+2023-08-16 21:03:23,905 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ['nice: cannot set niceness: Permission denied', "cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 21:03:23,905 - DEBUG - Running test for lfw/Paul_Bettany/Paul_Bettany_0001.jpg
+2023-08-16 21:03:27,625 - DEBUG - Stdout of extracting embedding: 1.9186453819274902
+2023-08-16 21:03:27,626 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 21:03:27,626 - DEBUG - Embedding extracted by the server in 1.9186453819274902 seconds
