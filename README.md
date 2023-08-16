@@ -5,7 +5,7 @@ Privacy-Friendly Face Recognition On Constrained Devices
 
 Required:
 
-`python3 python3.10-venv g++ make cmake libgmp-dev libssl-dev libboost-all-dev`
+`python3 python3.10-venv g++ make cmake libgmp-dev libssl-dev libboost-all-dev ffmpeg libsm6 libxext6`
 
 1. Clone the repo after adding the machine's ssh key as a deploy key
 
