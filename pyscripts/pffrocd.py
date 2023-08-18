@@ -130,7 +130,7 @@ def run_sfe(x, y, y_0=None, y_1=None):
                 f.write(f"{i}\n")
             
     # execute the ABY cos sim computation
-    CMD = f"./{EXECUTABLE_NAME} -r 0 -f {INPUT_FILE_NAME} & (./{EXECUTABLE_NAME} -r 1 -f {INPUT_FILE_NAME} 2>&1 > /dev/null)"
+    CMD = f"./{EXECUTABLE_NAME} -r 0 -f {INPUT_FILE_NAME} -s 112 -x 0 & (./{EXECUTABLE_NAME} -r 1 -f {INPUT_FILE_NAME} -s 112 -x 0 2>&1 > /dev/null)"
     output = subprocess.run(CMD, shell=True, capture_output=True, text=True, cwd=EXECUTABLE_PATH)
     assert (output.returncode == 0), f"{output.stdout=}, {output.stderr=}" # make sure the process executed successfully
     return output
