@@ -534,14 +534,6 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	// std::cout << "norm(share): " << norm_y << std::endl;
 	std::cout << "cos_dist: " << 1 - cos_sim << std::endl;
 
-	std::ofstream file;
-	file << std::fixed;
-	file.open(outputfile);
-	file << cos_sim << std::endl;
-	file.close();
-	
-
-	
 }
 
 int main(int argc, char **argv)
