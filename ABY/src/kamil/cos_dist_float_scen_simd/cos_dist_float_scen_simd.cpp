@@ -107,11 +107,11 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	std::fstream infile(inputfile);
 
-	std::cout << "INPUT FILE NAME: " << inputfile << std::endl;
+	//std::cout << "INPUT FILE NAME: " << inputfile << std::endl;
 
 	double x, y;
 
-	std::cout << "starting reading x and y" << std::endl;
+	//std::cout << "starting reading x and y" << std::endl;
 
 	while (infile >> x >> y) {
 		std::cout << "x: " << x << " | y: "<< y << std::endl;
@@ -119,7 +119,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		yembeddings.push_back(y);
 	}
 
-	std::cout<<"finished reading x and y" << std::endl;
+	//std::cout<<"finished reading x and y" << std::endl;
 
 	assert(xembeddings.size() == nvals);
 	assert(yembeddings.size() == nvals);
@@ -131,27 +131,27 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 	std::string fname = pffrocd_path + "/ABY/build/bin/share" + std::to_string(role) + ".txt";
 
-	std::cout << "FNAME: " << fname << std::endl; 
+	//std::cout << "FNAME: " << fname << std::endl; 
 
 	std::fstream infile_share(fname);
 
 	double z;
 
-	std::cout << "starting reading z" << std::endl;
+	// std::cout << "starting reading z" << std::endl;
 
 	while(infile_share >> z) {
-		std::cout << "z: " << z << std::endl;
+		//std::cout << "z: " << z << std::endl;
 		share_embeddings.push_back(z);
 	}
 
-	std::cout<<"finished reading z" << std::endl;
+	//std::cout<<"finished reading z" << std::endl;
 
 	assert(share_embeddings.size() == nvals);
 
 
 	std::string circuit_dir = pffrocd_path + "/ABY/bin/circ/";
 
-	std::cout << "CIRCUIT DIRECTORY: " << circuit_dir << std::endl;
+	//std::cout << "CIRCUIT DIRECTORY: " << circuit_dir << std::endl;
 
 	ABYParty *party = new ABYParty(role, address, port, seclvl, bitlen, nthreads, mt_alg, 100000, circuit_dir);
 
