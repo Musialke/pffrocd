@@ -492,7 +492,7 @@ def get_random_images_except_person(root_dir, excluded_person, num_images):
 
 
 def execute_command_parallel_alternative(hosts, user, password, command1, command2):
-    client = ParallelSSHClient(hosts=hosts, user=user, password=password, timeout=360)
+    client = ParallelSSHClient(hosts=hosts, user=user, password=password, timeout=600)
     output = client.run_command('%s', host_args=(command1,command2))
     client.join(output)
     del client
