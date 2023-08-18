@@ -116,8 +116,8 @@ def run_test():
             # logger.debug(f"{stdout2=}")
             # logger.debug(f"{stderr2=}")
 
-            command1 = f"cd {client_exec_path} ; nice -n {niceness} {client_exec_path}/{client_exec_name} -r 1 -a {server_ip} -f {client_exec_path}/embeddings.txt -o {client_pffrocd_path}/ABY/bin/circ/ -s {sec_lvl} -x {mt_alg}"
-            command2 = f"cd {server_exec_path} ; nice -n {niceness} {server_exec_path}/{server_exec_name} -r 0 -a {server_ip} -f {server_exec_path}/embeddings.txt -o {client_pffrocd_path}/ABY/bin/circ/ -s {sec_lvl} -x {mt_alg}"
+            command1 = f"cd {client_exec_path} ; nice -n {niceness} {client_exec_path}/{client_exec_name} -r 1 -a {server_ip} -f {client_exec_path}/embeddings.txt -o {client_pffrocd_path} -s {sec_lvl} -x {mt_alg}"
+            command2 = f"cd {server_exec_path} ; nice -n {niceness} {server_exec_path}/{server_exec_name} -r 0 -a {server_ip} -f {server_exec_path}/embeddings.txt -o {client_pffrocd_path} -s {sec_lvl} -x {mt_alg}"
             sfe_start_time  = time.time()
             output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, "kamil123", command1, command2)
             sfe_time = time.time() - sfe_start_time
