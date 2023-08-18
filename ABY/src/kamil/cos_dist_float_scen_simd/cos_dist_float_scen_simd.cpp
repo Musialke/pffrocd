@@ -34,7 +34,7 @@
 
 void read_test_options(int32_t *argcp, char ***argvp, e_role *role,
 					   uint32_t *bitlen, uint32_t *nvals, uint32_t *secparam, std::string *address,
-					   uint16_t *port, int32_t *test_op, uint32_t *test_bit, e_mt_gen_alg *mt_alg, uint32_t *debug, std::string *inputfile, std::string *outputfile)
+					   uint16_t *port, int32_t *test_op, uint32_t *test_bit, e_mt_gen_alg *mt_alg, uint32_t *debug, std::string *inputfile, std::string *circ_dir)
 {
 
 	uint32_t int_role = 0, int_port = 0, int_testbit = 0, int_mt_alg = 0;
@@ -51,7 +51,7 @@ void read_test_options(int32_t *argcp, char ***argvp, e_role *role,
 		 {(void *)&int_mt_alg, T_NUM, "x", "Arithmetic multiplication triples algorithm", false, false},
 		 {(void *)debug, T_NUM, "d", "debug mode (more printing) (0/1)", false, false},
 		 {(void *)inputfile, T_STR, "f", "Input file containing face embeddings", true, false},
-		 {(void *)outputfile, T_STR, "o", "Output file containing cos sim result", false, false}
+		 {(void *)circ_dir, T_STR, "o", "Circuit directory", true, false}
 		};
 
 	if (!parse_options(argcp, argvp, options,
@@ -86,7 +86,7 @@ void read_test_options(int32_t *argcp, char ***argvp, e_role *role,
 }
 
 void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t port, seclvl seclvl, uint32_t nvals, uint32_t nthreads,
-							 e_mt_gen_alg mt_alg, e_sharing sharing, uint32_t debug, std::string inputfile, std::string outputfile)
+							 e_mt_gen_alg mt_alg, e_sharing sharing, uint32_t debug, std::string inputfile, std::string circ_dir)
 {
 
 	// std::cout << "SEC LEVEL: " << seclvl.symbits << std::endl;
@@ -146,9 +146,9 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	assert(share_embeddings.size() == nvals);
 
 
-	std::string circuit_dir = "/home/dietpi/pffrocd/ABY/bin/circ/";
+	std::string circuit_dir = circ_dir;
 
-	// std::cout << "CIRCUIT DIRECTORY: " << circuit_dir << std::endl;
+	std::cout << "CIRCUIT DIRECTORY: " << circuit_dir << std::endl;
 
 	ABYParty *party = new ABYParty(role, address, port, seclvl, bitlen, nthreads, mt_alg, 100000, circuit_dir);
 
@@ -557,15 +557,15 @@ int main(int argc, char **argv)
 	uint32_t test_bit = 0;
 	uint32_t debug = 0;
 	std::string inputfile;
-	std::string outputfile;
+	std::string circ_dir;
 
 	read_test_options(&argc, &argv, &role, &bitlen, &nvals, &secparam, &address,
-					  &port, &test_op, &test_bit, &mt_alg, &debug, &inputfile, &outputfile);
+					  &port, &test_op, &test_bit, &mt_alg, &debug, &inputfile, &circ_dir);
 
 	std::cout << std::fixed << std::setprecision(10);
 	seclvl seclvl = get_sec_lvl(secparam);
 
-	test_verilog_add64_SIMD(role, address, port, seclvl, nvals, nthreads, mt_alg, S_BOOL, debug, inputfile, outputfile);
+	test_verilog_add64_SIMD(role, address, port, seclvl, nvals, nthreads, mt_alg, S_BOOL, debug, inputfile, circ_dir);
 
 	return 0;
 }
