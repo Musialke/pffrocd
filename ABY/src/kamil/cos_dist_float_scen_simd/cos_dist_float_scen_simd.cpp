@@ -114,7 +114,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 	//std::cout << "starting reading x and y" << std::endl;
 
 	while (infile >> x >> y) {
-		std::cout << "x: " << x << " | y: "<< y << std::endl;
+		// std::cout << "x: " << x << " | y: "<< y << std::endl;
 		xembeddings.push_back(x);
 		yembeddings.push_back(y);
 	}
