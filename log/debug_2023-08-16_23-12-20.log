@@ -1,0 +1,41 @@
+2023-08-16 23:12:20,736 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.1.105",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_rsa",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.1.110",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_rsa",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1000",
+        "security_level": "112",
+        "mt_algorithm": "0",
+        "niceness": "-20",
+        "starting_person": "1"
+    }
+}
+2023-08-16 23:12:21,398 - INFO - RUNNING for 999 people
+2023-08-16 23:12:21,399 - INFO - Currently running for lfw/Aaron_Sorkin (1/999)
+2023-08-16 23:12:21,399 - DEBUG - Found 2 images for lfw/Aaron_Sorkin
+2023-08-16 23:12:21,399 - DEBUG - setting image as reference image: lfw/Aaron_Sorkin/Aaron_Sorkin_0001.jpg
+2023-08-16 23:12:25,710 - DEBUG - Running test for lfw/Aaron_Sorkin/Aaron_Sorkin_0002.jpg
+2023-08-16 23:12:29,390 - DEBUG - Stdout of extracting embedding: 1.9192688465118408
+2023-08-16 23:12:29,391 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 23:12:29,391 - DEBUG - Embedding extracted by the server in 1.9192688465118408 seconds
+2023-08-16 23:12:33,171 - DEBUG - Running sfe...
+2023-08-16 23:12:33,705 - INFO - Finished! Total sfe time: 0.5336010456085205 seconds (1/2)
+2023-08-16 23:12:33,706 - DEBUG - Host 192.168.1.105: exit code 0, output [], error []
+2023-08-16 23:12:33,708 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ["cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 23:12:33,709 - DEBUG - Running test for lfw/Frank_Sinatra/Frank_Sinatra_0001.jpg
+2023-08-16 23:12:37,370 - DEBUG - Stdout of extracting embedding: 1.9073233604431152
+2023-08-16 23:12:37,371 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 23:12:37,371 - DEBUG - Embedding extracted by the server in 1.9073233604431152 seconds

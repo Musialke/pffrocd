@@ -1,0 +1,127 @@
+2023-08-16 23:10:21,779 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.1.105",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_rsa",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.1.110",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_rsa",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1000",
+        "security_level": "112",
+        "mt_algorithm": "0",
+        "niceness": "-20",
+        "starting_person": "1"
+    }
+}
+2023-08-16 23:10:22,424 - INFO - RUNNING for 999 people
+2023-08-16 23:10:22,425 - INFO - Currently running for lfw/Aaron_Sorkin (1/999)
+2023-08-16 23:10:22,425 - DEBUG - Found 2 images for lfw/Aaron_Sorkin
+2023-08-16 23:10:22,425 - DEBUG - setting image as reference image: lfw/Aaron_Sorkin/Aaron_Sorkin_0001.jpg
+2023-08-16 23:10:26,998 - DEBUG - Running test for lfw/Aaron_Sorkin/Aaron_Sorkin_0002.jpg
+2023-08-16 23:10:30,738 - DEBUG - Stdout of extracting embedding: 1.9222111701965332
+2023-08-16 23:10:30,739 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 23:10:30,739 - DEBUG - Embedding extracted by the server in 1.9222111701965332 seconds
+2023-08-16 23:10:34,251 - DEBUG - Running sfe...
+2023-08-16 23:10:34,747 - INFO - Finished! Total sfe time: 0.49588990211486816 seconds (1/2)
+2023-08-16 23:10:34,748 - DEBUG - Host 192.168.1.105: exit code 0, output [], error []
+2023-08-16 23:10:34,749 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ["cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 23:10:34,750 - DEBUG - Running test for lfw/Ilan_Goldfajn/Ilan_Goldfajn_0001.jpg
+2023-08-16 23:10:38,374 - DEBUG - Stdout of extracting embedding: 1.9172859191894531
+2023-08-16 23:10:38,375 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 23:10:38,375 - DEBUG - Embedding extracted by the server in 1.9172859191894531 seconds
+2023-08-16 23:10:41,833 - DEBUG - Running sfe...
+2023-08-16 23:10:42,284 - INFO - Finished! Total sfe time: 0.4498617649078369 seconds (2/2)
+2023-08-16 23:10:42,284 - DEBUG - Host 192.168.1.105: exit code 0, output [], error []
+2023-08-16 23:10:42,285 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ["cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 23:10:42,298 - INFO - Currently running for lfw/Abdel_Nasser_Assidi (2/999)
+2023-08-16 23:10:42,298 - DEBUG - Found 2 images for lfw/Abdel_Nasser_Assidi
+2023-08-16 23:10:42,299 - DEBUG - setting image as reference image: lfw/Abdel_Nasser_Assidi/Abdel_Nasser_Assidi_0001.jpg
+2023-08-16 23:10:45,844 - DEBUG - Running test for lfw/Abdel_Nasser_Assidi/Abdel_Nasser_Assidi_0002.jpg
+2023-08-16 23:10:49,580 - DEBUG - Stdout of extracting embedding: 1.915093183517456
+2023-08-16 23:10:49,581 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 23:10:49,581 - DEBUG - Embedding extracted by the server in 1.915093183517456 seconds
+2023-08-16 23:10:52,998 - DEBUG - Running sfe...
+2023-08-16 23:10:53,479 - INFO - Finished! Total sfe time: 0.4799535274505615 seconds (1/2)
+2023-08-16 23:10:53,479 - DEBUG - Host 192.168.1.105: exit code 0, output [], error []
+2023-08-16 23:10:53,480 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ["cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 23:10:53,480 - DEBUG - Running test for lfw/Dave_McNealey/Dave_McNealey_0001.jpg
+2023-08-16 23:10:57,136 - DEBUG - Stdout of extracting embedding: 1.910738229751587
+2023-08-16 23:10:57,137 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 23:10:57,138 - DEBUG - Embedding extracted by the server in 1.910738229751587 seconds
+2023-08-16 23:11:00,715 - DEBUG - Running sfe...
+2023-08-16 23:11:01,147 - INFO - Finished! Total sfe time: 0.4314084053039551 seconds (2/2)
+2023-08-16 23:11:01,147 - DEBUG - Host 192.168.1.105: exit code 0, output [], error []
+2023-08-16 23:11:01,148 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ["cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 23:11:01,157 - INFO - Currently running for lfw/Abdoulaye_Wade (3/999)
+2023-08-16 23:11:01,157 - DEBUG - Found 4 images for lfw/Abdoulaye_Wade
+2023-08-16 23:11:01,157 - DEBUG - setting image as reference image: lfw/Abdoulaye_Wade/Abdoulaye_Wade_0001.jpg
+2023-08-16 23:11:04,930 - DEBUG - Running test for lfw/Abdoulaye_Wade/Abdoulaye_Wade_0002.jpg
+2023-08-16 23:11:08,602 - DEBUG - Stdout of extracting embedding: 1.9071464538574219
+2023-08-16 23:11:08,602 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 23:11:08,603 - DEBUG - Embedding extracted by the server in 1.9071464538574219 seconds
+2023-08-16 23:11:12,058 - DEBUG - Running sfe...
+2023-08-16 23:11:12,658 - INFO - Finished! Total sfe time: 0.5991637706756592 seconds (1/6)
+2023-08-16 23:11:12,658 - DEBUG - Host 192.168.1.105: exit code 0, output [], error []
+2023-08-16 23:11:12,659 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ["cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 23:11:12,659 - DEBUG - Running test for lfw/Abdoulaye_Wade/Abdoulaye_Wade_0003.jpg
+2023-08-16 23:11:16,264 - DEBUG - Stdout of extracting embedding: 1.8987774848937988
+2023-08-16 23:11:16,264 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 23:11:16,265 - DEBUG - Embedding extracted by the server in 1.8987774848937988 seconds
+2023-08-16 23:11:19,727 - DEBUG - Running sfe...
+2023-08-16 23:11:20,219 - INFO - Finished! Total sfe time: 0.4915435314178467 seconds (2/6)
+2023-08-16 23:11:20,220 - DEBUG - Host 192.168.1.105: exit code 0, output [], error []
+2023-08-16 23:11:20,220 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ["cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 23:11:20,221 - DEBUG - Running test for lfw/Abdoulaye_Wade/Abdoulaye_Wade_0004.jpg
+2023-08-16 23:11:23,856 - DEBUG - Stdout of extracting embedding: 1.9216585159301758
+2023-08-16 23:11:23,857 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 23:11:23,857 - DEBUG - Embedding extracted by the server in 1.9216585159301758 seconds
+2023-08-16 23:11:27,597 - DEBUG - Running sfe...
+2023-08-16 23:11:28,046 - INFO - Finished! Total sfe time: 0.44822096824645996 seconds (3/6)
+2023-08-16 23:11:28,047 - DEBUG - Host 192.168.1.105: exit code 0, output [], error []
+2023-08-16 23:11:28,047 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ["cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 23:11:28,047 - DEBUG - Running test for lfw/Nick_Turner/Nick_Turner_0001.jpg
+2023-08-16 23:11:31,756 - DEBUG - Stdout of extracting embedding: 1.914029836654663
+2023-08-16 23:11:31,756 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 23:11:31,757 - DEBUG - Embedding extracted by the server in 1.914029836654663 seconds
+2023-08-16 23:11:35,269 - DEBUG - Running sfe...
+2023-08-16 23:11:35,769 - INFO - Finished! Total sfe time: 0.499727725982666 seconds (4/6)
+2023-08-16 23:11:35,770 - DEBUG - Host 192.168.1.105: exit code 0, output [], error []
+2023-08-16 23:11:35,772 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ["cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 23:11:35,773 - DEBUG - Running test for lfw/Demi_Moore/Demi_Moore_0002.jpg
+2023-08-16 23:11:39,426 - DEBUG - Stdout of extracting embedding: 1.913367509841919
+2023-08-16 23:11:39,427 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 23:11:39,427 - DEBUG - Embedding extracted by the server in 1.913367509841919 seconds
+2023-08-16 23:11:43,014 - DEBUG - Running sfe...
+2023-08-16 23:11:43,590 - INFO - Finished! Total sfe time: 0.5758416652679443 seconds (5/6)
+2023-08-16 23:11:43,591 - DEBUG - Host 192.168.1.105: exit code 0, output [], error []
+2023-08-16 23:11:43,591 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ["cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 23:11:43,591 - DEBUG - Running test for lfw/Anneli_Jaatteenmaki/Anneli_Jaatteenmaki_0001.jpg
+2023-08-16 23:11:47,305 - DEBUG - Stdout of extracting embedding: 1.912837028503418
+2023-08-16 23:11:47,305 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 23:11:47,306 - DEBUG - Embedding extracted by the server in 1.912837028503418 seconds
+2023-08-16 23:11:50,905 - DEBUG - Running sfe...
+2023-08-16 23:11:51,386 - INFO - Finished! Total sfe time: 0.4798121452331543 seconds (6/6)
+2023-08-16 23:11:51,386 - DEBUG - Host 192.168.1.105: exit code 0, output [], error []
+2023-08-16 23:11:51,387 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ["cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 23:11:51,394 - INFO - Currently running for lfw/Abdullah (4/999)
+2023-08-16 23:11:51,395 - DEBUG - Found 4 images for lfw/Abdullah
+2023-08-16 23:11:51,395 - DEBUG - setting image as reference image: lfw/Abdullah/Abdullah_0001.jpg
+2023-08-16 23:11:54,934 - DEBUG - Running test for lfw/Abdullah/Abdullah_0002.jpg
+2023-08-16 23:11:58,591 - DEBUG - Stdout of extracting embedding: 1.9098656177520752
+2023-08-16 23:11:58,592 - DEBUG - Stderr of extracting embedding: 
+2023-08-16 23:11:58,593 - DEBUG - Embedding extracted by the server in 1.9098656177520752 seconds
+2023-08-16 23:12:02,124 - DEBUG - Running sfe...
+2023-08-16 23:12:02,592 - INFO - Finished! Total sfe time: 0.467545747756958 seconds (1/6)
+2023-08-16 23:12:02,592 - DEBUG - Host 192.168.1.105: exit code 0, output [], error []
+2023-08-16 23:12:02,593 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ["cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-16 23:12:02,593 - DEBUG - Running test for lfw/Abdullah/Abdullah_0003.jpg
