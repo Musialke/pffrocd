@@ -88,7 +88,7 @@ def run_test():
 
         # run the test for each image
         for count_img,img in enumerate(imgs):
-            logger.debug(f"Running test for {img}")
+            logger.info(f"Running test for {img}")
 
             # run the face embedding extraction script on the server
             stdout, stderr = pffrocd.execute_command(server_ip, server_username, f"{server_pffrocd_path}/env/bin/python {server_pffrocd_path}/pyscripts/extract_embedding.py -i {server_pffrocd_path}/{img} -o {server_exec_path}/embedding.txt", server_key)
@@ -100,7 +100,7 @@ def run_test():
                 logger.error("REMOTE EXECUTION OF COMMAND FAILED")
                 logger.error(stderr)
 
-            logger.debug(f"Embedding extracted by the server in {extraction_time} seconds")
+            logger.info(f"Embedding extracted by the server in {extraction_time} seconds")
             
             # send the files with embeddings to the client and server
             img_embedding = pffrocd.get_embedding(img)
@@ -108,7 +108,7 @@ def run_test():
             pffrocd.write_embeddings_to_remote_file(server_ip, server_username, server_key, f"{server_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
             
             # run the sfe on both client and server in parallel
-            logger.debug("Running sfe...")
+            logger.info("Running sfe...")
             # stdout1, stderr1, stdout2, stderr2 = pffrocd.execute_command_parallel(host1=client_ip, username1=client_username, command1=f"{client_exec_path}/{client_exec_name} -r 1 -a {server_ip} -f {client_exec_path}/embeddings.txt", host2=server_ip, username2=server_username, command2=f"{server_exec_path}/{server_exec_name} -r 0 -a {server_ip} -f {server_exec_path}/embeddings.txt", private_key_path1=client_key, private_key_path2=server_key)
             # logger.debug("sfe done")
             # logger.debug(f"{stdout1=}")
