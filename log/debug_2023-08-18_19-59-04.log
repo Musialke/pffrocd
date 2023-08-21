@@ -1,0 +1,41 @@
+2023-08-18 19:59:04,642 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.0.103",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_rsa",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.0.106",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_rsa",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1000",
+        "security_level": "112",
+        "mt_algorithm": "0",
+        "niceness": "-20",
+        "starting_person": "1"
+    }
+}
+2023-08-18 19:59:05,283 - INFO - RUNNING for 999 people
+2023-08-18 19:59:05,284 - INFO - Currently running for lfw/Aaron_Sorkin (1/999)
+2023-08-18 19:59:05,285 - DEBUG - Found 2 images for lfw/Aaron_Sorkin
+2023-08-18 19:59:05,285 - DEBUG - setting image as reference image: lfw/Aaron_Sorkin/Aaron_Sorkin_0001.jpg
+2023-08-18 19:59:32,174 - DEBUG - Running test for lfw/Aaron_Sorkin/Aaron_Sorkin_0002.jpg
+2023-08-18 19:59:36,353 - DEBUG - Stdout of extracting embedding: 
+2023-08-18 19:59:36,354 - DEBUG - Stderr of extracting embedding: Traceback (most recent call last):
+  File "/home/kamil/pffrocd/pyscripts/extract_embedding.py", line 21, in <module>
+    embedding = DeepFace.represent(input_image, model_name='SFace', enforce_detection=False)[0]["embedding"]
+  File "/home/kamil/pffrocd/env/lib/python3.10/site-packages/deepface/DeepFace.py", line 645, in represent
+    img_objs = functions.extract_faces(
+  File "/home/kamil/pffrocd/env/lib/python3.10/site-packages/deepface/commons/functions.py", line 104, in extract_faces
+    img = load_image(img)
+  File "/home/kamil/pffrocd/env/lib/python3.10/site-packages/deepface/commons/functions.py", line 81, in load_image
+    raise ValueError(f"Confirm that {img} exists")
+ValueError: Confirm that /home/kamil/pffrocd/lfw/Aaron_Sorkin/Aaron_Sorkin_0002.jpg exists
