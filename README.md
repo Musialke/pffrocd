@@ -58,10 +58,13 @@ pip install -vr requirements.txt
 ```sh
 mkdir -p ~/.deepface/weights/ && cp face_recognition_sface_2021dec.onnx ~/.deepface/weights/
 ```
+ADDITIONALLY FOR MASTER
 
 11. Rename the `config.ini.example` file to `config.ini` and modify it accordingly
 
-12. Run the main script in the background on the master machine
+12. Copy the ssh keys to server and client using ssh-copy-id
+
+13. Run the main script in the background on the master machine
 ```sh
 python pyscripts/master.py&
 ```
