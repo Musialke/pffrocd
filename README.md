@@ -59,6 +59,13 @@ pip install -vr requirements.txt
 mkdir -p ~/.deepface/weights/ && cp face_recognition_sface_2021dec.onnx ~/.deepface/weights/
 ```
 
+11. Rename the `config.ini.example` file to `config.ini` and modify it accordingly
+
+12. Run the main script in the background on the master machine
+```sh
+python pyscripts/master.py&
+```
+
 
 ### Possible errors and solutions:
 
