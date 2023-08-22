@@ -3,56 +3,72 @@ Privacy-Friendly Face Recognition On Constrained Devices
 
 ## Complete guide to set up a host for tests:
 
-Required:
+1. Install required packages:
 
-`python3 python3.10-venv g++ make cmake libgmp-dev libssl-dev libboost-all-dev ffmpeg libsm6 libxext6`
+```sh
+sudo apt update && sudo apt install python3 python3.11-venv g++ make cmake libgmp-dev libssl-dev libboost-all-dev ffmpeg libsm6 libxext6 git -y
+```
 
-1. Clone the repo after adding the machine's ssh key as a deploy key
+2. Generate SSH key and add as deploy key to the git repo
+
+```sh
+ssh-keygen
+```
+
+3. Clone the repo and cd into it
 
 ```sh
 git clone git@github.com:Musialke/pffrocd.git
-cd pffrocd 
+cd pffrocd
 ```
-2. Create a virtualenv in the folder (assuming Python3 with venv is installed) and activate it
 
+4. Create the ABY build directory
 ```sh
-python3 -m venv env
-. env/bin/activate
+mkdir ABY/build/ && cd ABY/build/
 ```
-3. Install required packages
 
+5. Use CMake to configure the build (example applications on by default):
 ```sh
-pip install -vr requirements.txt
+cmake ..
 ```
 
-## SFE
+6. Call `make` in the build directory. You can find the build executables and libraries in the directories `bin/` and `lib/`, respectively.
+```sh
+make
+```
 
-Setting up:
+7. To be able to run a process with higher priority modify limits.conf as explained here: https://unix.stackexchange.com/a/358332
 
-1. Enter the framework directory: `cd ABY/`
-2. Create and enter the build directory: `mkdir build && cd build`
-3. Use CMake to configure the build with example applications: ```cmake .. -DABY_BUILD_EXE=On```
-4. Call `make` in the build directory. You can find the build executables and libraries in the directories `bin/` and `lib/`, respectively.
+ADDITIONALLY FOR SERVER AND MASTER:
+Since the server and master need to extract embeddings, they need the database of pictures and Python.
 
-The project-specific examples are in `src/kamil/`
-
-To run the examples run the corresponding python script located in `pyscripts/`
-
-1. Unpack the split database with face images by running
+8. Change directory back to repo root folder and unpack the picture database:
 ```sh
 cat lfw.tgz.parta* | tar -xzv
 ```
-2. Make sure you have Python3 on your system with venv installed
-3. Create a new virtual environment, activate it and install required packages
+
+9. Create a new virtual environment, activate it and install the required packages
 ```sh
 python3 -m venv env
-source env/bin/activate
-pip3 install -r requirements.txt
+. env/bin/activate
+pip install -vr requirements.txt
 ```
-4. Run a script, for example
+
+10. Copy the SFace weights where deepface can find them:
 ```sh
-python3 pyscripts/cos_dist_float_nscen_simd.py
+mkdir -p ~/.deepface/weights/ && cp face_recognition_sface_2021dec.onnx ~/.deepface/weights/
 ```
+ADDITIONALLY FOR MASTER
+
+11. Rename the `config.ini.example` file to `config.ini` and modify it accordingly
+
+12. Copy the ssh keys to server and client using ssh-copy-id
+
+13. Run the main script in the background on the master machine
+```sh
+python pyscripts/master.py&
+```
+
 
 ### Possible errors and solutions:
 
@@ -63,7 +79,7 @@ sudo apt update && sudo apt install ffmpeg libsm6 libxext6  -y
 ```
 
 `v2.error: OpenCV(4.7.0) /io/opencv/modules/dnn/src/onnx/onnx_importer.cpp:275: error: (-210:Unsupported format or combination of formats) Failed to parse ONNX model: /home/dietpi/.deepface/weights/face_recognition_sface_2021dec.onnx in function 'ONNXImporter'` 
-Link to weights for SFace is missing. fix:
+The link to weights for SFace is missing. fix:
 ```sh
 mkdir -p ~/.deepface/weights/ && cp face_recognition_sface_2021dec.onnx ~/.deepface/weights/
 ```
