@@ -1,0 +1,29 @@
+2023-08-22 18:37:43,266 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.5.111",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/user/.ssh/id_rsa",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.5.112",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_rsa",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1000",
+        "security_level": "112",
+        "mt_algorithm": "0",
+        "niceness": "-20",
+        "starting_person": "1"
+    }
+}
+2023-08-22 18:37:43,607 - INFO - RUNNING for 999 people
+2023-08-22 18:37:43,607 - INFO - Currently running for lfw/Aaron_Sorkin (1/999)
+2023-08-22 18:37:43,608 - DEBUG - Found 2 images for lfw/Aaron_Sorkin
+2023-08-22 18:37:43,608 - DEBUG - setting image as reference image: lfw/Aaron_Sorkin/Aaron_Sorkin_0001.jpg

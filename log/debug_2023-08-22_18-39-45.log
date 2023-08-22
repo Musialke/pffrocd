@@ -1,0 +1,42 @@
+2023-08-22 18:39:45,166 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.5.111",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/dietpi/.ssh/id_rsa",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.5.112",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/dietpi/.ssh/id_rsa",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1000",
+        "security_level": "112",
+        "mt_algorithm": "0",
+        "niceness": "-20",
+        "starting_person": "1"
+    }
+}
+2023-08-22 18:39:45,480 - INFO - RUNNING for 999 people
+2023-08-22 18:39:45,481 - INFO - Currently running for lfw/Aaron_Sorkin (1/999)
+2023-08-22 18:39:45,481 - DEBUG - Found 2 images for lfw/Aaron_Sorkin
+2023-08-22 18:39:45,481 - DEBUG - setting image as reference image: lfw/Aaron_Sorkin/Aaron_Sorkin_0001.jpg
+2023-08-22 18:39:52,133 - INFO - Running test for lfw/Aaron_Sorkin/Aaron_Sorkin_0002.jpg
+2023-08-22 18:39:59,732 - DEBUG - Stdout of extracting embedding: 5.399757385253906
+2023-08-22 18:39:59,733 - DEBUG - Stderr of extracting embedding: 
+2023-08-22 18:39:59,733 - INFO - Embedding extracted by the server in 5.399757385253906 seconds
+2023-08-22 18:40:04,648 - INFO - Running sfe...
+2023-08-22 18:42:11,253 - INFO - Finished! Total sfe time: 126.60467767715454 seconds (1/2)
+2023-08-22 18:42:11,254 - DEBUG - Host 192.168.5.111: exit code 0, output ['Online time is distributed as follows: ', 'Bool: local gates: 410.5380000000, interactive gates: 524.0930000000, layer finish: 539.3420000000', 'Yao: local gates: 11.8020000000, interactive gates: 8.4510000000, layer finish: 8.7360000000', 'Yao Rev: local gates: 10.7570000000, interactive gates: 7.8350000000, layer finish: 8.4450000000', 'Arith: local gates: 13.5790000000, interactive gates: 10.1390000000, layer finish: 19.6750000000', 'SPLUT: local gates: 11.0300000000, interactive gates: 10.6230000000, layer finish: 70.1880000000', 'Communication: 63747.5529999999', '', 'Complexities: ', 'Boolean Sharing: ANDs: 5971636 (1-bit) ; Depth: 10918', 'Total Vec AND: 5971636', 'Total Non-Vec AND: 5971636', 'XOR vals: 5892966 gates: 1383450', 'Comb gates: 0, CombStruct gates: 0, Perm gates: 0, Subset gates: 24576, Split gates: 0', 'Yao: ANDs: 0 ; Depth: 0', 'Reverse Yao: ANDs: 0 ; Depth: 0', 'Arithmetic Sharing: MULs: 0 ; Depth: 0', 'SP-LUT Sharing: OT-gates: Total OT gates = 0; Depth: 1', 'Total number of gates: 3163722 Total depth: 10918', 'Timings: ', 'Total =\t\t124011.6410000000 ms', 'Init =\t\t0.0650000000 ms', 'CircuitGen =\t0.2910000000 ms', 'Network =\t63.5180000000 ms', 'BaseOTs =\t109.2550000000 ms', 'Setup =\t\t58561.1620000000 ms', 'OTExtension =\t58554.8100000000 ms', 'Garbling =\t0.0030000000 ms', 'Online =\t65450.4750000000 ms', '', 'Communication: ', 'Total Sent / Rcv\t86427447  bytes / 86428462 bytes', 'BaseOTs Sent / Rcv\t29211  bytes / 29220 bytes', 'Setup Sent / Rcv\t84827314  bytes / 84827305 bytes', 'OTExtension Sent / Rcv\t84827305  bytes / 84827305 bytes', 'Garbling Sent / Rcv\t0  bytes / 0 bytes', 'Online Sent / Rcv\t1600133  bytes / 1601157 bytes', '', 'cos_dist_ver: 0.3933945708', 'cos_dist: 0.3933945708'], error []
+2023-08-22 18:42:11,255 - DEBUG - Host 192.168.5.112: exit code 0, output ['Online time is distributed as follows: ', 'Bool: local gates: 386.5050000000, interactive gates: 487.7310000000, layer finish: 462.0670000000', 'Yao: local gates: 10.5480000000, interactive gates: 7.1970000000, layer finish: 6.9400000000', 'Yao Rev: local gates: 9.8410000000, interactive gates: 6.2940000000, layer finish: 6.9290000000', 'Arith: local gates: 13.1860000000, interactive gates: 7.7270000000, layer finish: 19.1150000000', 'SPLUT: local gates: 10.2380000000, interactive gates: 6.8660000000, layer finish: 66.5540000000', 'Communication: 63909.2260000004', '', 'Complexities: ', 'Boolean Sharing: ANDs: 5971636 (1-bit) ; Depth: 10918', 'Total Vec AND: 5971636', 'Total Non-Vec AND: 5971636', 'XOR vals: 5892966 gates: 1383450', 'Comb gates: 0, CombStruct gates: 0, Perm gates: 0, Subset gates: 24576, Split gates: 0', 'Yao: ANDs: 0 ; Depth: 0', 'Reverse Yao: ANDs: 0 ; Depth: 0', 'Arithmetic Sharing: MULs: 0 ; Depth: 0', 'SP-LUT Sharing: OT-gates: Total OT gates = 0; Depth: 1', 'Total number of gates: 3163722 Total depth: 10918', 'Timings: ', 'Total =\t\t124007.2160000000 ms', 'Init =\t\t0.1170000000 ms', 'CircuitGen =\t0.3580000000 ms', 'Network =\t480.4770000000 ms', 'BaseOTs =\t107.7000000000 ms', 'Setup =\t\t58558.2230000000 ms', 'OTExtension =\t58552.4040000000 ms', 'Garbling =\t0.0040000000 ms', 'Online =\t65448.9910000000 ms', '', 'Communication: ', 'Total Sent / Rcv\t86428462  bytes / 86427438 bytes', 'BaseOTs Sent / Rcv\t29220  bytes / 29211 bytes', 'Setup Sent / Rcv\t84827305  bytes / 84827305 bytes', 'OTExtension Sent / Rcv\t84827305  bytes / 84827305 bytes', 'Garbling Sent / Rcv\t0  bytes / 0 bytes', 'Online Sent / Rcv\t1601157  bytes / 1600133 bytes', '', 'cos_dist_ver: 0.3933945708', 'cos_dist: 0.3933945708'], error []
+2023-08-22 18:42:11,256 - INFO - Running test for lfw/Laura_Elena_Harring/Laura_Elena_Harring_0001.jpg
+2023-08-22 18:42:15,392 - DEBUG - Stdout of extracting embedding: 1.9546775817871094
+2023-08-22 18:42:15,393 - DEBUG - Stderr of extracting embedding: 
+2023-08-22 18:42:15,393 - INFO - Embedding extracted by the server in 1.9546775817871094 seconds
+2023-08-22 18:42:20,505 - INFO - Running sfe...
