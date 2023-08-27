@@ -30,7 +30,29 @@ columns = [
     'total_time',
     'sfe_time',
     'extraction_time',
-    'ram_used',
+    'Command being timed',
+    'User time (seconds)',
+    'System time (seconds)', 
+    'Percent of CPU this job got', 
+    'Elapsed (wall clock) time (h:mm:ss or m:ss)', 
+    'Average shared text size (kbytes)', 
+    'Average unshared data size (kbytes)', 
+    'Average stack size (kbytes)', 
+    'Average total size (kbytes)', 
+    'Maximum resident set size (kbytes)', 
+    'Average resident set size (kbytes)', 
+    'Major (requiring I/O) page faults', 
+    'Minor (reclaiming a frame) page faults', 
+    'Voluntary context switches', 
+    'Involuntary context switches', 
+    'Swaps', 
+    'File system inputs', 
+    'File system outputs', 
+    'Socket messages sent', 
+    'Socket messages received', 
+    'Signals delivered', 
+    'Page size (bytes)', 
+    'Exit status',
     'energy_used',
     'online_time.bool.local_gates',
     'online_time.bool.interactive_gates',
@@ -180,6 +202,16 @@ def generate_nonce(a):
             n_i = fxor(a[i], x)
         n[i] = n_i
     return n
+
+def parse_usr_bin_time_output(output):
+    """Parses the benchmark output of usr/bin/time and returns stats of interest in a dictionary"""
+    metrics = {}
+    lines = output.strip().split('\t')
+
+    for line in lines:
+        key, value = line.split(': ')
+        metrics[key.strip()] = value.strip()
+    return metrics
 
 
 def parse_aby_output(s):
