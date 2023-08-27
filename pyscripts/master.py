@@ -116,13 +116,14 @@ def run_test():
             # logger.debug(f"{stdout2=}")
             # logger.debug(f"{stderr2=}")
 
-            command1 = f"cd {client_exec_path} ; nice -n {niceness} {client_exec_path}/{client_exec_name} -r 1 -a {server_ip} -f {client_exec_path}/embeddings.txt -o {client_pffrocd_path} -s {sec_lvl} -x {mt_alg}"
-            command2 = f"cd {server_exec_path} ; nice -n {niceness} {server_exec_path}/{server_exec_name} -r 0 -a {server_ip} -f {server_exec_path}/embeddings.txt -o {client_pffrocd_path} -s {sec_lvl} -x {mt_alg}"
+            command1 = f"cd {client_exec_path} ; nice -n {niceness} /usr/bin/time -v {client_exec_path}/{client_exec_name} -r 1 -a {server_ip} -f {client_exec_path}/embeddings.txt -o {client_pffrocd_path} -s {sec_lvl} -x {mt_alg}"
+            command2 = f"cd {server_exec_path} ; nice -n {niceness} /usr/bin/time -v {server_exec_path}/{server_exec_name} -r 0 -a {server_ip} -f {server_exec_path}/embeddings.txt -o {client_pffrocd_path} -s {sec_lvl} -x {mt_alg}"
             sfe_start_time  = time.time()
             output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, "kamil123", command1, command2)
             sfe_time = time.time() - sfe_start_time
             logger.info(f"Finished! Total sfe time: {sfe_time} seconds ({count_img+1}/{len(imgs)})")
             server_sfe_output = ''
+            server_sfe_error = ''
             for host_output in output:
                 hostname = host_output.host
                 stdout = list(host_output.stdout)
@@ -131,6 +132,9 @@ def run_test():
                     hostname, host_output.exit_code, stdout, stderr))
                 if hostname == server_ip:
                     server_sfe_output = ''.join(stdout)
+                    server_sfe_error = ''.join(stderr)
+            ram_usage = pffrocd.parse_usr_bin_time_output(server_sfe_error)
+            logger.debug(f"Parsed ram usage: {ram_usage}")
 
             # todo: rerun the routine with powertop to gather energy consumption data
 
@@ -139,12 +143,15 @@ def run_test():
             parsed_sfe_output = pffrocd.parse_aby_output(server_sfe_output)
             if not parsed_sfe_output:
                 continue
+            if not ram_usage:
+                continue
             cos_dist_sfe = float(parsed_sfe_output['cos_dist_sfe'])
             result = cos_dist_sfe < pffrocd.threshold
             expected_result = ref_img.split('/')[1] == img.split('/')[1] # check if the images belong to the same person
             cos_dist_np = pffrocd.get_cos_dist_numpy(ref_img_embedding, img_embedding)
             list_of_sfe_values = list(parsed_sfe_output.values())
-            to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time, 0, 0] + list_of_sfe_values
+            list_of_ram_values = list(ram_usage.values())
+            to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time] + list_of_ram_values +  [0] + list_of_sfe_values
             data.append(to_be_appended)
         # make and iteratively save the dataframe with results        
         df = pd.DataFrame(data, columns=pffrocd.columns)
