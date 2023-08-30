@@ -48,6 +48,7 @@ def run_test():
     sec_lvl = config.getint('misc', 'security_level')
     mt_alg = config.getint('misc', 'mt_algorithm')
     logger = pffrocd.setup_logging(current_datetime)
+    nr_of_images = config.getint('misc', 'nr_of_images')
 
     # print all config options to the debug log
     logger.debug(f"pffrocd config: {pffrocd.get_config_in_printing_format(config)}")
@@ -72,11 +73,16 @@ def run_test():
         imgs = imgs[1:]
         logger.debug(f"setting image as reference image: {ref_img}")
 
-        # get as many images of other people as there are of that person
-        other_imgs = pffrocd.get_random_images_except_person(root_dir='lfw', excluded_person=person, num_images=len(imgs))
+        # we want to have nr_of_images images in total
+        num_images_to_get = nr_of_images - len(imgs)
+        if num_images_to_get > 0:
+            other_imgs = pffrocd.get_random_images_except_person(root_dir='lfw', excluded_person=person, num_images=num_images_to_get)
+            # join the two list of images together
+            imgs = imgs + other_imgs
+        else:
+            # only work with nr_of_images images
+            imgs = imgs[:nr_of_images]
 
-        # join the two list of images together
-        imgs = imgs + other_imgs
 
         # create shares of the reference image
         ref_img_embedding = pffrocd.get_embedding(ref_img)
@@ -86,73 +92,61 @@ def run_test():
         pffrocd.write_share_to_remote_file(client_ip, client_username, client_key, f"{client_exec_path}/share1.txt", share0)
         pffrocd.write_share_to_remote_file(server_ip, server_username, server_key, f"{server_exec_path}/share0.txt", share1)
 
-        # run the test for each image
-        for count_img,img in enumerate(imgs):
-            logger.info(f"Running test for {img}")
 
-            # run the face embedding extraction script on the server
-            stdout, stderr = pffrocd.execute_command(server_ip, server_username, f"{server_pffrocd_path}/env/bin/python {server_pffrocd_path}/pyscripts/extract_embedding.py -i {server_pffrocd_path}/{img} -o {server_exec_path}/embedding.txt", server_key)
-            logger.debug(f"Stdout of extracting embedding: {stdout}")
-            logger.debug(f"Stderr of extracting embedding: {stderr}")
-            extraction_time = float(stdout)
+        # run the test for all imgs at once
+        logger.info(f"Running test for all images, {nr_of_images} in total")
 
-            if stderr != '':
-                logger.error("REMOTE EXECUTION OF COMMAND FAILED")
-                logger.error(stderr)
-
-            logger.info(f"Embedding extracted by the server in {extraction_time} seconds")
-            
+        # run the face embedding extraction script on the server
+        for i, img in enumerate(imgs):        
             # send the files with embeddings to the client and server
             img_embedding = pffrocd.get_embedding(img)
-            pffrocd.write_embeddings_to_remote_file(client_ip, client_username, client_key, f"{client_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
-            pffrocd.write_embeddings_to_remote_file(server_ip, server_username, server_key, f"{server_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
+            pffrocd.write_embeddings_to_remote_file(client_ip, client_username, client_key, f"{client_exec_path}/embeddings{i}.txt", img_embedding, ref_img_embedding)
+            pffrocd.write_embeddings_to_remote_file(server_ip, server_username, server_key, f"{server_exec_path}/embeddings{i}.txt", img_embedding, ref_img_embedding)
             
-            # run the sfe on both client and server in parallel
-            logger.info("Running sfe...")
-            # stdout1, stderr1, stdout2, stderr2 = pffrocd.execute_command_parallel(host1=client_ip, username1=client_username, command1=f"{client_exec_path}/{client_exec_name} -r 1 -a {server_ip} -f {client_exec_path}/embeddings.txt", host2=server_ip, username2=server_username, command2=f"{server_exec_path}/{server_exec_name} -r 0 -a {server_ip} -f {server_exec_path}/embeddings.txt", private_key_path1=client_key, private_key_path2=server_key)
-            # logger.debug("sfe done")
-            # logger.debug(f"{stdout1=}")
-            # logger.debug(f"{stderr1=}")
-            # logger.debug(f"{stdout2=}")
-            # logger.debug(f"{stderr2=}")
+        # run the sfe on both client and server in parallel
+        logger.info("Running sfe...")
 
-            command1 = f"cd {client_exec_path} ; nice -n {niceness} /usr/bin/time -v {client_exec_path}/{client_exec_name} -r 1 -a {server_ip} -f {client_exec_path}/embeddings.txt -o {client_pffrocd_path} -s {sec_lvl} -x {mt_alg}"
-            command2 = f"cd {server_exec_path} ; nice -n {niceness} /usr/bin/time -v {server_exec_path}/{server_exec_name} -r 0 -a {server_ip} -f {server_exec_path}/embeddings.txt -o {client_pffrocd_path} -s {sec_lvl} -x {mt_alg}"
-            sfe_start_time  = time.time()
-            output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, "kamil123", command1, command2)
-            sfe_time = time.time() - sfe_start_time
-            logger.info(f"Finished! Total sfe time: {sfe_time} seconds ({count_img+1}/{len(imgs)})")
-            server_sfe_output = ''
-            server_sfe_error = ''
-            for host_output in output:
-                hostname = host_output.host
-                stdout = list(host_output.stdout)
-                stderr = list(host_output.stderr)
-                logger.debug("Host %s: exit code %s, output %s, error %s" % (
-                    hostname, host_output.exit_code, stdout, stderr))
-                if hostname == server_ip:
-                    server_sfe_output = ''.join(stdout)
-                    server_sfe_error = ''.join(stderr)
-            ram_usage = pffrocd.parse_usr_bin_time_output(server_sfe_error)
-            logger.debug(f"Parsed ram usage: {ram_usage}")
+        # todo: add the nr_of_images flag to the command
 
-            # todo: rerun the routine with powertop to gather energy consumption data
+        command1 = f"cd {client_exec_path} ; nice -n {niceness} /usr/bin/time -v {client_exec_path}/{client_exec_name} -r 1 -a {server_ip} -f {client_exec_path}/embeddings -o {client_pffrocd_path} -s {sec_lvl} -x {mt_alg}"
+        command2 = f"cd {server_exec_path} ; nice -n {niceness} /usr/bin/time -v {server_exec_path}/{server_exec_name} -r 0 -a {server_ip} -f {server_exec_path}/embeddings -o {client_pffrocd_path} -s {sec_lvl} -x {mt_alg}"
+        sfe_start_time  = time.time()
+        output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, "kamil123", command1, command2)
+        sfe_time = time.time() - sfe_start_time
+        logger.info(f"Finished! Total sfe time: {sfe_time} seconds")
+        server_sfe_output = ''
+        server_sfe_error = ''
+        for host_output in output:
+            hostname = host_output.host
+            stdout = list(host_output.stdout)
+            stderr = list(host_output.stderr)
+            logger.debug("Host %s: exit code %s, output %s, error %s" % (
+                hostname, host_output.exit_code, stdout, stderr))
+            if hostname == server_ip:
+                server_sfe_output = ''.join(stdout)
+                server_sfe_error = ''.join(stderr)
+        ram_usage = pffrocd.parse_usr_bin_time_output(server_sfe_error)
+        logger.debug(f"Parsed ram usage: {ram_usage}")
+
+        # todo: rerun the routine with powertop to gather energy consumption data
 
 
-            # save all results and timing data
-            parsed_sfe_output = pffrocd.parse_aby_output(server_sfe_output)
-            if not parsed_sfe_output:
-                continue
-            if not ram_usage:
-                continue
-            cos_dist_sfe = float(parsed_sfe_output['cos_dist_sfe'])
-            result = cos_dist_sfe < pffrocd.threshold
-            expected_result = ref_img.split('/')[1] == img.split('/')[1] # check if the images belong to the same person
-            cos_dist_np = pffrocd.get_cos_dist_numpy(ref_img_embedding, img_embedding)
-            list_of_sfe_values = list(parsed_sfe_output.values())
-            list_of_ram_values = list(ram_usage.values())
-            to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time] + list_of_ram_values +  [0] + list_of_sfe_values
-            data.append(to_be_appended)
+        # save all results and timing data
+        parsed_sfe_output = pffrocd.parse_aby_output(server_sfe_output)
+        if not parsed_sfe_output:
+            continue
+        if not ram_usage:
+            continue
+        cos_dist_sfe = float(parsed_sfe_output['cos_dist_sfe'])
+        result = cos_dist_sfe < pffrocd.threshold
+        expected_result = ref_img.split('/')[1] == img.split('/')[1] # check if the images belong to the same person
+        cos_dist_np = pffrocd.get_cos_dist_numpy(ref_img_embedding, img_embedding)
+        list_of_sfe_values = list(parsed_sfe_output.values())
+        list_of_ram_values = list(ram_usage.values())
+        to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time, sfe_time, 0] + list_of_ram_values +  [0] + list_of_sfe_values
+        data.append(to_be_appended)
+
+        
         # make and iteratively save the dataframe with results        
         df = pd.DataFrame(data, columns=pffrocd.columns)
         output_path = f"dfs/{current_datetime}.csv"
