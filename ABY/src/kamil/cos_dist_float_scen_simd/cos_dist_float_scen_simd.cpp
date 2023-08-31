@@ -49,7 +49,7 @@ void read_test_options(int32_t *argcp, char ***argvp, e_role *role,
 		 {(void *)&int_port, T_NUM, "p", "Port, default: 7766", false, false},
 		 {(void *)test_op, T_NUM, "t", "Single test (leave out for all operations), default: off", false, false},
 		 {(void *)&int_mt_alg, T_NUM, "x", "Arithmetic multiplication triples algorithm", false, false},
-		 {(void *)nr_of_runs, T_NUM, "d", "how many runs of the test", false, false},
+		 {(void *)nr_of_runs, T_NUM, "d", "how many runs of the test", true, false},
 		 {(void *)inputfile, T_STR, "f", "Input file containing face embeddings", true, false},
 		 {(void *)pffrocd_path, T_STR, "o", "absolute path to pffrocd directory", true, false}
 		};
@@ -127,7 +127,7 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 
 		std::fstream infile(file_name);
 
-		std::cout << "INPUT FILE NAME: " << file_name << std::endl;
+		//std::cout << "INPUT FILE NAME: " << file_name << std::endl;
 
 		double x, y;
 
@@ -377,6 +377,8 @@ void test_verilog_add64_SIMD(e_role role, const std::string &address, uint16_t p
 		std::cout << "cos_dist: " << 1 - cos_sim << std::endl;
 
 		party -> Reset();
+
+		std::cout << "split here" <<std::endl;
 
 	}
 

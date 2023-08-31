@@ -497,7 +497,8 @@ def get_random_images_except_person(root_dir, excluded_person, num_images):
     people_folders = [os.path.join(root_dir, directory) for directory in os.listdir(root_dir)]
 
     # Remove the excluded person from the list of people folders
-    people_folders.remove(excluded_person)
+    if excluded_person:
+        people_folders.remove(excluded_person)
 
     # Create an empty list to store the paths to random images
     random_image_paths = []
