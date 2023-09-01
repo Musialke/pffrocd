@@ -108,8 +108,8 @@ def run_test():
 
         # todo: add the nr_of_images flag to the command
 
-        command1 = f"cd {client_exec_path} ; nice -n {niceness} /usr/bin/time -v {client_exec_path}/{client_exec_name} -r 1 -a {server_ip} -f {client_exec_path}/embeddings -o {client_pffrocd_path} -s {sec_lvl} -x {mt_alg}"
-        command2 = f"cd {server_exec_path} ; nice -n {niceness} /usr/bin/time -v {server_exec_path}/{server_exec_name} -r 0 -a {server_ip} -f {server_exec_path}/embeddings -o {client_pffrocd_path} -s {sec_lvl} -x {mt_alg}"
+        command1 = f"cd {client_exec_path} ; nice -n {niceness} /usr/bin/time -v {client_exec_path}/{client_exec_name} -r 1 -a {server_ip} -f {client_exec_path}/embeddings -o {client_pffrocd_path} -s {sec_lvl} -x {mt_alg} -d {nr_of_images}"
+        command2 = f"cd {server_exec_path} ; nice -n {niceness} /usr/bin/time -v {server_exec_path}/{server_exec_name} -r 0 -a {server_ip} -f {server_exec_path}/embeddings -o {client_pffrocd_path} -s {sec_lvl} -x {mt_alg} -d {nr_of_images}"
         sfe_start_time  = time.time()
         output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, "kamil123", command1, command2)
         sfe_time = time.time() - sfe_start_time
@@ -130,29 +130,47 @@ def run_test():
 
         # todo: rerun the routine with powertop to gather energy consumption data
 
+        # parse the outputs
+        l = []
+        benchmarks = server_sfe_output.split("split here")
+        for b in benchmarks:
+            parsed = pffrocd.parse_aby_output(b)
+            if parsed:
+                l.append(parsed)
 
-        # save all results and timing data
-        parsed_sfe_output = pffrocd.parse_aby_output(server_sfe_output)
-        if not parsed_sfe_output:
-            continue
-        if not ram_usage:
-            continue
-        cos_dist_sfe = float(parsed_sfe_output['cos_dist_sfe'])
-        result = cos_dist_sfe < pffrocd.threshold
-        expected_result = ref_img.split('/')[1] == img.split('/')[1] # check if the images belong to the same person
-        cos_dist_np = pffrocd.get_cos_dist_numpy(ref_img_embedding, img_embedding)
-        list_of_sfe_values = list(parsed_sfe_output.values())
-        list_of_ram_values = list(ram_usage.values())
-        to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time, sfe_time, 0] + list_of_ram_values +  [0] + list_of_sfe_values
-        data.append(to_be_appended)
+        # for x in l:
+        #     print(json.dumps(x, sort_keys=False, indent=4))
+        df = pd.DataFrame(l)
+        df.to_csv("hosts_reset.csv", mode='a', header=not os.path.exists("hosts_reset.csv"), index=False)
+        logger.info("Finished!")
+
+
+
+
+
+
+        # # save all results and timing data
+        # parsed_sfe_output = pffrocd.parse_aby_output(server_sfe_output)
+        # if not parsed_sfe_output:
+        #     continue
+        # if not ram_usage:
+        #     continue
+        # cos_dist_sfe = float(parsed_sfe_output['cos_dist_sfe'])
+        # result = cos_dist_sfe < pffrocd.threshold
+        # expected_result = ref_img.split('/')[1] == img.split('/')[1] # check if the images belong to the same person
+        # cos_dist_np = pffrocd.get_cos_dist_numpy(ref_img_embedding, img_embedding)
+        # list_of_sfe_values = list(parsed_sfe_output.values())
+        # list_of_ram_values = list(ram_usage.values())
+        # to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time, sfe_time, 0] + list_of_ram_values +  [0] + list_of_sfe_values
+        # data.append(to_be_appended)
 
         
-        # make and iteratively save the dataframe with results        
-        df = pd.DataFrame(data, columns=pffrocd.columns)
-        output_path = f"dfs/{current_datetime}.csv"
-        # append dataframe to file, only write headers if file does not exist yet
-        df.to_csv(output_path, mode='a', header=not os.path.exists(output_path))
-        data = []
+        # # make and iteratively save the dataframe with results        
+        # df = pd.DataFrame(data, columns=pffrocd.columns)
+        # output_path = f"dfs/{current_datetime}.csv"
+        # # append dataframe to file, only write headers if file does not exist yet
+        # df.to_csv(output_path, mode='a', header=not os.path.exists(output_path))
+        # data = []
 
 
 if __name__ == "__main__":

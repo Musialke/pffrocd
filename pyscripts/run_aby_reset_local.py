@@ -2,7 +2,7 @@
 
 """Test the cos_dist function locally with multiple runs, resetting the ABY party after each run"""
 
-NR_OF_RUNS = 20
+NR_OF_RUNS = 1000
 ABS_PATH = "/home/kamil/Documents/uni/thesis/pffrocd"
 import json
 import subprocess
@@ -54,4 +54,4 @@ for b in benchmarks:
 # for x in l:
 #     print(json.dumps(x, sort_keys=False, indent=4))
 df = pd.DataFrame(l)
-df.to_csv("local_reset.csv", index=False)
+df.to_csv(f"local_reset_{NR_OF_RUNS}.csv", index=False)
