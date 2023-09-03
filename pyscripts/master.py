@@ -7,6 +7,7 @@ import pffrocd
 import configparser
 import time
 import pandas as pd
+import numpy as np
 
 sec_lvl = None
 mt_alg = None
@@ -38,7 +39,16 @@ server_pffrocd_path = config.get('server', 'pffrocd_path')
 nr_of_people = config.getint('misc', 'nr_of_people')
 niceness = config.getint('misc', 'niceness')
 starting_person = config.getint('misc', 'starting_person')
+bit_length = config.getingint('misc', 'bit_length')
 
+if bit_length == 64:
+    NUMPY_DTYPE = np.float64
+elif bit_length == 32:
+    NUMPY_DTYPE = np.float32
+elif bit_length == 16:
+    NUMPY_DTYPE = np.float16
+else:
+    raise Exception("Invalid bit length")
 
 
 
@@ -79,8 +89,8 @@ def run_test():
         imgs = imgs + other_imgs
 
         # create shares of the reference image
-        ref_img_embedding = pffrocd.get_embedding(ref_img)
-        share0, share1 = pffrocd.create_shares(ref_img_embedding)
+        ref_img_embedding = pffrocd.get_embedding(ref_img, dtype=NUMPY_DTYPE)
+        share0, share1 = pffrocd.create_shares(ref_img_embedding, dtype=NUMPY_DTYPE)
 
         # write the shares to the server and client
         pffrocd.write_share_to_remote_file(client_ip, client_username, client_key, f"{client_exec_path}/share1.txt", share0)
@@ -103,7 +113,7 @@ def run_test():
             logger.info(f"Embedding extracted by the server in {extraction_time} seconds")
             
             # send the files with embeddings to the client and server
-            img_embedding = pffrocd.get_embedding(img)
+            img_embedding = pffrocd.get_embedding(img, dtype=NUMPY_DTYPE)
             pffrocd.write_embeddings_to_remote_file(client_ip, client_username, client_key, f"{client_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
             pffrocd.write_embeddings_to_remote_file(server_ip, server_username, server_key, f"{server_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
             

@@ -157,8 +157,8 @@ def run_sfe(x, y, y_0=None, y_1=None):
     assert (output.returncode == 0), f"{output.stdout=}, {output.stderr=}" # make sure the process executed successfully
     return output
 
-def get_embedding(imagepath):
-    return np.array(DeepFace.represent(img_path = imagepath, model_name="SFace", enforce_detection=False)[0]["embedding"])
+def get_embedding(imagepath, dtype):
+    return np.array(DeepFace.represent(img_path = imagepath, model_name="SFace", enforce_detection=False)[0]["embedding"], dtype=dtype)
 
 def get_two_random_embeddings(same_person):
     print(os.getcwd())
@@ -466,7 +466,7 @@ def get_people_with_multiple_images(root_dir):
 
 import os
 
-def create_shares(x: np.ndarray):
+def create_shares(x: np.ndarray, dtype):
     """Create shares for the client and server from an image"""
 
     # generate nonces
@@ -478,7 +478,7 @@ def create_shares(x: np.ndarray):
     # client's part is the nonces xored with the embedding
     share0 = fxor(x, share1)
 
-    return share0, share1
+    return share0.astype(dtype), share1.astype(dtype)
 
 def get_images_in_folder(folder_path):
     images = []
