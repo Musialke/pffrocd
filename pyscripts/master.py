@@ -50,6 +50,8 @@ elif bit_length == 16:
 else:
     raise Exception("Invalid bit length")
 
+client_exec_name += f"_{bit_length}"
+server_exec_name += f"_{bit_length}"
 
 
 
