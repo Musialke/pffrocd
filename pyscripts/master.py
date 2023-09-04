@@ -39,7 +39,7 @@ server_pffrocd_path = config.get('server', 'pffrocd_path')
 nr_of_people = config.getint('misc', 'nr_of_people')
 niceness = config.getint('misc', 'niceness')
 starting_person = config.getint('misc', 'starting_person')
-bit_length = config.getingint('misc', 'bit_length')
+bit_length = config.getint('misc', 'bit_length')
 
 if bit_length == 64:
     NUMPY_DTYPE = np.float64
