@@ -1,0 +1,35 @@
+2023-09-01 13:57:44,760 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.5.111",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.5.112",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1000",
+        "security_level": "112",
+        "mt_algorithm": "0",
+        "niceness": "-20",
+        "starting_person": "1",
+        "nr_of_images": "3"
+    }
+}
+2023-09-01 13:57:44,856 - INFO - RUNNING for 999 people
+2023-09-01 13:57:44,856 - INFO - Currently running for lfw/Aaron_Sorkin (1/999)
+2023-09-01 13:57:44,856 - DEBUG - Found 2 images for lfw/Aaron_Sorkin
+2023-09-01 13:57:44,856 - DEBUG - setting image as reference image: lfw/Aaron_Sorkin/Aaron_Sorkin_0001.jpg
+2023-09-01 13:57:48,425 - INFO - Running test for all images, 3 in total
+2023-09-01 13:57:54,508 - INFO - Running sfe...
+2023-09-01 13:57:55,124 - INFO - Finished! Total sfe time: 0.6160223484039307 seconds
+2023-09-01 13:57:55,124 - DEBUG - Host 192.168.5.111: exit code 139, output [], error ['Command terminated by signal 11', '\tCommand being timed: "/home/kamil/pffrocd/ABY/build/bin/cos_dist_float_scen_simd -r 1 -a 192.168.5.112 -f /home/kamil/pffrocd/ABY/build/bin/embeddings -o /home/kamil/pffrocd -s 112 -x 0 -d 3"', '\tUser time (seconds): 0.00', '\tSystem time (seconds): 0.00', '\tPercent of CPU this job got: 3%', '\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:00.13', '\tAverage shared text size (kbytes): 0', '\tAverage unshared data size (kbytes): 0', '\tAverage stack size (kbytes): 0', '\tAverage total size (kbytes): 0', '\tMaximum resident set size (kbytes): 8148', '\tAverage resident set size (kbytes): 0', '\tMajor (requiring I/O) page faults: 13', '\tMinor (reclaiming a frame) page faults: 469', '\tVoluntary context switches: 25', '\tInvoluntary context switches: 1', '\tSwaps: 0', '\tFile system inputs: 2712', '\tFile system outputs: 0', '\tSocket messages sent: 0', '\tSocket messages received: 0', '\tSignals delivered: 0', '\tPage size (bytes): 4096', '\tExit status: 0']
+2023-09-01 13:57:55,124 - DEBUG - Host 192.168.5.112: exit code 139, output [], error ['Command terminated by signal 11', '\tCommand being timed: "/home/kamil/pffrocd/ABY/build/bin/cos_dist_float_scen_simd -r 0 -a 192.168.5.112 -f /home/kamil/pffrocd/ABY/build/bin/embeddings -o /home/kamil/pffrocd -s 112 -x 0 -d 3"', '\tUser time (seconds): 0.01', '\tSystem time (seconds): 0.00', '\tPercent of CPU this job got: 9%', '\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:00.12', '\tAverage shared text size (kbytes): 0', '\tAverage unshared data size (kbytes): 0', '\tAverage stack size (kbytes): 0', '\tAverage total size (kbytes): 0', '\tMaximum resident set size (kbytes): 8304', '\tAverage resident set size (kbytes): 0', '\tMajor (requiring I/O) page faults: 13', '\tMinor (reclaiming a frame) page faults: 471', '\tVoluntary context switches: 25', '\tInvoluntary context switches: 0', '\tSwaps: 0', '\tFile system inputs: 2464', '\tFile system outputs: 0', '\tSocket messages sent: 0', '\tSocket messages received: 0', '\tSignals delivered: 0', '\tPage size (bytes): 4096', '\tExit status: 0']

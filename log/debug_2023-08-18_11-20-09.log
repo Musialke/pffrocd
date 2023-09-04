@@ -1,0 +1,34 @@
+2023-08-18 11:20:09,206 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.1.105",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.1.110",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1000",
+        "security_level": "112",
+        "mt_algorithm": "0",
+        "niceness": "-20",
+        "starting_person": "1"
+    }
+}
+2023-08-18 11:20:09,300 - INFO - RUNNING for 999 people
+2023-08-18 11:20:09,300 - INFO - Currently running for lfw/Aaron_Sorkin (1/999)
+2023-08-18 11:20:09,300 - DEBUG - Found 2 images for lfw/Aaron_Sorkin
+2023-08-18 11:20:09,300 - DEBUG - setting image as reference image: lfw/Aaron_Sorkin/Aaron_Sorkin_0001.jpg
+2023-08-18 11:20:14,227 - DEBUG - Running test for lfw/Aaron_Sorkin/Aaron_Sorkin_0002.jpg
+2023-08-18 11:20:17,017 - DEBUG - Stdout of extracting embedding: 1.9386284351348877
+2023-08-18 11:20:17,017 - DEBUG - Stderr of extracting embedding: 
+2023-08-18 11:20:17,017 - DEBUG - Embedding extracted by the server in 1.9386284351348877 seconds
+2023-08-18 11:20:22,003 - DEBUG - Running sfe...

@@ -1,0 +1,43 @@
+2023-08-18 10:34:46,025 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.1.110",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.1.105",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1000",
+        "security_level": "112",
+        "mt_algorithm": "0",
+        "niceness": "-20",
+        "starting_person": "1"
+    }
+}
+2023-08-18 10:34:46,115 - INFO - RUNNING for 999 people
+2023-08-18 10:34:46,115 - INFO - Currently running for lfw/Aaron_Sorkin (1/999)
+2023-08-18 10:34:46,115 - DEBUG - Found 2 images for lfw/Aaron_Sorkin
+2023-08-18 10:34:46,115 - DEBUG - setting image as reference image: lfw/Aaron_Sorkin/Aaron_Sorkin_0001.jpg
+2023-08-18 10:34:51,218 - DEBUG - Running test for lfw/Aaron_Sorkin/Aaron_Sorkin_0002.jpg
+2023-08-18 10:34:52,106 - DEBUG - Stdout of extracting embedding: 
+2023-08-18 10:34:52,107 - DEBUG - Stderr of extracting embedding: Traceback (most recent call last):
+  File "/home/kamil/pffrocd/pyscripts/extract_embedding.py", line 9, in <module>
+    from deepface import DeepFace
+  File "/home/kamil/pffrocd/env/lib/python3.10/site-packages/deepface/DeepFace.py", line 13, in <module>
+    import cv2
+  File "/home/kamil/pffrocd/env/lib/python3.10/site-packages/cv2/__init__.py", line 181, in <module>
+    bootstrap()
+  File "/home/kamil/pffrocd/env/lib/python3.10/site-packages/cv2/__init__.py", line 153, in bootstrap
+    native_module = importlib.import_module("cv2")
+  File "/usr/lib/python3.10/importlib/__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+ImportError: libGL.so.1: cannot open shared object file: No such file or directory
