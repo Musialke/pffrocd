@@ -165,8 +165,6 @@ def run_test():
             list_of_ram_values = list(ram_usage.values())
             to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time] + list_of_ram_values +  [0] + list_of_sfe_values
             data.append(to_be_appended)
-            # sleep to avoid overloading the server
-            time.sleep(5)
         # make and iteratively save the dataframe with results        
         df = pd.DataFrame(data, columns=pffrocd.columns)
         output_path = f"dfs/{current_datetime}.csv"
