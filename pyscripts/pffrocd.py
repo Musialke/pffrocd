@@ -190,7 +190,6 @@ def get_two_random_embeddings(same_person):
 fxor64 = lambda x,y:(x.view("int64")^y.view("int64")).view("float64")
 fxor32 = lambda x,y:(x.view("int32")^y.view("int32")).view("float32")
 def fxor(x,y, dtype):
-    print(f"{dtype=}, {x=}, {y=}, {x.dtype=}, {y.dtype=}")
     if dtype == np.float64:
         return fxor64(x,y)
     elif dtype == np.float32:
