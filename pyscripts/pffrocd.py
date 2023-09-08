@@ -157,8 +157,8 @@ def run_sfe(x, y, y_0=None, y_1=None):
     assert (output.returncode == 0), f"{output.stdout=}, {output.stderr=}" # make sure the process executed successfully
     return output
 
-def get_embedding(imagepath):
-    return np.array(DeepFace.represent(img_path = imagepath, model_name="SFace", enforce_detection=False)[0]["embedding"])
+def get_embedding(imagepath, dtype):
+    return np.array(DeepFace.represent(img_path = imagepath, model_name="SFace", enforce_detection=False)[0]["embedding"], dtype=dtype)
 
 def get_two_random_embeddings(same_person):
     print(os.getcwd())
@@ -187,21 +187,42 @@ def get_two_random_embeddings(same_person):
             pass
     return np.array(embedding1), np.array(embedding2)
 
-fxor = lambda x,y:(x.view("int64")^y.view("int64")).view("float64")
+fxor64 = lambda x,y:(x.view("int64")^y.view("int64")).view("float64")
+fxor32 = lambda x,y:(x.view("int32")^y.view("int32")).view("float32")
+def fxor(x,y, dtype):
+    if dtype == np.float64:
+        return fxor64(x,y)
+    elif dtype == np.float32:
+        return fxor32(x,y)
+    else:
+        raise Exception("Invalid dtype")
 
-def generate_nonce(a):
+
+def generate_nonce(a, dtype):
     """Generates random float nonces given a list of floats of size 128 (the face emedding)
     Checks for nan values after xoring, if that happens then it generates the nonces again
     """
     n = np.zeros(128)
     for i in range(len(a)):
-        x = np.double(np.random.uniform(-3,3))
-        n_i = fxor(a[i], x)
+        x = np.random.uniform(-3,3)
+        if dtype == np.float32:
+            x = np.float32(x)
+        elif dtype == np.float64:
+            x = np.float64(x)
+        else:
+            raise Exception("Invalid dtype")
+        n_i = fxor(a[i], x, dtype)
         while np.isnan(n_i):
-            x = np.double(np.random.uniform(-3,3))
-            n_i = fxor(a[i], x)
+            x = np.random.uniform(-3,3)
+            if dtype == np.float32:
+                x = np.float32(x)
+            elif dtype == np.float64:
+                x = np.float64(x)
+            else:
+                raise Exception("Invalid dtype")
+            n_i = fxor(a[i], x, dtype)
         n[i] = n_i
-    return n
+    return n.astype(dtype)
 
 def parse_usr_bin_time_output(output):
     """Parses the benchmark output of usr/bin/time and returns stats of interest in a dictionary"""
@@ -209,7 +230,10 @@ def parse_usr_bin_time_output(output):
     lines = output.strip().split('\t')
 
     for line in lines:
-        key, value = line.split(': ')
+        try:
+            key, value = line.split(': ')
+        except:
+            return None
         metrics[key.strip()] = value.strip()
     return metrics
 
@@ -466,19 +490,19 @@ def get_people_with_multiple_images(root_dir):
 
 import os
 
-def create_shares(x: np.ndarray):
+def create_shares(x: np.ndarray, dtype):
     """Create shares for the client and server from an image"""
 
     # generate nonces
-    r = generate_nonce(x)
+    r = generate_nonce(x, dtype)
 
     # server's part is the nonces
     share1 = r
 
     # client's part is the nonces xored with the embedding
-    share0 = fxor(x, share1)
+    share0 = fxor(x, share1, dtype)
 
-    return share0, share1
+    return share0.astype(dtype), share1.astype(dtype)
 
 def get_images_in_folder(folder_path):
     images = []

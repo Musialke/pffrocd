@@ -1,0 +1,37 @@
+2023-08-27 16:22:07,403 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.5.111",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.5.112",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1000",
+        "security_level": "112",
+        "mt_algorithm": "0",
+        "niceness": "-20",
+        "starting_person": "1"
+    }
+}
+2023-08-27 16:22:07,517 - INFO - RUNNING for 999 people
+2023-08-27 16:22:07,518 - INFO - Currently running for lfw/Aaron_Sorkin (1/999)
+2023-08-27 16:22:07,518 - DEBUG - Found 2 images for lfw/Aaron_Sorkin
+2023-08-27 16:22:07,518 - DEBUG - setting image as reference image: lfw/Aaron_Sorkin/Aaron_Sorkin_0001.jpg
+2023-08-27 16:22:10,759 - INFO - Running test for lfw/Aaron_Sorkin/Aaron_Sorkin_0002.jpg
+2023-08-27 16:22:13,499 - DEBUG - Stdout of extracting embedding: 1.9243686199188232
+2023-08-27 16:22:13,500 - DEBUG - Stderr of extracting embedding: 
+2023-08-27 16:22:13,500 - INFO - Embedding extracted by the server in 1.9243686199188232 seconds
+2023-08-27 16:22:15,618 - INFO - Running sfe...
+2023-08-27 16:22:33,801 - INFO - Finished! Total sfe time: 18.182174682617188 seconds (1/2)
+2023-08-27 16:22:33,801 - DEBUG - Host 192.168.5.111: exit code 1, output ['There was an error during establish connection, ending! '], error ['Connect failed due to timeout!', 'Command exited with non-zero status 1', '\tCommand being timed: "/home/kamil/pffrocd/ABY/build/bin/cos_dist_float_scen_simd -r 1 -a 192.168.5.112 -f /home/kamil/pffrocd/ABY/build/bin/embeddings.txt -o /home/kamil/pffrocd -s 112 -x 0"', '\tUser time (seconds): 1.83', '\tSystem time (seconds): 0.47', '\tPercent of CPU this job got: 13%', '\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:17.70', '\tAverage shared text size (kbytes): 0', '\tAverage unshared data size (kbytes): 0', '\tAverage stack size (kbytes): 0', '\tAverage total size (kbytes): 0', '\tMaximum resident set size (kbytes): 256688', '\tAverage resident set size (kbytes): 0', '\tMajor (requiring I/O) page faults: 0', '\tMinor (reclaiming a frame) page faults: 116985', '\tVoluntary context switches: 2005', '\tInvoluntary context switches: 14', '\tSwaps: 0', '\tFile system inputs: 0', '\tFile system outputs: 0', '\tSocket messages sent: 0', '\tSocket messages received: 0', '\tSignals delivered: 0', '\tPage size (bytes): 4096', '\tExit status: 1']
+2023-08-27 16:22:33,801 - DEBUG - Host 192.168.5.112: exit code 127, output [], error ['nice: ‘/usr/bin.time’: No such file or directory']

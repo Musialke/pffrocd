@@ -1,0 +1,52 @@
+2023-08-18 10:49:20,507 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.1.105",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.1.110",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1000",
+        "security_level": "112",
+        "mt_algorithm": "0",
+        "niceness": "-20",
+        "starting_person": "1"
+    }
+}
+2023-08-18 10:49:20,590 - INFO - RUNNING for 999 people
+2023-08-18 10:49:20,590 - INFO - Currently running for lfw/Aaron_Sorkin (1/999)
+2023-08-18 10:49:20,590 - DEBUG - Found 2 images for lfw/Aaron_Sorkin
+2023-08-18 10:49:20,590 - DEBUG - setting image as reference image: lfw/Aaron_Sorkin/Aaron_Sorkin_0001.jpg
+2023-08-18 10:49:26,533 - DEBUG - Running test for lfw/Aaron_Sorkin/Aaron_Sorkin_0002.jpg
+2023-08-18 10:49:29,323 - DEBUG - Stdout of extracting embedding: 1.926914930343628
+2023-08-18 10:49:29,323 - DEBUG - Stderr of extracting embedding: 
+2023-08-18 10:49:29,323 - DEBUG - Embedding extracted by the server in 1.926914930343628 seconds
+2023-08-18 10:49:34,497 - DEBUG - Running sfe...
+2023-08-18 10:49:35,505 - INFO - Finished! Total sfe time: 1.0073580741882324 seconds (1/2)
+2023-08-18 10:49:35,505 - DEBUG - Host 192.168.1.105: exit code 0, output ['CIRCUIT DIRECTORY: /home/kamil/pffrocd/ABY/bin/circ/'], error []
+2023-08-18 10:49:35,506 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ["cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-18 10:49:35,506 - DEBUG - Running test for lfw/Hannah_Stockbauer/Hannah_Stockbauer_0001.jpg
+2023-08-18 10:49:38,319 - DEBUG - Stdout of extracting embedding: 1.9324660301208496
+2023-08-18 10:49:38,319 - DEBUG - Stderr of extracting embedding: 
+2023-08-18 10:49:38,319 - DEBUG - Embedding extracted by the server in 1.9324660301208496 seconds
+2023-08-18 10:49:43,360 - DEBUG - Running sfe...
+2023-08-18 10:49:44,105 - INFO - Finished! Total sfe time: 0.7446215152740479 seconds (2/2)
+2023-08-18 10:49:44,105 - DEBUG - Host 192.168.1.105: exit code 0, output ['CIRCUIT DIRECTORY: /home/kamil/pffrocd/ABY/bin/circ/'], error []
+2023-08-18 10:49:44,105 - DEBUG - Host 192.168.1.110: exit code 0, output [], error ["cos_dist_float_scen_simd: /home/kamil/pffrocd/ABY/src/kamil/cos_dist_float_scen_simd/cos_dist_float_scen_simd.cpp:146: void test_verilog_add64_SIMD(e_role, const string&, uint16_t, seclvl, uint32_t, uint32_t, e_mt_gen_alg, e_sharing, uint32_t, std::string, std::string): Assertion `share_embeddings.size() == nvals' failed."]
+2023-08-18 10:49:44,108 - INFO - Currently running for lfw/Abdel_Nasser_Assidi (2/999)
+2023-08-18 10:49:44,108 - DEBUG - Found 2 images for lfw/Abdel_Nasser_Assidi
+2023-08-18 10:49:44,108 - DEBUG - setting image as reference image: lfw/Abdel_Nasser_Assidi/Abdel_Nasser_Assidi_0001.jpg
+2023-08-18 10:49:48,682 - DEBUG - Running test for lfw/Abdel_Nasser_Assidi/Abdel_Nasser_Assidi_0002.jpg
+2023-08-18 10:49:51,555 - DEBUG - Stdout of extracting embedding: 1.9328560829162598
+2023-08-18 10:49:51,555 - DEBUG - Stderr of extracting embedding: 
+2023-08-18 10:49:51,555 - DEBUG - Embedding extracted by the server in 1.9328560829162598 seconds

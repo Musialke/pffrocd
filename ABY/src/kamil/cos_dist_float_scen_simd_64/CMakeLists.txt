@@ -1,0 +1,3 @@
+
+add_executable(cos_dist_float_scen_simd_64 cos_dist_float_scen_simd_64.cpp)
+target_link_libraries(cos_dist_float_scen_simd_64 ABY::aby ENCRYPTO_utils::encrypto_utils)

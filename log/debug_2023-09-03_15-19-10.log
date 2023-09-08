@@ -1,0 +1,31 @@
+2023-09-03 15:19:10,103 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.5.111",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.5.112",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1000",
+        "security_level": "112",
+        "mt_algorithm": "0",
+        "niceness": "-20",
+        "starting_person": "20",
+        "nr_of_images": "30",
+        "bit_length": "32"
+    }
+}
+2023-09-03 15:19:10,183 - INFO - RUNNING for 980 people
+2023-09-03 15:19:10,183 - INFO - Currently running for lfw/Ahmet_Necdet_Sezer (1/980)
+2023-09-03 15:19:10,184 - DEBUG - Found 2 images for lfw/Ahmet_Necdet_Sezer
+2023-09-03 15:19:10,184 - DEBUG - setting image as reference image: lfw/Ahmet_Necdet_Sezer/Ahmet_Necdet_Sezer_0001.jpg

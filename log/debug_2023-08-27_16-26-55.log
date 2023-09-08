@@ -1,0 +1,37 @@
+2023-08-27 16:26:55,598 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.5.111",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.5.112",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1000",
+        "security_level": "112",
+        "mt_algorithm": "0",
+        "niceness": "-20",
+        "starting_person": "1"
+    }
+}
+2023-08-27 16:26:55,678 - INFO - RUNNING for 999 people
+2023-08-27 16:26:55,678 - INFO - Currently running for lfw/Aaron_Sorkin (1/999)
+2023-08-27 16:26:55,679 - DEBUG - Found 2 images for lfw/Aaron_Sorkin
+2023-08-27 16:26:55,679 - DEBUG - setting image as reference image: lfw/Aaron_Sorkin/Aaron_Sorkin_0001.jpg
+2023-08-27 16:26:58,854 - INFO - Running test for lfw/Aaron_Sorkin/Aaron_Sorkin_0002.jpg
+2023-08-27 16:27:01,783 - DEBUG - Stdout of extracting embedding: 1.90543532371521
+2023-08-27 16:27:01,783 - DEBUG - Stderr of extracting embedding: 
+2023-08-27 16:27:01,783 - INFO - Embedding extracted by the server in 1.90543532371521 seconds
+2023-08-27 16:27:03,777 - INFO - Running sfe...
+2023-08-27 16:29:16,849 - INFO - Finished! Total sfe time: 133.07268238067627 seconds (1/2)
+2023-08-27 16:29:16,850 - DEBUG - Host 192.168.5.111: exit code 0, output ['Online time is distributed as follows: ', 'Bool: local gates: 406.8650000000, interactive gates: 524.0180000000, layer finish: 532.9990000000', 'Yao: local gates: 12.2120000000, interactive gates: 7.6610000000, layer finish: 9.2280000000', 'Yao Rev: local gates: 9.5660000000, interactive gates: 6.8610000000, layer finish: 8.8350000000', 'Arith: local gates: 12.9690000000, interactive gates: 10.5440000000, layer finish: 21.8600000000', 'SPLUT: local gates: 12.7490000000, interactive gates: 10.4480000000, layer finish: 73.2730000000', 'Communication: 63301.9889999999', '', 'Complexities: ', 'Boolean Sharing: ANDs: 5971636 (1-bit) ; Depth: 10918', 'Total Vec AND: 5971636', 'Total Non-Vec AND: 5971636', 'XOR vals: 5892966 gates: 1383450', 'Comb gates: 0, CombStruct gates: 0, Perm gates: 0, Subset gates: 24576, Split gates: 0', 'Yao: ANDs: 0 ; Depth: 0', 'Reverse Yao: ANDs: 0 ; Depth: 0', 'Arithmetic Sharing: MULs: 0 ; Depth: 0', 'SP-LUT Sharing: OT-gates: Total OT gates = 0; Depth: 1', 'Total number of gates: 3163722 Total depth: 10918', 'Timings: ', 'Total =\t\t130476.8200000000 ms', 'Init =\t\t0.0620000000 ms', 'CircuitGen =\t0.0690000000 ms', 'Network =\t125.4870000000 ms', 'BaseOTs =\t170.8440000000 ms', 'Setup =\t\t65481.1570000000 ms', 'OTExtension =\t65471.1530000000 ms', 'Garbling =\t0.0030000000 ms', 'Online =\t64995.6590000000 ms', '', 'Communication: ', 'Total Sent / Rcv\t86427438  bytes / 86428462 bytes', 'BaseOTs Sent / Rcv\t29220  bytes / 29220 bytes', 'Setup Sent / Rcv\t84827305  bytes / 84827314 bytes', 'OTExtension Sent / Rcv\t84827305  bytes / 84827305 bytes', 'Garbling Sent / Rcv\t0  bytes / 0 bytes', 'Online Sent / Rcv\t1600133  bytes / 1601148 bytes', '', 'cos_dist_ver: 0.3933947035', 'cos_dist: 0.3933947035'], error ['\tCommand being timed: "/home/kamil/pffrocd/ABY/build/bin/cos_dist_float_scen_simd -r 1 -a 192.168.5.112 -f /home/kamil/pffrocd/ABY/build/bin/embeddings.txt -o /home/kamil/pffrocd -s 112 -x 0"', '\tUser time (seconds): 8.16', '\tSystem time (seconds): 4.45', '\tPercent of CPU this job got: 9%', '\tElapsed (wall clock) time (h:mm:ss or m:ss): 2:12.72', '\tAverage shared text size (kbytes): 0', '\tAverage unshared data size (kbytes): 0', '\tAverage stack size (kbytes): 0', '\tAverage total size (kbytes): 0', '\tMaximum resident set size (kbytes): 370068', '\tAverage resident set size (kbytes): 0', '\tMajor (requiring I/O) page faults: 0', '\tMinor (reclaiming a frame) page faults: 145346', '\tVoluntary context switches: 111685', '\tInvoluntary context switches: 212', '\tSwaps: 0', '\tFile system inputs: 0', '\tFile system outputs: 0', '\tSocket messages sent: 0', '\tSocket messages received: 0', '\tSignals delivered: 0', '\tPage size (bytes): 4096', '\tExit status: 0']
+2023-08-27 16:29:16,850 - DEBUG - Host 192.168.5.112: exit code 0, output ['Online time is distributed as follows: ', 'Bool: local gates: 379.1010000000, interactive gates: 482.9420000000, layer finish: 463.8490000000', 'Yao: local gates: 10.7800000000, interactive gates: 7.9900000000, layer finish: 7.4600000000', 'Yao Rev: local gates: 8.6980000000, interactive gates: 6.7510000000, layer finish: 7.0790000000', 'Arith: local gates: 12.8040000000, interactive gates: 8.5430000000, layer finish: 18.2890000000', 'SPLUT: local gates: 9.8340000000, interactive gates: 6.7220000000, layer finish: 62.7840000000', 'Communication: 63472.9270000002', '', 'Complexities: ', 'Boolean Sharing: ANDs: 5971636 (1-bit) ; Depth: 10918', 'Total Vec AND: 5971636', 'Total Non-Vec AND: 5971636', 'XOR vals: 5892966 gates: 1383450', 'Comb gates: 0, CombStruct gates: 0, Perm gates: 0, Subset gates: 24576, Split gates: 0', 'Yao: ANDs: 0 ; Depth: 0', 'Reverse Yao: ANDs: 0 ; Depth: 0', 'Arithmetic Sharing: MULs: 0 ; Depth: 0', 'SP-LUT Sharing: OT-gates: Total OT gates = 0; Depth: 1', 'Total number of gates: 3163722 Total depth: 10918', 'Timings: ', 'Total =\t\t130487.2830000000 ms', 'Init =\t\t0.1050000000 ms', 'CircuitGen =\t0.1330000000 ms', 'Network =\t400.7080000000 ms', 'BaseOTs =\t145.9560000000 ms', 'Setup =\t\t65478.4880000000 ms', 'OTExtension =\t65474.5620000000 ms', 'Garbling =\t0.0010000000 ms', 'Online =\t65008.7930000000 ms', '', 'Communication: ', 'Total Sent / Rcv\t86428462  bytes / 86427438 bytes', 'BaseOTs Sent / Rcv\t29220  bytes / 29220 bytes', 'Setup Sent / Rcv\t84827305  bytes / 84827305 bytes', 'OTExtension Sent / Rcv\t84827305  bytes / 84827305 bytes', 'Garbling Sent / Rcv\t0  bytes / 0 bytes', 'Online Sent / Rcv\t1601157  bytes / 1600133 bytes', '', 'cos_dist_ver: 0.3933947035', 'cos_dist: 0.3933947035'], error ['\tCommand being timed: "/home/kamil/pffrocd/ABY/build/bin/cos_dist_float_scen_simd -r 0 -a 192.168.5.112 -f /home/kamil/pffrocd/ABY/build/bin/embeddings.txt -o /home/kamil/pffrocd -s 112 -x 0"', '\tUser time (seconds): 6.05', '\tSystem time (seconds): 3.01', '\tPercent of CPU this job got: 6%', '\tElapsed (wall clock) time (h:mm:ss or m:ss): 2:12.60', '\tAverage shared text size (kbytes): 0', '\tAverage unshared data size (kbytes): 0', '\tAverage stack size (kbytes): 0', '\tAverage total size (kbytes): 0', '\tMaximum resident set size (kbytes): 370044', '\tAverage resident set size (kbytes): 0', '\tMajor (requiring I/O) page faults: 0', '\tMinor (reclaiming a frame) page faults: 145347', '\tVoluntary context switches: 84529', '\tInvoluntary context switches: 724', '\tSwaps: 0', '\tFile system inputs: 0', '\tFile system outputs: 0', '\tSocket messages sent: 0', '\tSocket messages received: 0', '\tSignals delivered: 0', '\tPage size (bytes): 4096', '\tExit status: 0']
