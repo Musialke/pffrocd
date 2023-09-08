@@ -40,6 +40,7 @@ nr_of_people = config.getint('misc', 'nr_of_people')
 niceness = config.getint('misc', 'niceness')
 starting_person = config.getint('misc', 'starting_person')
 bit_length = config.getint('misc', 'bit_length')
+gather_energy_data = config.getint('misc', 'gather_energy_data')
 
 if bit_length == 64:
     NUMPY_DTYPE = np.float64
@@ -148,8 +149,19 @@ def run_test():
             ram_usage = pffrocd.parse_usr_bin_time_output(server_sfe_error)
             logger.debug(f"Parsed ram usage: {ram_usage}")
 
-            # todo: rerun the routine with powertop to gather energy consumption data
-
+            # rerun the routine with powertop to gather energy consumption data
+            if gather_energy_data:
+                logger.info("Running powertop to gather energy consumption data...")
+                powertop_command = f"sudo powertop --csv=powertop_{current_datetime} -t {sfe_time + 1}"
+                output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, "kamil123", f"{command1} & {powertop_command}", f"{command2} & {powertop_command}")
+                # get the powertop files from hosts and parse them and save in the dataframe
+                df_energy_client = pffrocd.get_energy_consumption(client_ip, client_username, client_key, f"powertop_{current_datetime}")
+                df_energy_server = pffrocd.get_energy_consumption(client_ip, client_username, client_key, f"powertop_{current_datetime}")
+                energy_server = df_energy_server[df_energy_server['Description'].str.contains(f'{server_exec_name}')]['Usage'].values[0]
+                energy_client = df_energy_client[df_energy_client['Description'].str.contains(f'{client_exec_name}')]['Usage'].values[0]
+            else:
+                energy_client = 'not measured'
+                energy_server = 'not measured'
 
             # save all results and timing data
             parsed_sfe_output = pffrocd.parse_aby_output(server_sfe_output)
@@ -163,7 +175,7 @@ def run_test():
             cos_dist_np = pffrocd.get_cos_dist_numpy(ref_img_embedding, img_embedding)
             list_of_sfe_values = list(parsed_sfe_output.values())
             list_of_ram_values = list(ram_usage.values())
-            to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time] + list_of_ram_values +  [0] + list_of_sfe_values
+            to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time] + list_of_ram_values +  [energy_client, energy_server] + list_of_sfe_values
             data.append(to_be_appended)
         # make and iteratively save the dataframe with results        
         df = pd.DataFrame(data, columns=pffrocd.columns)

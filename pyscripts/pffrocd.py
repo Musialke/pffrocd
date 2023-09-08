@@ -15,6 +15,7 @@ import json
 from pssh.clients import ParallelSSHClient
 import pandas as pd
 from deepface.commons.distance import findThreshold
+import csv
 
 logging.getLogger("paramiko").setLevel(logging.WARNING)
 
@@ -53,7 +54,8 @@ columns = [
     'Signals delivered', 
     'Page size (bytes)', 
     'Exit status',
-    'energy_used',
+    'energy_client',
+    'energy_server',
     'online_time.bool.local_gates',
     'online_time.bool.interactive_gates',
     'online_time.bool.layer_finish',
@@ -236,6 +238,23 @@ def parse_usr_bin_time_output(output):
             return None
         metrics[key.strip()] = value.strip()
     return metrics
+
+def parse_powertop_csv(filepath):
+    """
+    Parse a PowerTop CSV file and extract a DataFrame containing the software power consumers.
+    
+    Args:
+        filepath (str): The path to the PowerTop CSV file.
+        
+    Returns:
+        pandas.DataFrame: A DataFrame containing the software power consumers.
+    """
+    with open(filepath, 'r') as csv_file:
+        rows = list(csv.reader(csv_file, delimiter=';'))
+        begin = rows.index([' *  *  *   Overview of Software Power Consumers   *  *  *'])
+        end = rows.index([' *  *  *   Device Power Report   *  *  *'])
+        headers = rows[begin+2]
+        return pd.DataFrame(rows[begin+3:end-2], columns=headers)
 
 
 def parse_aby_output(s):
@@ -474,6 +493,38 @@ def write_embeddings_to_remote_file(hostname, username, private_key_path, remote
     finally:
         # Close the SSH client connection
         client.close()
+
+def get_energy_consumption(hostname, username, private_key_path, remote_path) -> pd.DataFrame:
+     # Load the private key from the specified file path
+    private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
+
+    # Create an SSH client
+    client = paramiko.SSHClient()
+
+    # Automatically add the remote host's SSH key
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+    try:
+        # Connect to the remote host
+        client.connect(hostname, username=username, pkey=private_key)
+
+        # Create an SFTP session
+        sftp = client.open_sftp()
+
+        with sftp.open(remote_path, 'r') as file:
+            rows = list(csv.reader(file, delimiter=';'))
+            begin = rows.index([' *  *  *   Overview of Software Power Consumers   *  *  *'])
+            end = rows.index([' *  *  *   Device Power Report   *  *  *'])
+            headers = rows[begin+2]
+            df = pd.DataFrame(rows[begin+3:end-2], columns=headers)
+        
+        # Close the SFTP session
+        sftp.close()
+    finally:
+        # Close the SSH client connection
+        client.close()
+        return df
+
 
 def get_people_with_multiple_images(root_dir):
     people_folders = os.listdir(root_dir)
