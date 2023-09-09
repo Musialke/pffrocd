@@ -13,6 +13,7 @@ import logging
 import datetime
 import json
 from pssh.clients import ParallelSSHClient
+from pssh.config import HostConfig
 import pandas as pd
 from deepface.commons.distance import findThreshold
 
@@ -547,9 +548,18 @@ def get_random_images_except_person(root_dir, excluded_person, num_images):
     return random_image_paths
 
 
-def execute_command_parallel_alternative(hosts, user, password, command1, command2):
-    client = ParallelSSHClient(hosts=hosts, user=user, password=password, timeout=600)
-    output = client.run_command('%s', host_args=(command1,command2))
+def execute_command_parallel_alternative(hosts, username1, username2, password, command1, command2):
+    host_config = [
+            HostConfig(port=22, user=username1,
+                    password=password),
+            HostConfig(port=22, user=username2,
+                    password=password),
+            ]
+    client = ParallelSSHClient(hosts=hosts, host_config=host_config, timeout=600)
+    output = client.run_command('%s', host_args=(command1,command2), sudo=True)
+    for host_out in output:
+        host_out.stdin.write(f'{password}\n')
+        host_out.stdin.flush()
     client.join(output)
     del client
     return output
