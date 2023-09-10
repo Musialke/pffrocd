@@ -1,0 +1,30 @@
+2023-09-09 17:43:23,051 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.5.111",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/dietpi/.ssh/id_rsa",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.5.112",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/dietpi/.ssh/id_rsa",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1000",
+        "security_level": "80",
+        "mt_algorithm": "0",
+        "niceness": "-20",
+        "starting_person": "400",
+        "bit_length": "64"
+    }
+}
+2023-09-09 17:43:23,363 - INFO - RUNNING for 600 people
+2023-09-09 17:43:23,364 - INFO - Currently running for lfw/Doug_Melvin (1/600)
+2023-09-09 17:43:23,364 - DEBUG - Found 3 images for lfw/Doug_Melvin
+2023-09-09 17:43:23,365 - DEBUG - setting image as reference image: lfw/Doug_Melvin/Doug_Melvin_0001.jpg
