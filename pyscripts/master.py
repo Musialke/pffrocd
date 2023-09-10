@@ -162,8 +162,12 @@ def run_test():
             expected_result = ref_img.split('/')[1] == img.split('/')[1] # check if the images belong to the same person
             cos_dist_np = pffrocd.get_cos_dist_numpy(ref_img_embedding, img_embedding)
             list_of_sfe_values = list(parsed_sfe_output.values())
-            list_of_ram_values = list(ram_usage.values())
+            logger.debug(f"{list_of_sfe_values=}")
+            list_of_ram_values = list(ram_usage.values())[1:] # remove the first element, asking for sudo
+            logger.debug(f"{list_of_ram_values=}")
             to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time] + list_of_ram_values +  [0] + list_of_sfe_values
+            logger.debug(f"{to_be_appended=}")
+            logger.debug(f"{pffrocd.columns=}")
             data.append(to_be_appended)
         # make and iteratively save the dataframe with results        
         df = pd.DataFrame(data, columns=pffrocd.columns)
