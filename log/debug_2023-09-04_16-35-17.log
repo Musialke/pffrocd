@@ -1,0 +1,126 @@
+2023-09-04 16:35:17,462 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.5.115",
+        "username": "dietpi",
+        "private_ssh_key_path": "/home/dietpi/.ssh/id_rsa",
+        "executable_path": "/home/dietpi/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/dietpi/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.5.114",
+        "username": "dietpi",
+        "private_ssh_key_path": "/home/dietpi/.ssh/id_rsa",
+        "executable_path": "/home/dietpi/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/dietpi/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1500",
+        "security_level": "112",
+        "mt_algorithm": "0",
+        "niceness": "-20",
+        "starting_person": "20",
+        "bit_length": "32"
+    }
+}
+2023-09-04 16:35:18,025 - INFO - RUNNING for 1480 people
+2023-09-04 16:35:18,026 - INFO - Currently running for lfw/Ahmet_Necdet_Sezer (1/1480)
+2023-09-04 16:35:18,027 - DEBUG - Found 2 images for lfw/Ahmet_Necdet_Sezer
+2023-09-04 16:35:18,027 - DEBUG - setting image as reference image: lfw/Ahmet_Necdet_Sezer/Ahmet_Necdet_Sezer_0001.jpg
+2023-09-04 16:35:26,237 - INFO - Running test for lfw/Ahmet_Necdet_Sezer/Ahmet_Necdet_Sezer_0002.jpg
+2023-09-04 16:35:45,799 - DEBUG - Stdout of extracting embedding: 14.892407894134521
+2023-09-04 16:35:45,800 - DEBUG - Stderr of extracting embedding: 
+2023-09-04 16:35:45,801 - INFO - Embedding extracted by the server in 14.892407894134521 seconds
+2023-09-04 16:35:52,789 - INFO - Running sfe...
+2023-09-04 16:36:14,274 - INFO - Finished! Total sfe time: 21.48358178138733 seconds (1/2)
+2023-09-04 16:36:14,276 - DEBUG - Host 192.168.5.115: exit code 1, output ['There was an error during establish connection, ending! '], error ['Connect failed due to timeout!', 'Command exited with non-zero status 1', '\tCommand being timed: "/home/dietpi/pffrocd/ABY/build/bin/cos_dist_float_scen_simd_32 -r 1 -a 192.168.5.114 -f /home/dietpi/pffrocd/ABY/build/bin/embeddings.txt -o /home/dietpi/pffrocd -s 112 -x 0"', '\tUser time (seconds): 4.41', '\tSystem time (seconds): 0.99', '\tPercent of CPU this job got: 27%', '\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:19.93', '\tAverage shared text size (kbytes): 0', '\tAverage unshared data size (kbytes): 0', '\tAverage stack size (kbytes): 0', '\tAverage total size (kbytes): 0', '\tMaximum resident set size (kbytes): 131092', '\tAverage resident set size (kbytes): 0', '\tMajor (requiring I/O) page faults: 0', '\tMinor (reclaiming a frame) page faults: 53773', '\tVoluntary context switches: 2006', '\tInvoluntary context switches: 277', '\tSwaps: 0', '\tFile system inputs: 0', '\tFile system outputs: 0', '\tSocket messages sent: 0', '\tSocket messages received: 0', '\tSignals delivered: 0', '\tPage size (bytes): 4096', '\tExit status: 1']
+2023-09-04 16:36:14,277 - DEBUG - Host 192.168.5.114: exit code 127, output [], error ['nice: ‘/usr/bin/time’: No such file or directory']
+2023-09-04 16:36:14,278 - DEBUG - Parsed ram usage: None
+2023-09-04 16:36:14,279 - INFO - Running test for lfw/Tonino_Guerra/Tonino_Guerra_0001.jpg
+2023-09-04 16:36:34,108 - DEBUG - Stdout of extracting embedding: 14.931580781936646
+2023-09-04 16:36:34,109 - DEBUG - Stderr of extracting embedding: 
+2023-09-04 16:36:34,110 - INFO - Embedding extracted by the server in 14.931580781936646 seconds
+2023-09-04 16:36:40,922 - INFO - Running sfe...
+2023-09-04 16:37:02,941 - INFO - Finished! Total sfe time: 22.017834424972534 seconds (2/2)
+2023-09-04 16:37:02,944 - DEBUG - Host 192.168.5.115: exit code 1, output ['There was an error during establish connection, ending! '], error ['Connect failed due to timeout!', 'Command exited with non-zero status 1', '\tCommand being timed: "/home/dietpi/pffrocd/ABY/build/bin/cos_dist_float_scen_simd_32 -r 1 -a 192.168.5.114 -f /home/dietpi/pffrocd/ABY/build/bin/embeddings.txt -o /home/dietpi/pffrocd -s 112 -x 0"', '\tUser time (seconds): 4.46', '\tSystem time (seconds): 0.95', '\tPercent of CPU this job got: 26%', '\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:20.57', '\tAverage shared text size (kbytes): 0', '\tAverage unshared data size (kbytes): 0', '\tAverage stack size (kbytes): 0', '\tAverage total size (kbytes): 0', '\tMaximum resident set size (kbytes): 131088', '\tAverage resident set size (kbytes): 0', '\tMajor (requiring I/O) page faults: 0', '\tMinor (reclaiming a frame) page faults: 53773', '\tVoluntary context switches: 2006', '\tInvoluntary context switches: 254', '\tSwaps: 0', '\tFile system inputs: 0', '\tFile system outputs: 0', '\tSocket messages sent: 0', '\tSocket messages received: 0', '\tSignals delivered: 0', '\tPage size (bytes): 4096', '\tExit status: 1']
+2023-09-04 16:37:02,944 - DEBUG - Host 192.168.5.114: exit code 127, output [], error ['nice: ‘/usr/bin/time’: No such file or directory']
+2023-09-04 16:37:02,945 - DEBUG - Parsed ram usage: None
+2023-09-04 16:37:02,971 - INFO - Currently running for lfw/Ai_Sugiyama (2/1480)
+2023-09-04 16:37:02,972 - DEBUG - Found 5 images for lfw/Ai_Sugiyama
+2023-09-04 16:37:02,972 - DEBUG - setting image as reference image: lfw/Ai_Sugiyama/Ai_Sugiyama_0001.jpg
+2023-09-04 16:37:10,290 - INFO - Running test for lfw/Ai_Sugiyama/Ai_Sugiyama_0002.jpg
+2023-09-04 16:37:29,844 - DEBUG - Stdout of extracting embedding: 14.876577854156494
+2023-09-04 16:37:29,845 - DEBUG - Stderr of extracting embedding: 
+2023-09-04 16:37:29,845 - INFO - Embedding extracted by the server in 14.876577854156494 seconds
+2023-09-04 16:37:36,546 - INFO - Running sfe...
+2023-09-04 16:37:58,585 - INFO - Finished! Total sfe time: 22.037073612213135 seconds (1/8)
+2023-09-04 16:37:58,587 - DEBUG - Host 192.168.5.115: exit code 1, output ['There was an error during establish connection, ending! '], error ['Connect failed due to timeout!', 'Command exited with non-zero status 1', '\tCommand being timed: "/home/dietpi/pffrocd/ABY/build/bin/cos_dist_float_scen_simd_32 -r 1 -a 192.168.5.114 -f /home/dietpi/pffrocd/ABY/build/bin/embeddings.txt -o /home/dietpi/pffrocd -s 112 -x 0"', '\tUser time (seconds): 4.46', '\tSystem time (seconds): 0.93', '\tPercent of CPU this job got: 26%', '\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:20.50', '\tAverage shared text size (kbytes): 0', '\tAverage unshared data size (kbytes): 0', '\tAverage stack size (kbytes): 0', '\tAverage total size (kbytes): 0', '\tMaximum resident set size (kbytes): 131084', '\tAverage resident set size (kbytes): 0', '\tMajor (requiring I/O) page faults: 0', '\tMinor (reclaiming a frame) page faults: 53775', '\tVoluntary context switches: 2006', '\tInvoluntary context switches: 106', '\tSwaps: 0', '\tFile system inputs: 0', '\tFile system outputs: 0', '\tSocket messages sent: 0', '\tSocket messages received: 0', '\tSignals delivered: 0', '\tPage size (bytes): 4096', '\tExit status: 1']
+2023-09-04 16:37:58,588 - DEBUG - Host 192.168.5.114: exit code 127, output [], error ['nice: ‘/usr/bin/time’: No such file or directory']
+2023-09-04 16:37:58,588 - DEBUG - Parsed ram usage: None
+2023-09-04 16:37:58,589 - INFO - Running test for lfw/Ai_Sugiyama/Ai_Sugiyama_0003.jpg
+2023-09-04 16:38:18,415 - DEBUG - Stdout of extracting embedding: 14.937330961227417
+2023-09-04 16:38:18,416 - DEBUG - Stderr of extracting embedding: 
+2023-09-04 16:38:18,417 - INFO - Embedding extracted by the server in 14.937330961227417 seconds
+2023-09-04 16:38:25,051 - INFO - Running sfe...
+2023-09-04 16:38:46,499 - INFO - Finished! Total sfe time: 21.44736933708191 seconds (2/8)
+2023-09-04 16:38:46,501 - DEBUG - Host 192.168.5.115: exit code 1, output ['There was an error during establish connection, ending! '], error ['Connect failed due to timeout!', 'Command exited with non-zero status 1', '\tCommand being timed: "/home/dietpi/pffrocd/ABY/build/bin/cos_dist_float_scen_simd_32 -r 1 -a 192.168.5.114 -f /home/dietpi/pffrocd/ABY/build/bin/embeddings.txt -o /home/dietpi/pffrocd -s 112 -x 0"', '\tUser time (seconds): 4.37', '\tSystem time (seconds): 1.02', '\tPercent of CPU this job got: 27%', '\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:19.94', '\tAverage shared text size (kbytes): 0', '\tAverage unshared data size (kbytes): 0', '\tAverage stack size (kbytes): 0', '\tAverage total size (kbytes): 0', '\tMaximum resident set size (kbytes): 131092', '\tAverage resident set size (kbytes): 0', '\tMajor (requiring I/O) page faults: 0', '\tMinor (reclaiming a frame) page faults: 53774', '\tVoluntary context switches: 2006', '\tInvoluntary context switches: 136', '\tSwaps: 0', '\tFile system inputs: 0', '\tFile system outputs: 0', '\tSocket messages sent: 0', '\tSocket messages received: 0', '\tSignals delivered: 0', '\tPage size (bytes): 4096', '\tExit status: 1']
+2023-09-04 16:38:46,502 - DEBUG - Host 192.168.5.114: exit code 127, output [], error ['nice: ‘/usr/bin/time’: No such file or directory']
+2023-09-04 16:38:46,503 - DEBUG - Parsed ram usage: None
+2023-09-04 16:38:46,503 - INFO - Running test for lfw/Ai_Sugiyama/Ai_Sugiyama_0004.jpg
+2023-09-04 16:39:06,015 - DEBUG - Stdout of extracting embedding: 14.870723962783813
+2023-09-04 16:39:06,016 - DEBUG - Stderr of extracting embedding: 
+2023-09-04 16:39:06,016 - INFO - Embedding extracted by the server in 14.870723962783813 seconds
+2023-09-04 16:39:12,659 - INFO - Running sfe...
+2023-09-04 16:39:33,791 - INFO - Finished! Total sfe time: 21.13068652153015 seconds (3/8)
+2023-09-04 16:39:33,793 - DEBUG - Host 192.168.5.115: exit code 1, output ['There was an error during establish connection, ending! '], error ['Connect failed due to timeout!', 'Command exited with non-zero status 1', '\tCommand being timed: "/home/dietpi/pffrocd/ABY/build/bin/cos_dist_float_scen_simd_32 -r 1 -a 192.168.5.114 -f /home/dietpi/pffrocd/ABY/build/bin/embeddings.txt -o /home/dietpi/pffrocd -s 112 -x 0"', '\tUser time (seconds): 4.42', '\tSystem time (seconds): 0.99', '\tPercent of CPU this job got: 27%', '\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:19.67', '\tAverage shared text size (kbytes): 0', '\tAverage unshared data size (kbytes): 0', '\tAverage stack size (kbytes): 0', '\tAverage total size (kbytes): 0', '\tMaximum resident set size (kbytes): 131088', '\tAverage resident set size (kbytes): 0', '\tMajor (requiring I/O) page faults: 0', '\tMinor (reclaiming a frame) page faults: 53775', '\tVoluntary context switches: 2008', '\tInvoluntary context switches: 297', '\tSwaps: 0', '\tFile system inputs: 0', '\tFile system outputs: 0', '\tSocket messages sent: 0', '\tSocket messages received: 0', '\tSignals delivered: 0', '\tPage size (bytes): 4096', '\tExit status: 1']
+2023-09-04 16:39:33,794 - DEBUG - Host 192.168.5.114: exit code 127, output [], error ['nice: ‘/usr/bin/time’: No such file or directory']
+2023-09-04 16:39:33,795 - DEBUG - Parsed ram usage: None
+2023-09-04 16:39:33,795 - INFO - Running test for lfw/Ai_Sugiyama/Ai_Sugiyama_0005.jpg
+2023-09-04 16:39:53,616 - DEBUG - Stdout of extracting embedding: 14.92284083366394
+2023-09-04 16:39:53,616 - DEBUG - Stderr of extracting embedding: 
+2023-09-04 16:39:53,617 - INFO - Embedding extracted by the server in 14.92284083366394 seconds
+2023-09-04 16:40:00,367 - INFO - Running sfe...
+2023-09-04 16:40:21,713 - INFO - Finished! Total sfe time: 21.344260454177856 seconds (4/8)
+2023-09-04 16:40:21,715 - DEBUG - Host 192.168.5.115: exit code 1, output ['There was an error during establish connection, ending! '], error ['Connect failed due to timeout!', 'Command exited with non-zero status 1', '\tCommand being timed: "/home/dietpi/pffrocd/ABY/build/bin/cos_dist_float_scen_simd_32 -r 1 -a 192.168.5.114 -f /home/dietpi/pffrocd/ABY/build/bin/embeddings.txt -o /home/dietpi/pffrocd -s 112 -x 0"', '\tUser time (seconds): 4.53', '\tSystem time (seconds): 0.87', '\tPercent of CPU this job got: 27%', '\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:19.87', '\tAverage shared text size (kbytes): 0', '\tAverage unshared data size (kbytes): 0', '\tAverage stack size (kbytes): 0', '\tAverage total size (kbytes): 0', '\tMaximum resident set size (kbytes): 131080', '\tAverage resident set size (kbytes): 0', '\tMajor (requiring I/O) page faults: 0', '\tMinor (reclaiming a frame) page faults: 53774', '\tVoluntary context switches: 2006', '\tInvoluntary context switches: 83', '\tSwaps: 0', '\tFile system inputs: 0', '\tFile system outputs: 0', '\tSocket messages sent: 0', '\tSocket messages received: 0', '\tSignals delivered: 0', '\tPage size (bytes): 4096', '\tExit status: 1']
+2023-09-04 16:40:21,716 - DEBUG - Host 192.168.5.114: exit code 127, output [], error ['nice: ‘/usr/bin/time’: No such file or directory']
+2023-09-04 16:40:21,716 - DEBUG - Parsed ram usage: None
+2023-09-04 16:40:21,716 - INFO - Running test for lfw/Mary_Jo_Myers/Mary_Jo_Myers_0001.jpg
+2023-09-04 16:40:41,280 - DEBUG - Stdout of extracting embedding: 14.915235757827759
+2023-09-04 16:40:41,281 - DEBUG - Stderr of extracting embedding: 
+2023-09-04 16:40:41,281 - INFO - Embedding extracted by the server in 14.915235757827759 seconds
+2023-09-04 16:40:47,972 - INFO - Running sfe...
+2023-09-04 16:41:08,262 - INFO - Finished! Total sfe time: 20.289576292037964 seconds (5/8)
+2023-09-04 16:41:08,264 - DEBUG - Host 192.168.5.115: exit code 1, output ['There was an error during establish connection, ending! '], error ['Connect failed due to timeout!', 'Command exited with non-zero status 1', '\tCommand being timed: "/home/dietpi/pffrocd/ABY/build/bin/cos_dist_float_scen_simd_32 -r 1 -a 192.168.5.114 -f /home/dietpi/pffrocd/ABY/build/bin/embeddings.txt -o /home/dietpi/pffrocd -s 112 -x 0"', '\tUser time (seconds): 4.44', '\tSystem time (seconds): 0.96', '\tPercent of CPU this job got: 28%', '\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:18.84', '\tAverage shared text size (kbytes): 0', '\tAverage unshared data size (kbytes): 0', '\tAverage stack size (kbytes): 0', '\tAverage total size (kbytes): 0', '\tMaximum resident set size (kbytes): 131088', '\tAverage resident set size (kbytes): 0', '\tMajor (requiring I/O) page faults: 0', '\tMinor (reclaiming a frame) page faults: 53773', '\tVoluntary context switches: 2007', '\tInvoluntary context switches: 283', '\tSwaps: 0', '\tFile system inputs: 0', '\tFile system outputs: 0', '\tSocket messages sent: 0', '\tSocket messages received: 0', '\tSignals delivered: 0', '\tPage size (bytes): 4096', '\tExit status: 1']
+2023-09-04 16:41:08,265 - DEBUG - Host 192.168.5.114: exit code 127, output [], error ['nice: ‘/usr/bin/time’: No such file or directory']
+2023-09-04 16:41:08,265 - DEBUG - Parsed ram usage: None
+2023-09-04 16:41:08,266 - INFO - Running test for lfw/Gavin_Degraw/Gavin_Degraw_0001.jpg
+2023-09-04 16:41:27,815 - DEBUG - Stdout of extracting embedding: 14.904147863388062
+2023-09-04 16:41:27,816 - DEBUG - Stderr of extracting embedding: 
+2023-09-04 16:41:27,817 - INFO - Embedding extracted by the server in 14.904147863388062 seconds
+2023-09-04 16:41:35,164 - INFO - Running sfe...
+2023-09-04 16:41:55,830 - INFO - Finished! Total sfe time: 20.664711713790894 seconds (6/8)
+2023-09-04 16:41:55,832 - DEBUG - Host 192.168.5.115: exit code 1, output ['There was an error during establish connection, ending! '], error ['Connect failed due to timeout!', 'Command exited with non-zero status 1', '\tCommand being timed: "/home/dietpi/pffrocd/ABY/build/bin/cos_dist_float_scen_simd_32 -r 1 -a 192.168.5.114 -f /home/dietpi/pffrocd/ABY/build/bin/embeddings.txt -o /home/dietpi/pffrocd -s 112 -x 0"', '\tUser time (seconds): 4.50', '\tSystem time (seconds): 0.89', '\tPercent of CPU this job got: 28%', '\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:19.21', '\tAverage shared text size (kbytes): 0', '\tAverage unshared data size (kbytes): 0', '\tAverage stack size (kbytes): 0', '\tAverage total size (kbytes): 0', '\tMaximum resident set size (kbytes): 131092', '\tAverage resident set size (kbytes): 0', '\tMajor (requiring I/O) page faults: 0', '\tMinor (reclaiming a frame) page faults: 53773', '\tVoluntary context switches: 2006', '\tInvoluntary context switches: 163', '\tSwaps: 0', '\tFile system inputs: 0', '\tFile system outputs: 0', '\tSocket messages sent: 0', '\tSocket messages received: 0', '\tSignals delivered: 0', '\tPage size (bytes): 4096', '\tExit status: 1']
+2023-09-04 16:41:55,832 - DEBUG - Host 192.168.5.114: exit code 127, output [], error ['nice: ‘/usr/bin/time’: No such file or directory']
+2023-09-04 16:41:55,833 - DEBUG - Parsed ram usage: None
+2023-09-04 16:41:55,833 - INFO - Running test for lfw/Denise_Locke/Denise_Locke_0001.jpg
+2023-09-04 16:42:15,383 - DEBUG - Stdout of extracting embedding: 14.891929626464844
+2023-09-04 16:42:15,383 - DEBUG - Stderr of extracting embedding: 
+2023-09-04 16:42:15,384 - INFO - Embedding extracted by the server in 14.891929626464844 seconds
+2023-09-04 16:42:22,181 - INFO - Running sfe...
+2023-09-04 16:42:42,515 - INFO - Finished! Total sfe time: 20.332821369171143 seconds (7/8)
+2023-09-04 16:42:42,517 - DEBUG - Host 192.168.5.115: exit code 1, output ['There was an error during establish connection, ending! '], error ['Connect failed due to timeout!', 'Command exited with non-zero status 1', '\tCommand being timed: "/home/dietpi/pffrocd/ABY/build/bin/cos_dist_float_scen_simd_32 -r 1 -a 192.168.5.114 -f /home/dietpi/pffrocd/ABY/build/bin/embeddings.txt -o /home/dietpi/pffrocd -s 112 -x 0"', '\tUser time (seconds): 4.49', '\tSystem time (seconds): 0.94', '\tPercent of CPU this job got: 28%', '\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:18.96', '\tAverage shared text size (kbytes): 0', '\tAverage unshared data size (kbytes): 0', '\tAverage stack size (kbytes): 0', '\tAverage total size (kbytes): 0', '\tMaximum resident set size (kbytes): 131088', '\tAverage resident set size (kbytes): 0', '\tMajor (requiring I/O) page faults: 0', '\tMinor (reclaiming a frame) page faults: 53773', '\tVoluntary context switches: 2008', '\tInvoluntary context switches: 98', '\tSwaps: 0', '\tFile system inputs: 0', '\tFile system outputs: 0', '\tSocket messages sent: 0', '\tSocket messages received: 0', '\tSignals delivered: 0', '\tPage size (bytes): 4096', '\tExit status: 1']
+2023-09-04 16:42:42,518 - DEBUG - Host 192.168.5.114: exit code 127, output [], error ['nice: ‘/usr/bin/time’: No such file or directory']
+2023-09-04 16:42:42,518 - DEBUG - Parsed ram usage: None
+2023-09-04 16:42:42,518 - INFO - Running test for lfw/Chanda_Rubin/Chanda_Rubin_0002.jpg
+2023-09-04 16:43:02,368 - DEBUG - Stdout of extracting embedding: 14.951807260513306
+2023-09-04 16:43:02,368 - DEBUG - Stderr of extracting embedding: 
+2023-09-04 16:43:02,369 - INFO - Embedding extracted by the server in 14.951807260513306 seconds
+2023-09-04 16:43:09,188 - INFO - Running sfe...
+2023-09-04 16:43:29,856 - INFO - Finished! Total sfe time: 20.66685461997986 seconds (8/8)
+2023-09-04 16:43:29,859 - DEBUG - Host 192.168.5.115: exit code 1, output ['There was an error during establish connection, ending! '], error ['Connect failed due to timeout!', 'Command exited with non-zero status 1', '\tCommand being timed: "/home/dietpi/pffrocd/ABY/build/bin/cos_dist_float_scen_simd_32 -r 1 -a 192.168.5.114 -f /home/dietpi/pffrocd/ABY/build/bin/embeddings.txt -o /home/dietpi/pffrocd -s 112 -x 0"', '\tUser time (seconds): 4.53', '\tSystem time (seconds): 0.88', '\tPercent of CPU this job got: 28%', '\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:19.19', '\tAverage shared text size (kbytes): 0', '\tAverage unshared data size (kbytes): 0', '\tAverage stack size (kbytes): 0', '\tAverage total size (kbytes): 0', '\tMaximum resident set size (kbytes): 131088', '\tAverage resident set size (kbytes): 0', '\tMajor (requiring I/O) page faults: 0', '\tMinor (reclaiming a frame) page faults: 53773', '\tVoluntary context switches: 2005', '\tInvoluntary context switches: 198', '\tSwaps: 0', '\tFile system inputs: 0', '\tFile system outputs: 0', '\tSocket messages sent: 0', '\tSocket messages received: 0', '\tSignals delivered: 0', '\tPage size (bytes): 4096', '\tExit status: 1']
+2023-09-04 16:43:29,860 - DEBUG - Host 192.168.5.114: exit code 127, output [], error ['nice: ‘/usr/bin/time’: No such file or directory']
+2023-09-04 16:43:29,861 - DEBUG - Parsed ram usage: None
+2023-09-04 16:43:29,877 - INFO - Currently running for lfw/Aicha_El_Ouafi (3/1480)
+2023-09-04 16:43:29,878 - DEBUG - Found 3 images for lfw/Aicha_El_Ouafi
+2023-09-04 16:43:29,878 - DEBUG - setting image as reference image: lfw/Aicha_El_Ouafi/Aicha_El_Ouafi_0001.jpg

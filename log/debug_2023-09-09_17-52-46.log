@@ -1,0 +1,35 @@
+2023-09-09 17:52:46,572 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.5.114",
+        "username": "dietpi",
+        "private_ssh_key_path": "/home/dietpi/.ssh/id_rsa",
+        "executable_path": "/home/dietpi/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/dietpi/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.5.112",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/dietpi/.ssh/id_rsa",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1500",
+        "security_level": "112",
+        "mt_algorithm": "0",
+        "niceness": "-20",
+        "starting_person": "20",
+        "bit_length": "32"
+    }
+}
+2023-09-09 17:52:47,136 - INFO - RUNNING for 1480 people
+2023-09-09 17:52:47,137 - INFO - Currently running for lfw/Ahmet_Necdet_Sezer (1/1480)
+2023-09-09 17:52:47,137 - DEBUG - Found 2 images for lfw/Ahmet_Necdet_Sezer
+2023-09-09 17:52:47,138 - DEBUG - setting image as reference image: lfw/Ahmet_Necdet_Sezer/Ahmet_Necdet_Sezer_0001.jpg
+2023-09-09 17:52:55,022 - INFO - Running test for lfw/Ahmet_Necdet_Sezer/Ahmet_Necdet_Sezer_0002.jpg
+2023-09-09 17:52:59,521 - DEBUG - Stdout of extracting embedding: 1.9098432064056396
+2023-09-09 17:52:59,522 - DEBUG - Stderr of extracting embedding: 
+2023-09-09 17:52:59,522 - INFO - Embedding extracted by the server in 1.9098432064056396 seconds
+2023-09-09 17:53:05,848 - INFO - Running sfe...
