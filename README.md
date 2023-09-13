@@ -41,33 +41,39 @@ make
 
 7. To be able to run a process with higher priority modify limits.conf as explained here: https://unix.stackexchange.com/a/358332
 
+8. Calibrate Powertop to get power estimate readings
+
+```sh
+sudo powertop --calibrate
+```
+
 ADDITIONALLY FOR SERVER AND MASTER:
 
 Since the server and master need to extract embeddings, they need the database of pictures and Python.
 
-8. Change directory back to repo root folder and unpack the picture database:
+9. Change directory back to repo root folder and unpack the picture database:
 ```sh
 cat lfw.tgz.parta* | tar -xzv
 ```
 
-9. Create a new virtual environment, activate it and install the required packages
+10. Create a new virtual environment, activate it and install the required packages
 ```sh
 python3 -m venv env
 . env/bin/activate
 pip install -vr requirements.txt
 ```
 
-10. Copy the SFace weights where deepface can find them:
+11. Copy the SFace weights where deepface can find them:
 ```sh
 mkdir -p ~/.deepface/weights/ && cp face_recognition_sface_2021dec.onnx ~/.deepface/weights/
 ```
 ADDITIONALLY FOR MASTER
 
-11. Rename the `config.ini.example` file to `config.ini` and modify it accordingly
+12. Rename the `config.ini.example` file to `config.ini` and modify it accordingly
 
-12. Copy the ssh keys to server and client using ssh-copy-id
+13. Copy the ssh keys to server and client using ssh-copy-id
 
-13. Run the main script in the background on the master machine
+14. Run the main script in the background on the master machine
 ```sh
 python pyscripts/master.py&
 ```
