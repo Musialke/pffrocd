@@ -22,6 +22,8 @@ git clone git@github.com:Musialke/pffrocd.git
 cd pffrocd
 ```
 
+For SERVER and CLIENT:
+
 4. Create the ABY build directory
 ```sh
 mkdir ABY/build/ && cd ABY/build/
@@ -40,6 +42,7 @@ make
 7. To be able to run a process with higher priority modify limits.conf as explained here: https://unix.stackexchange.com/a/358332
 
 ADDITIONALLY FOR SERVER AND MASTER:
+
 Since the server and master need to extract embeddings, they need the database of pictures and Python.
 
 8. Change directory back to repo root folder and unpack the picture database:
