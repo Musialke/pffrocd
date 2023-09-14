@@ -40,6 +40,7 @@ nr_of_people = config.getint('misc', 'nr_of_people')
 niceness = config.getint('misc', 'niceness')
 starting_person = config.getint('misc', 'starting_person')
 bit_length = config.getint('misc', 'bit_length')
+gather_energy_data = config.getint('misc', 'gather_energy_data')
 
 if bit_length == 64:
     NUMPY_DTYPE = np.float64
@@ -148,7 +149,21 @@ def run_test():
             ram_usage = pffrocd.parse_usr_bin_time_output(server_sfe_error)
             logger.debug(f"Parsed ram usage: {ram_usage}")
 
-            # todo: rerun the routine with powertop to gather energy consumption data
+                # rerun the routine with powertop to gather energy consumption data
+            if gather_energy_data:
+                logger.info("Running powertop to gather energy consumption data...")
+                powertop_command = f"sudo powertop --csv=powertop_{current_datetime}.csv -t {sfe_time + 1}"
+                output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, server_username,  "kamil123", f"{command1} & {powertop_command}", f"{command2} & {powertop_command}")
+                # get the powertop files from hosts and parse them and save in the dataframe
+                all_values, energy_client = pffrocd.get_energy_consumption(client_ip, client_username, client_key, f"{client_exec_path}/powertop_{current_datetime}.csv", sfe_time + 1)
+                logger.debug(f"All values from powertop for client: {all_values}")
+                logger.debug(f"Energy client: {energy_client}")
+                all_values, energy_server = pffrocd.get_energy_consumption(server_ip, server_username, server_key, f"{server_exec_path}/powertop_{current_datetime}.csv", sfe_time + 1)
+                logger.debug(f"All values from powertop for server: {all_values}")
+                logger.debug(f"Energy server: {energy_server}")
+            else:
+                energy_client = 'not measured'
+                energy_server = 'not measured'
 
 
             # save all results and timing data
@@ -162,10 +177,16 @@ def run_test():
             expected_result = ref_img.split('/')[1] == img.split('/')[1] # check if the images belong to the same person
             cos_dist_np = pffrocd.get_cos_dist_numpy(ref_img_embedding, img_embedding)
             list_of_sfe_values = list(parsed_sfe_output.values())
+            logger.debug(f"{parsed_sfe_output=}")
             logger.debug(f"{list_of_sfe_values=}")
-            list_of_ram_values = list(ram_usage.values())[1:] # remove the first element, asking for sudo
+            # if ram_usage asked for password for sudo delete that entry
+            logger.debug(f"Checking if the key <[sudo] password for {server_username}> exists")
+            if ram_usage[f'[sudo] password for {server_username}'] == '':
+                del ram_usage[f'[sudo] password for {server_username}']
+            list_of_ram_values = list(ram_usage.values()) # [1:] # remove the first element, asking for sudo
+            logger.debug(f"{ram_usage=}")
             logger.debug(f"{list_of_ram_values=}")
-            to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time] + list_of_ram_values +  [0] + list_of_sfe_values
+            to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time] + list_of_ram_values +  [energy_client, energy_server] + list_of_sfe_values
             logger.debug(f"{to_be_appended=}")
             logger.debug(f"{pffrocd.columns=}")
             data.append(to_be_appended)

@@ -1,0 +1,108 @@
+2023-09-09 13:18:53,802 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.5.111",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.5.112",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1000",
+        "security_level": "112",
+        "mt_algorithm": "0",
+        "niceness": "-20",
+        "starting_person": "100",
+        "nr_of_images": "30",
+        "bit_length": "64",
+        "gather_energy_data": "1"
+    }
+}
+2023-09-09 13:18:53,904 - INFO - RUNNING for 900 people
+2023-09-09 13:18:53,904 - INFO - Currently running for lfw/Anthony_Fauci (1/900)
+2023-09-09 13:18:53,905 - DEBUG - Found 2 images for lfw/Anthony_Fauci
+2023-09-09 13:18:53,905 - DEBUG - setting image as reference image: lfw/Anthony_Fauci/Anthony_Fauci_0001.jpg
+2023-09-09 13:18:56,280 - INFO - Running test for lfw/Anthony_Fauci/Anthony_Fauci_0002.jpg
+2023-09-09 13:18:59,148 - DEBUG - Stdout of extracting embedding: 1.9124579429626465
+2023-09-09 13:18:59,148 - DEBUG - Stderr of extracting embedding: 
+2023-09-09 13:18:59,149 - INFO - Embedding extracted by the server in 1.9124579429626465 seconds
+2023-09-09 13:19:00,705 - INFO - Running sfe...
+2023-09-09 13:19:16,455 - INFO - Finished! Total sfe time: 15.749434471130371 seconds (1/2)
+2023-09-09 13:19:16,456 - DEBUG - Host 192.168.5.111: exit code 0, output ['Online time is distributed as follows: ', 'Bool: local gates: 271.4290000000, interactive gates: 322.8620000000, layer finish: 257.1870000000', 'Yao: local gates: 5.7100000000, interactive gates: 4.9320000000, layer finish: 3.0980000000', 'Yao Rev: local gates: 5.2760000000, interactive gates: 4.4220000000, layer finish: 3.1470000000', 'Arith: local gates: 6.6770000000, interactive gates: 4.6060000000, layer finish: 6.9890000000', 'SPLUT: local gates: 5.1990000000, interactive gates: 4.9560000000, layer finish: 29.3160000000', 'Communication: 3681.1880000000', '', 'Complexities: ', 'Boolean Sharing: ANDs: 5971636 (1-bit) ; Depth: 10918', 'Total Vec AND: 5971636', 'Total Non-Vec AND: 5971636', 'XOR vals: 5892966 gates: 1383450', 'Comb gates: 0, CombStruct gates: 0, Perm gates: 0, Subset gates: 24576, Split gates: 0', 'Yao: ANDs: 0 ; Depth: 0', 'Reverse Yao: ANDs: 0 ; Depth: 0', 'Arithmetic Sharing: MULs: 0 ; Depth: 0', 'SP-LUT Sharing: OT-gates: Total OT gates = 0; Depth: 1', 'Total number of gates: 3163722 Total depth: 10918', 'Timings: ', 'Total =\t\t13233.6950000000 ms', 'Init =\t\t0.0580000000 ms', 'CircuitGen =\t0.0660000000 ms', 'Network =\t4.8410000000 ms', 'BaseOTs =\t105.5400000000 ms', 'Setup =\t\t8594.9750000000 ms', 'OTExtension =\t8587.8020000000 ms', 'Garbling =\t0.0030000000 ms', 'Online =\t4638.7160000000 ms', '', 'Communication: ', 'Total Sent / Rcv\t86427438  bytes / 86428462 bytes', 'BaseOTs Sent / Rcv\t29220  bytes / 29220 bytes', 'Setup Sent / Rcv\t84827305  bytes / 84827305 bytes', 'OTExtension Sent / Rcv\t84827305  bytes / 84827305 bytes', 'Garbling Sent / Rcv\t0  bytes / 0 bytes', 'Online Sent / Rcv\t1600133  bytes / 1601157 bytes', '', 'cos_dist_ver: 0.3293662287', 'cos_dist: 0.3293662287'], error ['[sudo] password for kamil: \tCommand being timed: "/home/kamil/pffrocd/ABY/build/bin/cos_dist_float_scen_simd_64 -r 1 -a 192.168.5.112 -f /home/kamil/pffrocd/ABY/build/bin/embeddings.txt -o /home/kamil/pffrocd -s 112 -x 0"', '\tUser time (seconds): 6.86', '\tSystem time (seconds): 1.79', '\tPercent of CPU this job got: 56%', '\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:15.37', '\tAverage shared text size (kbytes): 0', '\tAverage unshared data size (kbytes): 0', '\tAverage stack size (kbytes): 0', '\tAverage total size (kbytes): 0', '\tMaximum resident set size (kbytes): 361304', '\tAverage resident set size (kbytes): 0', '\tMajor (requiring I/O) page faults: 0', '\tMinor (reclaiming a frame) page faults: 143108', '\tVoluntary context switches: 128324', '\tInvoluntary context switches: 35', '\tSwaps: 0', '\tFile system inputs: 0', '\tFile system outputs: 0', '\tSocket messages sent: 0', '\tSocket messages received: 0', '\tSignals delivered: 0', '\tPage size (bytes): 4096', '\tExit status: 0']
+2023-09-09 13:19:16,456 - DEBUG - Host 192.168.5.112: exit code 0, output ['Online time is distributed as follows: ', 'Bool: local gates: 104.8520000000, interactive gates: 106.8000000000, layer finish: 85.9720000000', 'Yao: local gates: 1.8490000000, interactive gates: 1.4080000000, layer finish: 0.8270000000', 'Yao Rev: local gates: 1.3590000000, interactive gates: 1.2700000000, layer finish: 0.5920000000', 'Arith: local gates: 1.6410000000, interactive gates: 1.1880000000, layer finish: 1.5300000000', 'SPLUT: local gates: 1.4780000000, interactive gates: 1.1320000000, layer finish: 7.7670000000', 'Communication: 4305.7030000000', '', 'Complexities: ', 'Boolean Sharing: ANDs: 5971636 (1-bit) ; Depth: 10918', 'Total Vec AND: 5971636', 'Total Non-Vec AND: 5971636', 'XOR vals: 5892966 gates: 1383450', 'Comb gates: 0, CombStruct gates: 0, Perm gates: 0, Subset gates: 24576, Split gates: 0', 'Yao: ANDs: 0 ; Depth: 0', 'Reverse Yao: ANDs: 0 ; Depth: 0', 'Arithmetic Sharing: MULs: 0 ; Depth: 0', 'SP-LUT Sharing: OT-gates: Total OT gates = 0; Depth: 1', 'Total number of gates: 3163722 Total depth: 10918', 'Timings: ', 'Total =\t\t13230.7750000000 ms', 'Init =\t\t0.0670000000 ms', 'CircuitGen =\t0.0680000000 ms', 'Network =\t471.2200000000 ms', 'BaseOTs =\t103.5500000000 ms', 'Setup =\t\t8597.4620000000 ms', 'OTExtension =\t8590.9110000000 ms', 'Garbling =\t0.0040000000 ms', 'Online =\t4633.3110000000 ms', '', 'Communication: ', 'Total Sent / Rcv\t86428471  bytes / 86427438 bytes', 'BaseOTs Sent / Rcv\t29211  bytes / 29211 bytes', 'Setup Sent / Rcv\t84827314  bytes / 84837394 bytes', 'OTExtension Sent / Rcv\t84827305  bytes / 84827305 bytes', 'Garbling Sent / Rcv\t0  bytes / 0 bytes', 'Online Sent / Rcv\t1601157  bytes / 1590044 bytes', '', 'cos_dist_ver: 0.3293662287', 'cos_dist: 0.3293662287'], error ['[sudo] password for kamil: \tCommand being timed: "/home/kamil/pffrocd/ABY/build/bin/cos_dist_float_scen_simd_64 -r 0 -a 192.168.5.112 -f /home/kamil/pffrocd/ABY/build/bin/embeddings.txt -o /home/kamil/pffrocd -s 112 -x 0"', '\tUser time (seconds): 4.87', '\tSystem time (seconds): 0.83', '\tPercent of CPU this job got: 37%', '\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:15.33', '\tAverage shared text size (kbytes): 0', '\tAverage unshared data size (kbytes): 0', '\tAverage stack size (kbytes): 0', '\tAverage total size (kbytes): 0', '\tMaximum resident set size (kbytes): 364464', '\tAverage resident set size (kbytes): 0', '\tMajor (requiring I/O) page faults: 0', '\tMinor (reclaiming a frame) page faults: 143949', '\tVoluntary context switches: 93685', '\tInvoluntary context switches: 37', '\tSwaps: 0', '\tFile system inputs: 0', '\tFile system outputs: 0', '\tSocket messages sent: 0', '\tSocket messages received: 0', '\tSignals delivered: 0', '\tPage size (bytes): 4096', '\tExit status: 0']
+2023-09-09 13:19:16,456 - DEBUG - Parsed ram usage: {'[sudo] password for kamil': '', 'Command being timed': '"/home/kamil/pffrocd/ABY/build/bin/cos_dist_float_scen_simd_64 -r 0 -a 192.168.5.112 -f /home/kamil/pffrocd/ABY/build/bin/embeddings.txt -o /home/kamil/pffrocd -s 112 -x 0"', 'User time (seconds)': '4.87', 'System time (seconds)': '0.83', 'Percent of CPU this job got': '37%', 'Elapsed (wall clock) time (h:mm:ss or m:ss)': '0:15.33', 'Average shared text size (kbytes)': '0', 'Average unshared data size (kbytes)': '0', 'Average stack size (kbytes)': '0', 'Average total size (kbytes)': '0', 'Maximum resident set size (kbytes)': '364464', 'Average resident set size (kbytes)': '0', 'Major (requiring I/O) page faults': '0', 'Minor (reclaiming a frame) page faults': '143949', 'Voluntary context switches': '93685', 'Involuntary context switches': '37', 'Swaps': '0', 'File system inputs': '0', 'File system outputs': '0', 'Socket messages sent': '0', 'Socket messages received': '0', 'Signals delivered': '0', 'Page size (bytes)': '4096', 'Exit status': '0'}
+2023-09-09 13:19:16,456 - INFO - Running powertop to gather energy consumption data...
+2023-09-09 13:19:37,589 - DEBUG - df_energy_client=         Usage Wakeups/s GPU ops/s Disk IO/s GFX Wakeups/s   Category                 Description
+0     7.5 ms/s     257.6                                    Interrupt         [3] net_rx(softirq)
+1     5.6 ms/s      75.3                                      Process  [PID 4405] cos_dist_float_
+2     2.7 ms/s      46.2                                        Timer            tick_sched_timer
+3    65.6 ms/s      0.06                                      Process  [PID 4407] cos_dist_float_
+4    60.5 ms/s      0.19                                      Process  [PID 4406] cos_dist_float_
+..         ...       ...       ...       ...           ...        ...                         ...
+95                                                                                               
+96                                                                                               
+97                                                                                               
+98                                                                                               
+99                                                                                               
+
+[100 rows x 7 columns]
+2023-09-09 13:19:37,611 - DEBUG - df_energy_server=          Usage Wakeups/s GPU ops/s Disk IO/s GFX Wakeups/s   Category              Description PW Estimate
+0      8.7 ms/s     189.9                                    Interrupt      [3] net_rx(softirq)   3.30 mW  
+1    218.4 us/s     111.6                                      Process   [PID 34] [ksoftirqd/3]   1.94 mW  
+2      1.7 ms/s      99.0                                        Timer         tick_sched_timer   1.72 mW  
+3      1.0 ms/s      23.9                                    Interrupt      [2] net tx(softirq)    416 uW  
+4    201.9 us/s       8.6                                        Timer  tcp_compressed_ack_kick    150 uW  
+..          ...       ...       ...       ...           ...        ...                      ...         ...
+97                                                                                                         
+98                                                                                                         
+99                                                                                                         
+100        None      None      None      None          None       None                     None        None
+101        None      None      None      None          None       None                     None        None
+
+[102 rows x 8 columns]
+2023-09-09 13:19:37,622 - INFO - Running test for lfw/Ray_Morrough/Ray_Morrough_0001.jpg
+2023-09-09 13:19:40,478 - DEBUG - Stdout of extracting embedding: 1.9226322174072266
+2023-09-09 13:19:40,478 - DEBUG - Stderr of extracting embedding: 
+2023-09-09 13:19:40,478 - INFO - Embedding extracted by the server in 1.9226322174072266 seconds
+2023-09-09 13:19:41,474 - INFO - Running sfe...
+2023-09-09 13:19:57,375 - INFO - Finished! Total sfe time: 15.900663614273071 seconds (2/2)
+2023-09-09 13:19:57,376 - DEBUG - Host 192.168.5.111: exit code 0, output ['Online time is distributed as follows: ', 'Bool: local gates: 279.9540000000, interactive gates: 332.9670000000, layer finish: 263.7920000000', 'Yao: local gates: 6.0760000000, interactive gates: 4.9160000000, layer finish: 3.1040000000', 'Yao Rev: local gates: 5.3860000000, interactive gates: 4.5550000000, layer finish: 3.1940000000', 'Arith: local gates: 6.4390000000, interactive gates: 5.1330000000, layer finish: 7.3950000000', 'SPLUT: local gates: 5.4700000000, interactive gates: 5.1690000000, layer finish: 30.6980000000', 'Communication: 3684.4760000000', '', 'Complexities: ', 'Boolean Sharing: ANDs: 5971636 (1-bit) ; Depth: 10918', 'Total Vec AND: 5971636', 'Total Non-Vec AND: 5971636', 'XOR vals: 5892966 gates: 1383450', 'Comb gates: 0, CombStruct gates: 0, Perm gates: 0, Subset gates: 24576, Split gates: 0', 'Yao: ANDs: 0 ; Depth: 0', 'Reverse Yao: ANDs: 0 ; Depth: 0', 'Arithmetic Sharing: MULs: 0 ; Depth: 0', 'SP-LUT Sharing: OT-gates: Total OT gates = 0; Depth: 1', 'Total number of gates: 3163722 Total depth: 10918', 'Timings: ', 'Total =\t\t13451.2100000000 ms', 'Init =\t\t0.0640000000 ms', 'CircuitGen =\t0.0670000000 ms', 'Network =\t5.2810000000 ms', 'BaseOTs =\t127.6500000000 ms', 'Setup =\t\t8780.7650000000 ms', 'OTExtension =\t8773.9170000000 ms', 'Garbling =\t0.0030000000 ms', 'Online =\t4670.4410000000 ms', '', 'Communication: ', 'Total Sent / Rcv\t86427438  bytes / 86428462 bytes', 'BaseOTs Sent / Rcv\t29220  bytes / 29220 bytes', 'Setup Sent / Rcv\t84827305  bytes / 84827305 bytes', 'OTExtension Sent / Rcv\t84827305  bytes / 84827305 bytes', 'Garbling Sent / Rcv\t0  bytes / 0 bytes', 'Online Sent / Rcv\t1600133  bytes / 1601157 bytes', '', 'cos_dist_ver: 0.9416375960', 'cos_dist: 0.9416375960'], error ['[sudo] password for kamil: \tCommand being timed: "/home/kamil/pffrocd/ABY/build/bin/cos_dist_float_scen_simd_64 -r 1 -a 192.168.5.112 -f /home/kamil/pffrocd/ABY/build/bin/embeddings.txt -o /home/kamil/pffrocd -s 112 -x 0"', '\tUser time (seconds): 6.91', '\tSystem time (seconds): 1.80', '\tPercent of CPU this job got: 56%', '\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:15.53', '\tAverage shared text size (kbytes): 0', '\tAverage unshared data size (kbytes): 0', '\tAverage stack size (kbytes): 0', '\tAverage total size (kbytes): 0', '\tMaximum resident set size (kbytes): 361256', '\tAverage resident set size (kbytes): 0', '\tMajor (requiring I/O) page faults: 0', '\tMinor (reclaiming a frame) page faults: 143110', '\tVoluntary context switches: 127566', '\tInvoluntary context switches: 42', '\tSwaps: 0', '\tFile system inputs: 0', '\tFile system outputs: 0', '\tSocket messages sent: 0', '\tSocket messages received: 0', '\tSignals delivered: 0', '\tPage size (bytes): 4096', '\tExit status: 0']
+2023-09-09 13:19:57,376 - DEBUG - Host 192.168.5.112: exit code 0, output ['Online time is distributed as follows: ', 'Bool: local gates: 106.3860000000, interactive gates: 108.0610000000, layer finish: 86.4110000000', 'Yao: local gates: 1.5590000000, interactive gates: 1.2650000000, layer finish: 0.7330000000', 'Yao Rev: local gates: 1.7750000000, interactive gates: 1.2560000000, layer finish: 0.8690000000', 'Arith: local gates: 1.7650000000, interactive gates: 1.2500000000, layer finish: 1.7290000000', 'SPLUT: local gates: 1.5330000000, interactive gates: 1.3610000000, layer finish: 7.6340000000', 'Communication: 4331.7510000000', '', 'Complexities: ', 'Boolean Sharing: ANDs: 5971636 (1-bit) ; Depth: 10918', 'Total Vec AND: 5971636', 'Total Non-Vec AND: 5971636', 'XOR vals: 5892966 gates: 1383450', 'Comb gates: 0, CombStruct gates: 0, Perm gates: 0, Subset gates: 24576, Split gates: 0', 'Yao: ANDs: 0 ; Depth: 0', 'Reverse Yao: ANDs: 0 ; Depth: 0', 'Arithmetic Sharing: MULs: 0 ; Depth: 0', 'SP-LUT Sharing: OT-gates: Total OT gates = 0; Depth: 1', 'Total number of gates: 3163722 Total depth: 10918', 'Timings: ', 'Total =\t\t13446.3720000000 ms', 'Init =\t\t0.0710000000 ms', 'CircuitGen =\t0.0650000000 ms', 'Network =\t399.4540000000 ms', 'BaseOTs =\t128.0560000000 ms', 'Setup =\t\t8783.2350000000 ms', 'OTExtension =\t8776.0800000000 ms', 'Garbling =\t0.0040000000 ms', 'Online =\t4663.1350000000 ms', '', 'Communication: ', 'Total Sent / Rcv\t86428462  bytes / 86427438 bytes', 'BaseOTs Sent / Rcv\t29220  bytes / 29220 bytes', 'Setup Sent / Rcv\t84827305  bytes / 84837394 bytes', 'OTExtension Sent / Rcv\t84827305  bytes / 84827305 bytes', 'Garbling Sent / Rcv\t0  bytes / 0 bytes', 'Online Sent / Rcv\t1601157  bytes / 1590044 bytes', '', 'cos_dist_ver: 0.9416375960', 'cos_dist: 0.9416375960'], error ['[sudo] password for kamil: \tCommand being timed: "/home/kamil/pffrocd/ABY/build/bin/cos_dist_float_scen_simd_64 -r 0 -a 192.168.5.112 -f /home/kamil/pffrocd/ABY/build/bin/embeddings.txt -o /home/kamil/pffrocd -s 112 -x 0"', '\tUser time (seconds): 4.72', '\tSystem time (seconds): 0.92', '\tPercent of CPU this job got: 36%', '\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:15.51', '\tAverage shared text size (kbytes): 0', '\tAverage unshared data size (kbytes): 0', '\tAverage stack size (kbytes): 0', '\tAverage total size (kbytes): 0', '\tMaximum resident set size (kbytes): 366408', '\tAverage resident set size (kbytes): 0', '\tMajor (requiring I/O) page faults: 0', '\tMinor (reclaiming a frame) page faults: 144392', '\tVoluntary context switches: 93644', '\tInvoluntary context switches: 46', '\tSwaps: 0', '\tFile system inputs: 0', '\tFile system outputs: 0', '\tSocket messages sent: 0', '\tSocket messages received: 0', '\tSignals delivered: 0', '\tPage size (bytes): 4096', '\tExit status: 0']
+2023-09-09 13:19:57,377 - DEBUG - Parsed ram usage: {'[sudo] password for kamil': '', 'Command being timed': '"/home/kamil/pffrocd/ABY/build/bin/cos_dist_float_scen_simd_64 -r 0 -a 192.168.5.112 -f /home/kamil/pffrocd/ABY/build/bin/embeddings.txt -o /home/kamil/pffrocd -s 112 -x 0"', 'User time (seconds)': '4.72', 'System time (seconds)': '0.92', 'Percent of CPU this job got': '36%', 'Elapsed (wall clock) time (h:mm:ss or m:ss)': '0:15.51', 'Average shared text size (kbytes)': '0', 'Average unshared data size (kbytes)': '0', 'Average stack size (kbytes)': '0', 'Average total size (kbytes)': '0', 'Maximum resident set size (kbytes)': '366408', 'Average resident set size (kbytes)': '0', 'Major (requiring I/O) page faults': '0', 'Minor (reclaiming a frame) page faults': '144392', 'Voluntary context switches': '93644', 'Involuntary context switches': '46', 'Swaps': '0', 'File system inputs': '0', 'File system outputs': '0', 'Socket messages sent': '0', 'Socket messages received': '0', 'Signals delivered': '0', 'Page size (bytes)': '4096', 'Exit status': '0'}
+2023-09-09 13:19:57,377 - INFO - Running powertop to gather energy consumption data...
+2023-09-09 13:20:18,714 - DEBUG - df_energy_client=         Usage Wakeups/s GPU ops/s Disk IO/s GFX Wakeups/s   Category                 Description
+0     8.6 ms/s     274.5                                    Interrupt         [3] net_rx(softirq)
+1     2.9 ms/s      68.8                                        Timer            tick_sched_timer
+2     3.6 ms/s      58.8                                      Process  [PID 4637] cos_dist_float_
+3    64.6 ms/s      0.19                                      Process  [PID 4639] cos_dist_float_
+4     0.9 ms/s      12.6                                    Interrupt        [6] tasklet(softirq)
+..         ...       ...       ...       ...           ...        ...                         ...
+95                                                                                               
+96                                                                                               
+97                                                                                               
+98                                                                                               
+99                                                                                               
+
+[100 rows x 7 columns]
+2023-09-09 13:20:18,735 - DEBUG - df_energy_server=          Usage Wakeups/s GPU ops/s Disk IO/s GFX Wakeups/s   Category                 Description PW Estimate
+0     61.0 ms/s      0.25                                      Process  [PID 5061] cos_dist_float_   6.82 mW  
+1     50.1 ms/s                                                Process  [PID 5060] cos_dist_float_   5.60 mW  
+2      9.2 ms/s     199.7                                    Interrupt         [3] net_rx(softirq)   3.09 mW  
+3     12.0 ms/s       7.4                                      Process  [PID 5058] cos_dist_float_   1.42 mW  
+4      1.8 ms/s      93.1                                        Timer            tick_sched_timer   1.16 mW  
+..          ...       ...       ...       ...           ...        ...                         ...         ...
+97                                                                                                            
+98                                                                                                            
+99                                                                                                            
+100        None      None      None      None          None       None                        None        None
+101        None      None      None      None          None       None                        None        None
+
+[102 rows x 8 columns]

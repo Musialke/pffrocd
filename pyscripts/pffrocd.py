@@ -16,6 +16,7 @@ from pssh.clients import ParallelSSHClient
 from pssh.config import HostConfig
 import pandas as pd
 from deepface.commons.distance import findThreshold
+import csv
 
 logging.getLogger("paramiko").setLevel(logging.WARNING)
 
@@ -54,7 +55,8 @@ columns = [
     'Signals delivered', 
     'Page size (bytes)', 
     'Exit status',
-    'energy_used',
+    'energy_client',
+    'energy_server',
     'online_time.bool.local_gates',
     'online_time.bool.interactive_gates',
     'online_time.bool.layer_finish',
@@ -160,6 +162,78 @@ def run_sfe(x, y, y_0=None, y_1=None):
 
 def get_embedding(imagepath, dtype):
     return np.array(DeepFace.represent(img_path = imagepath, model_name="SFace", enforce_detection=False)[0]["embedding"], dtype=dtype)
+
+def parse_powertop_csv(filepath):
+    """
+    Parse a PowerTop CSV file and extract a DataFrame containing the software power consumers.
+    
+    Args:
+        filepath (str): The path to the PowerTop CSV file.
+        
+    Returns:
+        pandas.DataFrame: A DataFrame containing the software power consumers.
+    """
+    with open(filepath, 'r') as csv_file:
+        rows = list(csv.reader(csv_file, delimiter=';'))
+        begin = rows.index([' *  *  *   Overview of Software Power Consumers   *  *  *'])
+        end = rows.index([' *  *  *   Device Power Report   *  *  *'])
+        headers = rows[begin+2]
+        return pd.DataFrame(rows[begin+3:end-2], columns=headers)
+
+def get_energy_consumption(hostname, username, private_key_path, remote_path, running_time) -> pd.DataFrame:
+     # Load the private key from the specified file path
+    private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
+
+    # Create an SSH client
+    client = paramiko.SSHClient()
+
+    # Automatically add the remote host's SSH key
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+    try:
+        # Connect to the remote host
+        client.connect(hostname, username=username, pkey=private_key)
+
+        # Create an SFTP session
+        sftp = client.open_sftp()
+
+        with sftp.open(remote_path, 'r') as file:
+            rows = list(csv.reader(file, delimiter=';'))
+            # get the software power consumers overview
+            begin = rows.index([' *  *  *   Overview of Software Power Consumers   *  *  *'])
+            end = rows.index([' *  *  *   Device Power Report   *  *  *'])
+            headers = rows[begin+2]
+            df = pd.DataFrame(rows[begin+3:end-2], columns=headers)
+
+            # get the energy consumption readings of cos_dist
+            # fixme: hardcoded exec name, should be read from config but powertop doesn't print full name
+            mask = df['Description'].str.contains('cos_dist')
+            mask.fillna(False, inplace=True)
+            energy_series = df[mask]['PW Estimate']
+
+            # combine readings from all threads and compute total energy (E = P * T)
+            total_watts = 0
+            for row in energy_series:
+                value, unit = row.split()
+                value = float(value)
+                if unit == 'mW': 
+                    value*=0.001
+                elif unit == 'uW':
+                    value*=0.000001
+                elif unit == 'W':
+                    pass
+                else:
+                    return None
+                total_watts += value
+            total_joules = total_watts * running_time
+
+
+        # Close the SFTP session
+        sftp.close()
+    finally:
+        # Close the SSH client connection
+        client.close()
+        return energy_series, total_joules
 
 def get_two_random_embeddings(same_person):
     print(os.getcwd())
