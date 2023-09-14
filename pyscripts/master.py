@@ -179,6 +179,9 @@ def run_test():
             list_of_sfe_values = list(parsed_sfe_output.values())
             logger.debug(f"{parsed_sfe_output=}")
             logger.debug(f"{list_of_sfe_values=}")
+            # if ram_usage asked for password for sudo delete that entry
+            if ram_usage[f'[sudo] password for {server_username}']:
+                del ram_usage[f'[sudo] password for {server_username}']
             list_of_ram_values = list(ram_usage.values()) # [1:] # remove the first element, asking for sudo
             logger.debug(f"{ram_usage=}")
             logger.debug(f"{list_of_ram_values=}")
