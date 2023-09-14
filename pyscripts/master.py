@@ -181,8 +181,7 @@ def run_test():
             logger.debug(f"{list_of_sfe_values=}")
             # if ram_usage asked for password for sudo delete that entry
             logger.debug(f"Checking if the key <[sudo] password for {server_username}> exists")
-            if ram_usage[f'[sudo] password for {server_username}'] == '':
-                del ram_usage[f'[sudo] password for {server_username}']
+            ram_usage.pop(f'[sudo] password for {server_username}', None)
             list_of_ram_values = list(ram_usage.values()) # [1:] # remove the first element, asking for sudo
             logger.debug(f"{ram_usage=}")
             logger.debug(f"{list_of_ram_values=}")
