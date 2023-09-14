@@ -1,0 +1,36 @@
+2023-09-05 12:42:20,342 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.5.111",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.5.112",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1000",
+        "security_level": "112",
+        "mt_algorithm": "0",
+        "niceness": "-20",
+        "starting_person": "100",
+        "nr_of_images": "30",
+        "bit_length": "64"
+    }
+}
+2023-09-05 12:42:20,416 - INFO - RUNNING for 900 people
+2023-09-05 12:42:20,416 - INFO - Currently running for lfw/Anthony_Fauci (1/900)
+2023-09-05 12:42:20,416 - DEBUG - Found 2 images for lfw/Anthony_Fauci
+2023-09-05 12:42:20,416 - DEBUG - setting image as reference image: lfw/Anthony_Fauci/Anthony_Fauci_0001.jpg
+2023-09-05 12:42:26,602 - INFO - Running test for lfw/Anthony_Fauci/Anthony_Fauci_0002.jpg
+2023-09-05 12:42:29,314 - DEBUG - Stdout of extracting embedding: 1.9161298274993896
+2023-09-05 12:42:29,314 - DEBUG - Stderr of extracting embedding: 
+2023-09-05 12:42:29,314 - INFO - Embedding extracted by the server in 1.9161298274993896 seconds
+2023-09-05 12:42:35,184 - INFO - Running sfe...

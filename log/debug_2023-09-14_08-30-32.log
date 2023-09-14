@@ -1,0 +1,42 @@
+2023-09-14 08:30:32,739 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.5.115",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.5.114",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/kamil/.ssh/id_thesis",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1000",
+        "security_level": "80",
+        "mt_algorithm": "0",
+        "niceness": "-20",
+        "starting_person": "20",
+        "nr_of_images": "30",
+        "bit_length": "32",
+        "gather_energy_data": "1"
+    }
+}
+2023-09-14 08:30:32,832 - INFO - RUNNING for 980 people
+2023-09-14 08:30:32,832 - INFO - Currently running for lfw/Ahmet_Necdet_Sezer (1/980)
+2023-09-14 08:30:32,832 - DEBUG - Found 2 images for lfw/Ahmet_Necdet_Sezer
+2023-09-14 08:30:32,832 - DEBUG - setting image as reference image: lfw/Ahmet_Necdet_Sezer/Ahmet_Necdet_Sezer_0001.jpg
+2023-09-14 08:30:35,577 - INFO - Running test for lfw/Ahmet_Necdet_Sezer/Ahmet_Necdet_Sezer_0002.jpg
+2023-09-14 08:30:55,771 - DEBUG - Stdout of extracting embedding: 17.41620397567749
+2023-09-14 08:30:55,772 - DEBUG - Stderr of extracting embedding: 
+2023-09-14 08:30:55,772 - INFO - Embedding extracted by the server in 17.41620397567749 seconds
+2023-09-14 08:30:58,351 - INFO - Running sfe...
+2023-09-14 08:31:13,528 - INFO - Finished! Total sfe time: 15.176016807556152 seconds (1/2)
+2023-09-14 08:31:13,529 - DEBUG - Host 192.168.5.115: exit code 0, output ['Online time is distributed as follows: ', 'Bool: local gates: 382.9530000000, interactive gates: 428.4760000000, layer finish: 278.4260000000', 'Yao: local gates: 8.1630000000, interactive gates: 5.0520000000, layer finish: 3.3880000000', 'Yao Rev: local gates: 5.9250000000, interactive gates: 5.8380000000, layer finish: 2.4820000000', 'Arith: local gates: 8.3060000000, interactive gates: 7.5100000000, layer finish: 9.0170000000', 'SPLUT: local gates: 5.4510000000, interactive gates: 5.9390000000, layer finish: 42.1340000000', 'Communication: 4649.2560000000', '', 'Complexities: ', 'Boolean Sharing: ANDs: 1878982 (1-bit) ; Depth: 8080', 'Total Vec AND: 1878982', 'Total Non-Vec AND: 1878982', 'XOR vals: 1740116 gates: 596354', 'Comb gates: 0, CombStruct gates: 0, Perm gates: 0, Subset gates: 12288, Split gates: 0', 'Yao: ANDs: 0 ; Depth: 0', 'Reverse Yao: ANDs: 0 ; Depth: 0', 'Arithmetic Sharing: MULs: 0 ; Depth: 0', 'SP-LUT Sharing: OT-gates: Total OT gates = 0; Depth: 1', 'Total number of gates: 1339400 Total depth: 8080', 'Timings: ', 'Total =\t\t9510.6710000000 ms', 'Init =\t\t0.3710000000 ms', 'CircuitGen =\t0.2740000000 ms', 'Network =\t73.4000000000 ms', 'BaseOTs =\t117.0320000000 ms', 'Setup =\t\t3634.5980000000 ms', 'OTExtension =\t3615.5850000000 ms', 'Garbling =\t0.0080000000 ms', 'Online =\t5876.0670000000 ms', '', 'Communication: ', 'Total Sent / Rcv\t19986398  bytes / 19986910 bytes', 'BaseOTs Sent / Rcv\t10532  bytes / 10532 bytes', 'Setup Sent / Rcv\t19437193  bytes / 19437193 bytes', 'OTExtension Sent / Rcv\t19437193  bytes / 19437193 bytes', 'Garbling Sent / Rcv\t0  bytes / 0 bytes', 'Online Sent / Rcv\t549205  bytes / 549717 bytes', '', 'cos_dist_ver: 0.4069042802', 'cos_dist: 0.4069042802'], error ['\tCommand being timed: "/home/kamil/pffrocd/ABY/build/bin/cos_dist_float_scen_simd_32 -r 1 -a 192.168.5.114 -f /home/kamil/pffrocd/ABY/build/bin/embeddings.txt -o /home/kamil/pffrocd -s 80 -x 0"', '\tUser time (seconds): 12.56', '\tSystem time (seconds): 4.23', '\tPercent of CPU this job got: 113%', '\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:14.75', '\tAverage shared text size (kbytes): 0', '\tAverage unshared data size (kbytes): 0', '\tAverage stack size (kbytes): 0', '\tAverage total size (kbytes): 0', '\tMaximum resident set size (kbytes): 139084', '\tAverage resident set size (kbytes): 0', '\tMajor (requiring I/O) page faults: 0', '\tMinor (reclaiming a frame) page faults: 60419', '\tVoluntary context switches: 67739', '\tInvoluntary context switches: 19605', '\tSwaps: 0', '\tFile system inputs: 0', '\tFile system outputs: 0', '\tSocket messages sent: 0', '\tSocket messages received: 0', '\tSignals delivered: 0', '\tPage size (bytes): 4096', '\tExit status: 0']
+2023-09-14 08:31:13,529 - DEBUG - Host 192.168.5.114: exit code 0, output ['Online time is distributed as follows: ', 'Bool: local gates: 395.2470000000, interactive gates: 436.0070000000, layer finish: 290.8320000000', 'Yao: local gates: 7.6110000000, interactive gates: 5.7160000000, layer finish: 4.8660000000', 'Yao Rev: local gates: 5.5070000000, interactive gates: 5.0430000000, layer finish: 2.3570000000', 'Arith: local gates: 6.6660000000, interactive gates: 8.4050000000, layer finish: 6.0200000000', 'SPLUT: local gates: 6.2430000000, interactive gates: 5.2470000000, layer finish: 42.5710000000', 'Communication: 4623.9830000000', '', 'Complexities: ', 'Boolean Sharing: ANDs: 1878982 (1-bit) ; Depth: 8080', 'Total Vec AND: 1878982', 'Total Non-Vec AND: 1878982', 'XOR vals: 1740116 gates: 596354', 'Comb gates: 0, CombStruct gates: 0, Perm gates: 0, Subset gates: 12288, Split gates: 0', 'Yao: ANDs: 0 ; Depth: 0', 'Reverse Yao: ANDs: 0 ; Depth: 0', 'Arithmetic Sharing: MULs: 0 ; Depth: 0', 'SP-LUT Sharing: OT-gates: Total OT gates = 0; Depth: 1', 'Total number of gates: 1339400 Total depth: 8080', 'Timings: ', 'Total =\t\t9511.3650000000 ms', 'Init =\t\t0.2860000000 ms', 'CircuitGen =\t0.2490000000 ms', 'Network =\t16.4290000000 ms', 'BaseOTs =\t116.3440000000 ms', 'Setup =\t\t3634.5710000000 ms', 'OTExtension =\t3615.1330000000 ms', 'Garbling =\t0.0080000000 ms', 'Online =\t5876.7870000000 ms', '', 'Communication: ', 'Total Sent / Rcv\t19986910  bytes / 19986398 bytes', 'BaseOTs Sent / Rcv\t10532  bytes / 10532 bytes', 'Setup Sent / Rcv\t19437193  bytes / 19437193 bytes', 'OTExtension Sent / Rcv\t19437184  bytes / 19437193 bytes', 'Garbling Sent / Rcv\t0  bytes / 0 bytes', 'Online Sent / Rcv\t549717  bytes / 549205 bytes', '', 'cos_dist_ver: 0.4069042802', 'cos_dist: 0.4069042802'], error ['\tCommand being timed: "/home/kamil/pffrocd/ABY/build/bin/cos_dist_float_scen_simd_32 -r 0 -a 192.168.5.114 -f /home/kamil/pffrocd/ABY/build/bin/embeddings.txt -o /home/kamil/pffrocd -s 80 -x 0"', '\tUser time (seconds): 12.62', '\tSystem time (seconds): 4.33', '\tPercent of CPU this job got: 114%', '\tElapsed (wall clock) time (h:mm:ss or m:ss): 0:14.74', '\tAverage shared text size (kbytes): 0', '\tAverage unshared data size (kbytes): 0', '\tAverage stack size (kbytes): 0', '\tAverage total size (kbytes): 0', '\tMaximum resident set size (kbytes): 139060', '\tAverage resident set size (kbytes): 0', '\tMajor (requiring I/O) page faults: 2', '\tMinor (reclaiming a frame) page faults: 60418', '\tVoluntary context switches: 64654', '\tInvoluntary context switches: 13890', '\tSwaps: 0', '\tFile system inputs: 816', '\tFile system outputs: 0', '\tSocket messages sent: 0', '\tSocket messages received: 0', '\tSignals delivered: 0', '\tPage size (bytes): 4096', '\tExit status: 0']
+2023-09-14 08:31:13,530 - DEBUG - Parsed ram usage: {'Command being timed': '"/home/kamil/pffrocd/ABY/build/bin/cos_dist_float_scen_simd_32 -r 0 -a 192.168.5.114 -f /home/kamil/pffrocd/ABY/build/bin/embeddings.txt -o /home/kamil/pffrocd -s 80 -x 0"', 'User time (seconds)': '12.62', 'System time (seconds)': '4.33', 'Percent of CPU this job got': '114%', 'Elapsed (wall clock) time (h:mm:ss or m:ss)': '0:14.74', 'Average shared text size (kbytes)': '0', 'Average unshared data size (kbytes)': '0', 'Average stack size (kbytes)': '0', 'Average total size (kbytes)': '0', 'Maximum resident set size (kbytes)': '139060', 'Average resident set size (kbytes)': '0', 'Major (requiring I/O) page faults': '2', 'Minor (reclaiming a frame) page faults': '60418', 'Voluntary context switches': '64654', 'Involuntary context switches': '13890', 'Swaps': '0', 'File system inputs': '816', 'File system outputs': '0', 'Socket messages sent': '0', 'Socket messages received': '0', 'Signals delivered': '0', 'Page size (bytes)': '4096', 'Exit status': '0'}
+2023-09-14 08:31:13,530 - INFO - Running powertop to gather energy consumption data...
