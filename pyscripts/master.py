@@ -141,6 +141,8 @@ def run_test():
             logger.info(f"Finished! Total sfe time: {sfe_time} seconds ({count_img+1}/{len(imgs)})")
             server_sfe_output = ''
             server_sfe_error = ''
+            client_sfe_output = ''
+            client_sfe_error = ''
             for host_output in output:
                 hostname = host_output.host
                 stdout = list(host_output.stdout)
@@ -150,8 +152,13 @@ def run_test():
                 if hostname == server_ip:
                     server_sfe_output = ''.join(stdout)
                     server_sfe_error = ''.join(stderr)
-            ram_usage = pffrocd.parse_usr_bin_time_output(server_sfe_error)
-            logger.debug(f"Parsed ram usage: {ram_usage}")
+                if hostname == client_ip:
+                    client_sfe_output = ''.join(stdout)
+                    client_sfe_error = ''.join(stderr)
+            server_ram_usage = pffrocd.parse_usr_bin_time_output(server_sfe_error)
+            client_ram_usage = pffrocd.parse_usr_bin_time_output(client_sfe_error)
+            logger.debug(f"Parsed server ram usage: {server_ram_usage}")
+            logger.debug(f"Parsed client ram usage: {client_ram_usage}")
 
                 # rerun the routine with powertop to gather energy consumption data
             if gather_energy_data:
@@ -171,25 +178,33 @@ def run_test():
 
 
             # save all results and timing data
-            parsed_sfe_output = pffrocd.parse_aby_output(server_sfe_output)
-            if not parsed_sfe_output:
+            server_parsed_sfe_output = pffrocd.parse_aby_output(server_sfe_output)
+            client_parsed_sfe_output = pffrocd.parse_aby_output(client_sfe_output)
+            if not server_parsed_sfe_output or not client_parsed_sfe_output:
                 continue
-            if not ram_usage:
+            if not server_ram_usage or not client_ram_usage:
                 continue
-            cos_dist_sfe = float(parsed_sfe_output['cos_dist_sfe'])
+            cos_dist_sfe = float(server_parsed_sfe_output['cos_dist_sfe'])
             result = cos_dist_sfe < pffrocd.threshold
             expected_result = ref_img.split('/')[1] == img.split('/')[1] # check if the images belong to the same person
             cos_dist_np = pffrocd.get_cos_dist_numpy(ref_img_embedding, img_embedding)
-            list_of_sfe_values = list(parsed_sfe_output.values())
-            logger.debug(f"{parsed_sfe_output=}")
-            logger.debug(f"{list_of_sfe_values=}")
+            server_list_of_sfe_values = list(server_parsed_sfe_output.values())
+            client_list_of_sfe_values = list(client_parsed_sfe_output.values())
+            logger.debug(f"{server_parsed_sfe_output=}")
+            logger.debug(f"{server_list_of_sfe_values=}")
+            logger.debug(f"{client_parsed_sfe_output=}")
+            logger.debug(f"{client_list_of_sfe_values=}")
             # if ram_usage asked for password for sudo delete that entry
             logger.debug(f"Checking if the key <[sudo] password for {server_username}> exists")
-            ram_usage.pop(f'[sudo] password for {server_username}', None)
-            list_of_ram_values = list(ram_usage.values()) # [1:] # remove the first element, asking for sudo
-            logger.debug(f"{ram_usage=}")
-            logger.debug(f"{list_of_ram_values=}")
-            to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time] + list_of_ram_values +  [energy_client, energy_server] + list_of_sfe_values
+            server_ram_usage.pop(f'[sudo] password for {server_username}', None)
+            client_ram_usage.pop(f'[sudo] password for {client_username}', None)
+            server_list_of_ram_values = list(server_ram_usage.values()) # [1:] # remove the first element, asking for sudo
+            client_list_of_ram_values = list(client_ram_usage.values())
+            logger.debug(f"{server_ram_usage=}")
+            logger.debug(f"{client_ram_usage=}")
+            logger.debug(f"{server_list_of_ram_values=}")
+            logger.debug(f"{client_list_of_ram_values=}")
+            to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time] + server_list_of_ram_values + client_list_of_ram_values +  [energy_client, energy_server] + server_list_of_sfe_values + client_list_of_sfe_values
             logger.debug(f"{to_be_appended=}")
             logger.debug(f"{pffrocd.columns=}")
             data.append(to_be_appended)
