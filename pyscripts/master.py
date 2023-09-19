@@ -65,6 +65,10 @@ def run_test():
     # print all config options to the debug log
     logger.debug(f"pffrocd config: {pffrocd.get_config_in_printing_format(config)}")
 
+    # get the bandwidth and log it
+    bandwidth = pffrocd.get_bandwidth(server_ip, client_ip, server_username, client_username, 'kamil123', server_key, server_pffrocd_path, current_datetime)
+    logger.info(f"Bandwidth: {bandwidth:.2f} Mbits/sec")
+
     # get the list of people that have more than one image
     people = pffrocd.get_people_with_multiple_images(root_dir='lfw')
     people = people[starting_person:nr_of_people]

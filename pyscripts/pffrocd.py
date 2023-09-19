@@ -565,6 +565,49 @@ def get_people_with_multiple_images(root_dir):
 
 import os
 
+def get_bandwidth(hostname1, hostname2, username1, username2, password, private_key_path, remote_path, current_datetime):
+    '''execute iperf3 command on a list of hosts'''
+    output = execute_command_parallel_alternative([hostname1, hostname2], username1, username2, password, f'iperf3 -J -s -1 --logfile iperf3_{current_datetime}.log', 'sleep 3 && iperf3 -J -c 192.168.5.114', timeout=20)
+    for host_output in output:
+        stdout = list(host_output.stdout)
+        stderr = list(host_output.stderr)
+        # if host_output.exit_code != 0:
+        #     return f"f'iperf3 failed on {host_output.host}. stdout: {stdout}, stderr: {stderr}"
+    '''read the logfile into a dictionary'''
+    # Load the private key from the specified file path
+    private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
+
+    # Create an SSH client
+    client = paramiko.SSHClient()
+
+    # Automatically add the remote host's SSH key
+    client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+    try:
+        # Connect to the remote host
+        client.connect(hostname1, username=username1, pkey=private_key)
+
+        # Create an SFTP session
+        sftp = client.open_sftp()
+
+        with sftp.open(f'iperf3_{current_datetime}.log', 'r') as file:
+            # Read the content of the file
+            content = file.readlines()
+            # load the content into a dictionary
+            d = json.loads(''.join(content))
+            bandwidth = float(d['end']['sum_received']['bits_per_second']) / 1e6
+        
+        # remove the file on the host
+        sftp.remove(f'iperf3_{current_datetime}.log')
+
+        # Close the SFTP session
+        sftp.close()
+    finally:
+        # Close the SSH client connection
+        client.close()
+        return bandwidth
+
+
 def create_shares(x: np.ndarray, dtype):
     """Create shares for the client and server from an image"""
 
@@ -622,14 +665,14 @@ def get_random_images_except_person(root_dir, excluded_person, num_images):
     return random_image_paths
 
 
-def execute_command_parallel_alternative(hosts, username1, username2, password, command1, command2):
+def execute_command_parallel_alternative(hosts, username1, username2, password, command1, command2, timeout=600):
     host_config = [
             HostConfig(port=22, user=username1,
                     password=password),
             HostConfig(port=22, user=username2,
                     password=password),
             ]
-    client = ParallelSSHClient(hosts=hosts, host_config=host_config, timeout=600)
+    client = ParallelSSHClient(hosts=hosts, host_config=host_config, timeout=timeout)
     output = client.run_command('%s', host_args=(command1,command2), sudo=True)
     for host_out in output:
         host_out.stdin.write(f'{password}\n')
