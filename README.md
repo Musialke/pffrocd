@@ -6,7 +6,7 @@ Privacy-Friendly Face Recognition On Constrained Devices
 1. Install required packages:
 
 ```sh
-sudo apt update && sudo apt install time python3 python3-venv g++ make cmake libgmp-dev libssl-dev libboost-all-dev ffmpeg libsm6 libxext6 git powertop -y
+sudo apt update && sudo apt install time python3 python3-venv iperf3 g++ make cmake libgmp-dev libssl-dev libboost-all-dev ffmpeg libsm6 libxext6 git powertop -y
 ```
 
 2. Generate SSH key and add as deploy key to the git repo
