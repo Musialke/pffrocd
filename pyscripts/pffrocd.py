@@ -650,7 +650,7 @@ import os
 
 def get_bandwidth(hostname1, hostname2, username1, username2, password, private_key_path, remote_path, current_datetime):
     '''execute iperf3 command on a list of hosts'''
-    output = execute_command_parallel_alternative([hostname1, hostname2], username1, username2, password, f'iperf3 -J -s -1 --logfile iperf3_{current_datetime}.log', 'sleep 3 && iperf3 -J -c 192.168.5.114', timeout=20)
+    output = execute_command_parallel_alternative([hostname1, hostname2], username1, username2, password, f'iperf3 -J -s -1 --logfile iperf3_{current_datetime}.log', f'sleep 3 && iperf3 -J -c {hostname1}', timeout=20)
     for host_output in output:
         stdout = list(host_output.stdout)
         stderr = list(host_output.stderr)
