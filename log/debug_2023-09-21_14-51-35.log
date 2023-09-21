@@ -1,0 +1,33 @@
+2023-09-21 14:51:35,978 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.5.115",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/dietpi/.ssh/id_rsa",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.5.114",
+        "username": "kamil",
+        "private_ssh_key_path": "/home/dietpi/.ssh/id_rsa",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1500",
+        "security_level": "112",
+        "mt_algorithm": "0",
+        "niceness": "-20",
+        "starting_person": "20",
+        "bit_length": "32",
+        "gather_energy_data": "1"
+    }
+}
+2023-09-21 14:51:53,382 - INFO - Bandwidth: 58.29 Mbits/sec
+2023-09-21 14:51:53,979 - INFO - RUNNING for 1480 people
+2023-09-21 14:51:53,980 - INFO - Currently running for lfw/Ahmet_Necdet_Sezer (1/1480)
+2023-09-21 14:51:53,981 - DEBUG - Found 2 images for lfw/Ahmet_Necdet_Sezer
+2023-09-21 14:51:53,981 - DEBUG - setting image as reference image: lfw/Ahmet_Necdet_Sezer/Ahmet_Necdet_Sezer_0001.jpg
+2023-09-21 14:52:01,538 - INFO - Running test for lfw/Ahmet_Necdet_Sezer/Ahmet_Necdet_Sezer_0002.jpg
