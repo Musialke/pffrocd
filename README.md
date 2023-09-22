@@ -1,6 +1,13 @@
 # pffrocd
 Privacy-Friendly Face Recognition On Constrained Devices
 
+
+The testing flow is as follows:
+
+![image](https://github.com/Musialke/pffrocd/assets/26610983/e0843c66-283b-4aea-b536-fe309f1481fd)
+
+The code is also rather extensively commented. The main script is `pyscripts/master.py` and helping functions are in `pyscripts/pfforcd.py`.
+
 ## Complete guide to set up a host for tests:
 
 1. Install required packages:
@@ -78,6 +85,8 @@ ADDITIONALLY FOR MASTER
 python pyscripts/master.py&
 ```
 
+The logs are saved in the `log/` directory and the test results are appended to a csv file in `dfs/` after running all tests for one person.
+
 
 ### Possible errors and solutions:
 
@@ -92,35 +101,3 @@ The link to weights for SFace is missing. fix:
 ```sh
 mkdir -p ~/.deepface/weights/ && cp face_recognition_sface_2021dec.onnx ~/.deepface/weights/
 ```
-### Examples explanation:
-
-
-- **cos_dist_float_nscen_simd**
-  - Input: face embeddings, i.e.original floats
-  - Circuit: non-scenario, so two SIMD IN gates
-  - Goal: show that the circuit we have works with two unaltered embeddings without shared gates
-- **cos_dist_roundfloat_nscen_simd**
-  - Input: embeddings, but floats are scaled up by some factor and remainder after the decimal place is removed
-  - Circuit: non-scenario, so two SIMD IN gates
-  - Goal: See if the circuit works with input: float -> int -> float in ABY (all zeros after decimal)
-- **cos_dist_int_nscen_simd**
-  - Input: embeddings cast to int after scaling up by a factor
-  - Circuit: non-scenario, SIMD, inputs as ints instead of floats
-  - Goal: See if having ints as inputs instead of floats works
-- **cos_dist_float_nscen_nsimd**
-  - Input: embeddings, original floats
-  - Circuit: non-scenario, **non-SIMD**
-  - Goal: Have a non-SIMD version of the circuit, potentially easier to debug
-- **cos_dist_roundfloat_nscen_nsimd**
-  - Input: embeddings, but floats are scaled up by some factor and the remainder after the decimal place is removed
-  - Circuit: non-scenario, **non-SIMD**
-  - Goal: Have a non-SIMD circuit with inputs that can be cast to int
-- **cos_randint_nscen_nsimd**
-  - Input: vectors of random **positive** integers
-  - Circuit: non-scenario, **non-SIMD**
-  - Goal: Have a non-SIMD circuit with inputs that can be XORed
-
-
-## Face recognition models:
-
-WIP
