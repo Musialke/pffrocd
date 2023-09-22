@@ -32,3 +32,7 @@ mt_algorithm = 0
 niceness = -20
 # starting person: in case you need to start with a specific person, not from zero
 starting_person = 15
+# the bitlength of the vector elements (either 32 or 64)
+bit_length = 32
+# whether to run the test twice and gather energy data with powertop the second time (0 = no, 1 = yes)
+gather_energy_data = 0
