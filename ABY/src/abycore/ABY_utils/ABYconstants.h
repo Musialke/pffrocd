@@ -34,7 +34,7 @@
 #define PRINT_COMMUNICATION_STATS 1 //prints communication statistics
 #define BENCHONLINEPHASE 1 //show very detailed runtime statistic on each sharing for online phase, typically for troubleshooting
 
-#define BENCH_HARDWARE 0 // measure RTT, connection bandwidth and AES
+#define BENCH_HARDWARE 1 // measure RTT, connection bandwidth and AES
 
 #define BATCH
 

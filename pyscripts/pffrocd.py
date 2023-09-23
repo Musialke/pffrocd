@@ -80,6 +80,9 @@ columns = [
     'client.Exit status',
     'energy_client',
     'energy_server',
+    'server.hardware.aes.performance',
+    'server.hardware.rtt',
+    'server.hardware.throughput',
     'server.online_time.bool.local_gates',
     'server.online_time.bool.interactive_gates',
     'server.online_time.bool.layer_finish',
@@ -140,6 +143,9 @@ columns = [
     'server.communication.online.received',
     'server.cos_dist_ver',
     'server.cos_dist_sfe',
+    'client.hardware.aes.performance',
+    'client.hardware.rtt',
+    'client.hardware.throughput',
     'client.online_time.bool.local_gates',
     'client.online_time.bool.interactive_gates',
     'client.online_time.bool.layer_finish',
@@ -409,93 +415,98 @@ def parse_aby_output(s):
     d = {}
 
     try:
-    # online_time
-        d['online_time.bool.local_gates'] = numbers[0]
-        d['online_time.bool.interactive_gates'] = numbers[1]
-        d['online_time.bool.layer_finish'] = numbers[2]
-        
-        d['online_time.yao.local_gates'] = numbers[3]
-        d['online_time.yao.interactive_gates'] = numbers[4]
-        d['online_time.yao.layer_finish'] = numbers[5]
-        
-        d['online_time.yao_rev.local_gates'] = numbers[6]
-        d['online_time.yao_rev.interactive_gates'] = numbers[7]
-        d['online_time.yao_rev.layer_finish'] = numbers[8]
-        
-        d['online_time.arith.local_gates'] = numbers[9]
-        d['online_time.arith.interactive_gates'] = numbers[10]
-        d['online_time.arith.layer_finish'] = numbers[11]
-        
-        d['online_time.splut.local_gates'] = numbers[12]
-        d['online_time.splut.interactive_gates'] = numbers[13]
-        d['online_time.splut.layer_finish'] = numbers[14]
-        
-        d['online_time.communication'] = numbers[15]
-    
+        # hardware
+        d['hardware.aes.performance'] = numbers[0]
+        d['hardware.rtt'] = numbers[1]
+        d['hardware.throughput'] = numbers[2]
+
+        # online_time
+        d['online_time.bool.local_gates'] = numbers[3]
+        d['online_time.bool.interactive_gates'] = numbers[4]
+        d['online_time.bool.layer_finish'] = numbers[5]
+
+        d['online_time.yao.local_gates'] = numbers[6]
+        d['online_time.yao.interactive_gates'] = numbers[7]
+        d['online_time.yao.layer_finish'] = numbers[8]
+
+        d['online_time.yao_rev.local_gates'] = numbers[9]
+        d['online_time.yao_rev.interactive_gates'] = numbers[10]
+        d['online_time.yao_rev.layer_finish'] = numbers[11]
+
+        d['online_time.arith.local_gates'] = numbers[12]
+        d['online_time.arith.interactive_gates'] = numbers[13]
+        d['online_time.arith.layer_finish'] = numbers[14]
+
+        d['online_time.splut.local_gates'] = numbers[15]
+        d['online_time.splut.interactive_gates'] = numbers[16]
+        d['online_time.splut.layer_finish'] = numbers[17]
+
+        d['online_time.communication'] = numbers[18]
+
 
         # complexities
-        d['complexities.boolean_sharing.ands'] = numbers[16]
-        d['complexities.boolean_sharing.depth'] = numbers[18]
+        d['complexities.boolean_sharing.ands'] = numbers[19]
+        d['complexities.boolean_sharing.depth'] = numbers[21]
 
-        d['complexities.total_vec_and'] = numbers[19]
-        d['complexities.total_non_vec_and'] = numbers[20]
-        d['complexities.xor_vals'] = numbers[21]
-        d['complexities.gates'] = numbers[22]
-        d['complexities.comb_gates'] = numbers[23]
-        d['complexities.combstruct_gates'] = numbers[24]
-        d['complexities.perm_gates'] = numbers[25]
-        d['complexities.subset_gates'] = numbers[26]
-        d['complexities.split_gates'] = numbers[27]
+        d['complexities.total_vec_and'] = numbers[22]
+        d['complexities.total_non_vec_and'] = numbers[23]
+        d['complexities.xor_vals'] = numbers[24]
+        d['complexities.gates'] = numbers[25]
+        d['complexities.comb_gates'] = numbers[26]
+        d['complexities.combstruct_gates'] = numbers[27]
+        d['complexities.perm_gates'] = numbers[28]
+        d['complexities.subset_gates'] = numbers[29]
+        d['complexities.split_gates'] = numbers[30]
 
-        d['complexities.yao.ands'] = numbers[28]
-        d['complexities.yao.depth'] = numbers[29]
+        d['complexities.yao.ands'] = numbers[31]
+        d['complexities.yao.depth'] = numbers[32]
 
-        d['complexities.reverse_yao.ands'] = numbers[30]
-        d['complexities.reverse_yao.depth'] = numbers[31]
+        d['complexities.reverse_yao.ands'] = numbers[33]
+        d['complexities.reverse_yao.depth'] = numbers[34]
 
-        d['complexities.arithmetic_sharing.muls'] = numbers[32]
-        d['complexities.arithmetic_sharing.depth'] = numbers[33]
+        d['complexities.arithmetic_sharing.muls'] = numbers[35]
+        d['complexities.arithmetic_sharing.depth'] = numbers[36]
 
-        d['complexities.sp_lut_sharing.ot_gates_total'] = numbers[34]
-        d['complexities.sp_lut_sharing.depth'] = numbers[35]
+        d['complexities.sp_lut_sharing.ot_gates_total'] = numbers[37]
+        d['complexities.sp_lut_sharing.depth'] = numbers[38]
 
-        d['complexities.total_nr_of_gates'] = numbers[36]
-        d['complexities.total_depth'] = numbers[37]
+        d['complexities.total_nr_of_gates'] = numbers[39]
+        d['complexities.total_depth'] = numbers[40]
 
 
         # timings
-        d['timings.total'] = numbers[38]
-        d['timings.init'] = numbers[39]
-        d['timings.circuitgen'] = numbers[40]
-        d['timings.network'] = numbers[41]
-        d['timings.baseots'] = numbers[42]
-        d['timings.setup'] = numbers[43]
-        d['timings.otextension'] = numbers[44]
-        d['timings.garbling'] = numbers[45]
-        d['timings.online'] = numbers[46]
+        d['timings.total'] = numbers[41]
+        d['timings.init'] = numbers[42]
+        d['timings.circuitgen'] = numbers[43]
+        d['timings.network'] = numbers[44]
+        d['timings.baseots'] = numbers[45]
+        d['timings.setup'] = numbers[46]
+        d['timings.otextension'] = numbers[47]
+        d['timings.garbling'] = numbers[48]
+        d['timings.online'] = numbers[49]
 
         # communication
-        d['communication.total.sent'] = numbers[47]
-        d['communication.total.received'] = numbers[48]
+        d['communication.total.sent'] = numbers[50]
+        d['communication.total.received'] = numbers[51]
 
-        d['communication.base_ots.sent'] = numbers[49]
-        d['communication.base_ots.received'] = numbers[50]
+        d['communication.base_ots.sent'] = numbers[52]
+        d['communication.base_ots.received'] = numbers[53]
 
-        d['communication.setup.sent'] = numbers[51]
-        d['communication.setup.received'] = numbers[52]
+        d['communication.setup.sent'] = numbers[54]
+        d['communication.setup.received'] = numbers[55]
 
-        d['communication.otextension.sent'] = numbers[53]
-        d['communication.otextension.received'] = numbers[54]
+        d['communication.otextension.sent'] = numbers[56]
+        d['communication.otextension.received'] = numbers[57]
 
-        d['communication.garbling.sent'] = numbers[55]
-        d['communication.garbling.received'] = numbers[56]
+        d['communication.garbling.sent'] = numbers[58]
+        d['communication.garbling.received'] = numbers[59]
 
-        d['communication.online.sent'] = numbers[57]
-        d['communication.online.received'] = numbers[58]
+        d['communication.online.sent'] = numbers[60]
+        d['communication.online.received'] = numbers[61]
 
         # results
-        d['cos_dist_ver'] = numbers[59]
-        d['cos_dist_sfe'] = numbers[60]
+        d['cos_dist_ver'] = numbers[62]
+        d['cos_dist_sfe'] = numbers[63]
     except:
         return None
     return d
