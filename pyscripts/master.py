@@ -186,6 +186,7 @@ def run_test():
                 continue
             logger.info(f"Server throughput: {server_parsed_sfe_output['hardware.throughput']}")
             logger.info(f"Client throughput: {client_parsed_sfe_output['hardware.throughput']}")
+            logger.info(f"Server total time: {server_parsed_sfe_output['timings.total'] / 1000}")
             cos_dist_sfe = float(server_parsed_sfe_output['cos_dist_sfe'])
             result = cos_dist_sfe < pffrocd.threshold
             expected_result = ref_img.split('/')[1] == img.split('/')[1] # check if the images belong to the same person
