@@ -136,7 +136,7 @@ def run_test():
             command1 = f"cd {client_exec_path} ; nice -n {niceness} /usr/bin/time -v {client_exec_path}/{client_exec_name} -r 1 -a {server_ip} -f {client_exec_path}/embeddings.txt -o {client_pffrocd_path} -s {sec_lvl} -x {mt_alg}"
             command2 = f"cd {server_exec_path} ; nice -n {niceness} /usr/bin/time -v {server_exec_path}/{server_exec_name} -r 0 -a {server_ip} -f {server_exec_path}/embeddings.txt -o {client_pffrocd_path} -s {sec_lvl} -x {mt_alg}"
             sfe_start_time  = time.time()
-            output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, server_username, "kamil123", command1, command2)
+            output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, server_username, "kamil123", command1, command2, timeout=300)
             sfe_time = time.time() - sfe_start_time
             logger.info(f"Finished! Total sfe time: {sfe_time} seconds ({count_img+1}/{len(imgs)})")
             server_sfe_output = ''
@@ -164,7 +164,7 @@ def run_test():
             if gather_energy_data:
                 logger.info("Running powertop to gather energy consumption data...")
                 powertop_command = f"sudo powertop --csv=powertop_{current_datetime}.csv -t {sfe_time + 1}"
-                output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, server_username,  "kamil123", f"{command1} & {powertop_command}", f"{command2} & {powertop_command}")
+                output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, server_username,  "kamil123", f"{command1} & {powertop_command}", f"{command2} & {powertop_command}", timeout=300)
                 # get the powertop files from hosts and parse them and save in the dataframe
                 all_values, energy_client = pffrocd.get_energy_consumption(client_ip, client_username, client_key, f"{client_exec_path}/powertop_{current_datetime}.csv", sfe_time + 1)
                 logger.debug(f"All values from powertop for client: {all_values}")
