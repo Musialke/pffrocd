@@ -1,6 +1,7 @@
 [client]
-ip_address = 
-username = 
+ip_address = 127.0.0.1
+username = user
+password = password
 # path to a private ssh key used to connect to the client
 private_ssh_key_path = /home/user/.ssh/id_rsa
 # location of the the sfe executable
@@ -10,8 +11,9 @@ executable_name = cos_dist_float_scen_simd
 pffrocd_path = /home/user/pffrocd
 
 [server]
-ip_address = 
-username = 
+ip_address = 127.0.0.1
+username = user
+password = password
 # path to a private ssh key used to connect to the client
 private_ssh_key_path = /home/user/.ssh/id_rsa
 # location of the the sfe executable
