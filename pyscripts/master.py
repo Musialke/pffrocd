@@ -24,6 +24,7 @@ def orverride_config(sec_lvl, mt_alg):
 
 client_ip = config.get('client', 'ip_address')
 client_username = config.get('client', 'username')
+client_password = config.get('client', 'password')
 client_key = config.get('client', 'private_ssh_key_path')
 client_exec_path = config.get('client', 'executable_path')
 client_exec_name = config.get('client', 'executable_name')
@@ -31,6 +32,7 @@ client_pffrocd_path = config.get('client', 'pffrocd_path')
 
 server_ip = config.get('server', 'ip_address')
 server_username = config.get('server', 'username')
+server_password = config.get('server', 'password')
 server_key = config.get('server', 'private_ssh_key_path')
 server_exec_path = config.get('server', 'executable_path')
 server_exec_name = config.get('server', 'executable_name')
@@ -66,8 +68,8 @@ def run_test():
     logger.debug(f"pffrocd config: {pffrocd.get_config_in_printing_format(config)}")
 
     # get the bandwidth and log it
-    bandwidth = pffrocd.get_bandwidth(server_ip, client_ip, server_username, client_username, 'kamil123', server_key, server_pffrocd_path, current_datetime)
-    logger.info(f"Bandwidth: {bandwidth:.2f} Mbits/sec")
+    bandwidth = pffrocd.get_bandwidth(server_ip, client_ip, server_username, client_username, server_password, client_password, server_key, server_pffrocd_path, current_datetime)
+    logger.info(f"Initial (tested with iperf3) bandwidth: {bandwidth:.2f} Mbits/sec")
 
     # get the list of people that have more than one image
     people = pffrocd.get_people_with_multiple_images(root_dir='lfw')
@@ -136,7 +138,7 @@ def run_test():
             command1 = f"cd {client_exec_path} ; nice -n {niceness} /usr/bin/time -v {client_exec_path}/{client_exec_name} -r 1 -a {server_ip} -f {client_exec_path}/embeddings.txt -o {client_pffrocd_path} -s {sec_lvl} -x {mt_alg}"
             command2 = f"cd {server_exec_path} ; nice -n {niceness} /usr/bin/time -v {server_exec_path}/{server_exec_name} -r 0 -a {server_ip} -f {server_exec_path}/embeddings.txt -o {client_pffrocd_path} -s {sec_lvl} -x {mt_alg}"
             sfe_start_time  = time.time()
-            output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, server_username, "kamil123", command1, command2, timeout=300)
+            output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, server_username, client_password, server_password, command1, command2, timeout=300)
             sfe_time = time.time() - sfe_start_time
             logger.info(f"Finished! Total sfe time: {sfe_time} seconds ({count_img+1}/{len(imgs)})")
             server_sfe_output = ''
@@ -164,7 +166,7 @@ def run_test():
             if gather_energy_data:
                 logger.info("Running powertop to gather energy consumption data...")
                 powertop_command = f"sudo powertop --csv=powertop_{current_datetime}.csv -t {sfe_time + 1}"
-                output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, server_username,  "kamil123", f"{command1} & {powertop_command}", f"{command2} & {powertop_command}", timeout=300)
+                output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, server_username, client_password, server_password, f"{command1} & {powertop_command}", f"{command2} & {powertop_command}", timeout=300)
                 # get the powertop files from hosts and parse them and save in the dataframe
                 all_values, energy_client = pffrocd.get_energy_consumption(client_ip, client_username, client_key, f"{client_exec_path}/powertop_{current_datetime}.csv", sfe_time + 1)
                 logger.debug(f"All values from powertop for client: {all_values}")
@@ -184,9 +186,10 @@ def run_test():
                 continue
             if not server_ram_usage or not client_ram_usage:
                 continue
-            logger.info(f"Server throughput: {server_parsed_sfe_output['hardware.throughput']}")
-            logger.info(f"Client throughput: {client_parsed_sfe_output['hardware.throughput']}")
+            logger.info(f"Server throughput (for this run, reported by ABY): {float(server_parsed_sfe_output['hardware.throughput']) * 8:.2f} Mbits/sec")
+            logger.info(f"Client throughput (for this run, reported by ABY): {float(client_parsed_sfe_output['hardware.throughput']) * 8:.2f} Mbits/sec")
             logger.info(f"Server total time: {float(server_parsed_sfe_output['timings.total']) / 1000}")
+            logger.info(f"Client total time: {float(client_parsed_sfe_output['timings.total']) / 1000}")
             cos_dist_sfe = float(server_parsed_sfe_output['cos_dist_sfe'])
             result = cos_dist_sfe < pffrocd.threshold
             expected_result = ref_img.split('/')[1] == img.split('/')[1] # check if the images belong to the same person

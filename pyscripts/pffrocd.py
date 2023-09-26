@@ -659,9 +659,9 @@ def get_people_with_multiple_images(root_dir):
 
 import os
 
-def get_bandwidth(hostname1, hostname2, username1, username2, password, private_key_path, remote_path, current_datetime):
+def get_bandwidth(hostname1, hostname2, username1, username2, password1, password2, private_key_path, remote_path, current_datetime):
     '''execute iperf3 command on a list of hosts'''
-    output = execute_command_parallel_alternative([hostname1, hostname2], username1, username2, password, f'iperf3 -J -s -1 --logfile iperf3_{current_datetime}.log', f'sleep 3 && iperf3 -J -c {hostname1}', timeout=20)
+    output = execute_command_parallel_alternative([hostname1, hostname2], username1, username2, password1, password2,  f'iperf3 -J -s -1 --logfile iperf3_{current_datetime}.log', f'sleep 3 && iperf3 -J -c {hostname1}', timeout=20)
     for host_output in output:
         stdout = list(host_output.stdout)
         stderr = list(host_output.stderr)
@@ -761,18 +761,24 @@ def get_random_images_except_person(root_dir, excluded_person, num_images):
     return random_image_paths
 
 
-def execute_command_parallel_alternative(hosts, username1, username2, password, command1, command2, timeout=600):
+def execute_command_parallel_alternative(hosts, username1, username2, password1, password2, command1, command2, timeout=600):
     host_config = [
             HostConfig(port=22, user=username1,
-                    password=password),
+                    password=password1),
             HostConfig(port=22, user=username2,
-                    password=password),
+                    password=password2),
             ]
     client = ParallelSSHClient(hosts=hosts, host_config=host_config, timeout=timeout)
     output = client.run_command('%s', host_args=(command1,command2), sudo=True)
     for host_out in output:
-        host_out.stdin.write(f'{password}\n')
-        host_out.stdin.flush()
+        if host_out.host == hosts[0]:
+            host_out.stdin.write(f'{password1}\n')
+            host_out.stdin.flush()
+        elif host_out.host == hosts[1]:
+            host_out.stdin.write(f'{password2}\n')
+            host_out.stdin.flush()
+        else:
+            raise Exception(f"Unexpected host: {host_out.host}")
     client.join(output)
     del client
     return output
