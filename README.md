@@ -31,6 +31,20 @@ The results are saved in a `.csv` file as a `pandas` Dataframe in the `dfs/` fol
 
 The testing flow is as follows:
 
+**Master**
+
+1. Reads config file
+2. Tests bandwidth between _sever_ and _client_ (by remotely executing iperf3 tests on both devices)
+3. Prepares the database images (choose appropriate people from the DB and their images)
+4. Sets image x of person p as the reference image (the image stored at the Service Provider)
+5. Sends share of x to _client_ and _server_
+6. Runs tests for other images of p, namely for each image i:
+7. Makes the _server_ extract embedding of i
+8. Sends embeddings to _client_ and _server_
+9. Runs SFE on _client_ and _server_
+10. If indicated, reruns SFE this time gathering energy data from Powertop
+11. Saves results
+
 ![image](https://github.com/Musialke/pffrocd/assets/26610983/e0843c66-283b-4aea-b536-fe309f1481fd)
 
 ## Setup Guide:
