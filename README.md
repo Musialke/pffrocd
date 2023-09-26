@@ -7,9 +7,20 @@ Privacy-Friendly Face Recognition On Constrained Devices
 
 Three entities are involved in the testing: a _master_ device, _server_ (simulating a drone) and _client_ (simulating a mobile device). They should be located in the same network so that _master_ can `ssh` into _server_ and _client_ and run SFE on them.
 
-![Untitled Diagram drawio(2)](https://github.com/Musialke/pffrocd/assets/26610983/274e493f-0dec-42fe-86e1-61a8543494f7)
+![Untitled Diagram(18) drawio](https://github.com/Musialke/pffrocd/assets/26610983/128361a4-b817-42ac-a857-e592e41556b4)
+
 
 The _master_ device does not need to be a very powerful machine, as it only orchestrates the operations. Its specifications do not influence test results. A Raspberry Pi 2 was performing just fine.
+
+I was running:
+
+_master_: RPi Model 3 B (aarch64) DietPi v8.20.1 Debian GNU/Linux 12 (bookworm)
+_client_ and _server_:
+Raspbian OS
+Operating System: Debian GNU/Linux 11 (bullseye)
+          Kernel: Linux 6.1.21-v8+
+    Architecture: arm64
+
 
 ### Running tests
 
