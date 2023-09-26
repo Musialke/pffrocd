@@ -1,14 +1,41 @@
 # pffrocd
 Privacy-Friendly Face Recognition On Constrained Devices
 
+## Test explanation
+
+### Devices needed
+
+Three entities are involved in the testing: a _master_ device, _server_ (simulating a drone) and _client_ (simulating a mobile device). They should be located in the same network so that _master_ can `ssh` into _server_ and _client_ and run SFE on them.
+
+![Untitled Diagram drawio(2)](https://github.com/Musialke/pffrocd/assets/26610983/274e493f-0dec-42fe-86e1-61a8543494f7)
+
+The _master_ device does not need to be a very powerful machine, as it only orchestrates the operations. Its specifications do not influence test results. A Raspberry Pi 2 was performing just fine.
+
+### Running tests
+
+First, follow the [setup guide](#setup-guide). Then execute the main script `pyscripts/master.py` at the _master_ device. It handles the communication with the _server_ and _client_.
+
+The _master_ device:
+- reads the config file
+- prepares images from the image database
+- creates face embedding shares and sends them to _server_ and _client_
+- orchestrates SFE execution between _server_ and _client_
+- saves results
+
+There is logging:
+INFO level logging to stdout and DEBUG level logging to a file in `log/`.
+
+The results are saved in a `.csv` file as a `pandas` Dataframe in the `dfs/` folder. For the format of the saved data, see `pffrocd.columns` in `pyscripts/pffrocd.py`. Also, the Jupyter Notebooks in `plotting/` and `results/` can give an overview how to visualize the data.
+
+### Testing flow
 
 The testing flow is as follows:
 
 ![image](https://github.com/Musialke/pffrocd/assets/26610983/e0843c66-283b-4aea-b536-fe309f1481fd)
 
-The code is also rather extensively commented. The main script is `pyscripts/master.py` and helping functions are in `pyscripts/pfforcd.py`.
+## Setup Guide:
 
-## Complete guide to set up a host for tests:
+**For all three devices**
 
 1. Install required packages:
 
@@ -16,7 +43,7 @@ The code is also rather extensively commented. The main script is `pyscripts/mas
 sudo apt update && sudo apt install time python3 python3-venv iperf3 g++ make cmake libgmp-dev libssl-dev libboost-all-dev ffmpeg libsm6 libxext6 git powertop -y
 ```
 
-2. Generate SSH key and add as deploy key to the git repo
+2. Generate SSH keys and add them as deploy keys to the git repo (to be able to clone the repo)
 
 ```sh
 ssh-keygen
@@ -29,7 +56,7 @@ git clone git@github.com:Musialke/pffrocd.git
 cd pffrocd
 ```
 
-For SERVER and CLIENT:
+**For _server_ and _client_:**
 
 4. Create the ABY build directory
 ```sh
@@ -41,12 +68,12 @@ mkdir ABY/build/ && cd ABY/build/
 cmake ..
 ```
 
-6. Call `make` in the build directory. You can find the build executables and libraries in the directories `bin/` and `lib/`, respectively.
+6. Call `make` in the build directory. You can find the build executables and libraries in the `bin/` and `lib/` directories, respectively.
 ```sh
 make
 ```
 
-7. To be able to run a process with higher priority modify limits.conf as explained here: https://unix.stackexchange.com/a/358332
+7. To be able to run a process with higher priority, modify limits.conf as explained here: https://unix.stackexchange.com/a/358332
 
 8. Calibrate Powertop to get power estimate readings
 
@@ -54,11 +81,13 @@ make
 sudo powertop --calibrate
 ```
 
-ADDITIONALLY FOR SERVER AND MASTER:
+This takes a while, turns peripherals on and off and reboots the system
 
-Since the server and master need to extract embeddings, they need the database of pictures and Python.
+**ADDITIONALLY for _master_ and _server_:**
 
-9. Change directory back to repo root folder and unpack the picture database:
+Since the _server_ and _master_ need to extract embeddings, they need the database of pictures and Python.
+
+9. Change the directory back to the repo root folder and unpack the picture database:
 ```sh
 cat lfw.tgz.parta* | tar -xzv
 ```
@@ -74,13 +103,19 @@ pip install -vr requirements.txt
 ```sh
 mkdir -p ~/.deepface/weights/ && cp face_recognition_sface_2021dec.onnx ~/.deepface/weights/
 ```
-ADDITIONALLY FOR MASTER
+**ADDITIONALLY for _master_**
+
+You need to specify config options and _master_ needs to be able to ssh into _server_ and _client_. 
 
 12. Rename the `config.ini.example` file to `config.ini` and modify it accordingly
 
-13. Copy the ssh keys to server and client using ssh-copy-id
+13. Copy the SSH keys to the _server_ and _client_ using ssh-copy-id
 
-14. Run the main script in the background on the master machine
+```sh
+ssh-copy-id user@ip_address
+```
+**All done!**
+You can now run the main script in the background on the master machine
 ```sh
 python pyscripts/master.py&
 ```
