@@ -18,6 +18,7 @@ _master_: RPi Model 3 B (aarch64) DietPi v8.20.1 Debian GNU/Linux 12 (bookworm)
 
 
 _client_ and _server_:
+RPi Model 3 B+
 Raspbian OS
 Operating System: Debian GNU/Linux 11 (bullseye)
           Kernel: Linux 6.1.21-v8+
