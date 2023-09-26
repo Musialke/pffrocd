@@ -15,6 +15,8 @@ The _master_ device does not need to be a very powerful machine, as it only orch
 I was running:
 
 _master_: RPi Model 3 B (aarch64) DietPi v8.20.1 Debian GNU/Linux 12 (bookworm)
+
+
 _client_ and _server_:
 Raspbian OS
 Operating System: Debian GNU/Linux 11 (bullseye)
