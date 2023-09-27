@@ -39,7 +39,7 @@ The _master_ device:
 There is logging:
 INFO level logging to stdout and DEBUG level logging to a file in `log/`.
 
-The results are saved in a `.csv` file as a `pandas` Dataframe in the `dfs/` folder. For the format of the saved data, see `pffrocd.columns` in `pyscripts/pffrocd.py`. Also, the Jupyter Notebooks in `plotting/` and `results/` can give an overview how to visualize the data.
+The results are saved in a `.csv` file as a `pandas` Dataframe in the `dfs/` folder. For the format of the saved data, see `pffrocd.columns` in `pyscripts/pffrocd.py`. Also, the Jupyter Notebooks in `plotting/` and `results/` can give an overview of how to visualize the data.
 
 ### Testing flow
 
@@ -109,7 +109,7 @@ make
 sudo powertop --calibrate
 ```
 
-This takes a while, turns peripherals on and off and reboots the system
+This takes a while, turns peripherals on and off and reboots the system.
 
 **ADDITIONALLY for _master_ and _server_:**
 
@@ -133,7 +133,7 @@ mkdir -p ~/.deepface/weights/ && cp face_recognition_sface_2021dec.onnx ~/.deepf
 ```
 **ADDITIONALLY for _master_**
 
-You need to specify config options and _master_ needs to be able to ssh into _server_ and _client_. 
+You need to specify config options, and _master_ needs to be able to ssh into _server_ and _client_. 
 
 12. Rename the `config.ini.example` file to `config.ini` and modify it accordingly
 
@@ -145,7 +145,12 @@ ssh-copy-id user@ip_address
 **All done!**
 You can now run the main script in the background on the master machine
 ```sh
-python pyscripts/master.py&
+nohup python3 pyscripts/master.py </dev/null >/dev/null 2>&1 &
+```
+
+Follow the logs to know what stage the program is at:
+```sh
+tail -f log/<logfile>
 ```
 
 The logs are saved in the `log/` directory and the test results are appended to a csv file in `dfs/` after running all tests for one person.
@@ -154,13 +159,13 @@ The logs are saved in the `log/` directory and the test results are appended to 
 ### Possible errors and solutions:
 
 `ImportError: libGL.so.1: cannot open shared object file: No such file or directory`
-fix:
+Fix:
 ```sh
 sudo apt update && sudo apt install ffmpeg libsm6 libxext6  -y
 ```
 
 `v2.error: OpenCV(4.7.0) /io/opencv/modules/dnn/src/onnx/onnx_importer.cpp:275: error: (-210:Unsupported format or combination of formats) Failed to parse ONNX model: /home/dietpi/.deepface/weights/face_recognition_sface_2021dec.onnx in function 'ONNXImporter'` 
-The link to weights for SFace is missing. fix:
+The link to weights for SFace needs to be included. Fix:
 ```sh
 mkdir -p ~/.deepface/weights/ && cp face_recognition_sface_2021dec.onnx ~/.deepface/weights/
 ```
