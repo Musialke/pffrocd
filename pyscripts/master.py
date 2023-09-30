@@ -77,7 +77,7 @@ def run_test():
     logger.info(f"RUNNING for {len(people)} people")
 
     # list to store data (later saved as a dataframe) see https://stackoverflow.com/a/56746204
-    data = []
+    # data = []
 
     # run for all the people with multiple images
     for count_person, person in enumerate(people):
@@ -213,13 +213,11 @@ def run_test():
             to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time] + server_list_of_ram_values + client_list_of_ram_values +  [energy_client, energy_server] + server_list_of_sfe_values + client_list_of_sfe_values
             logger.debug(f"{to_be_appended=}")
             logger.debug(f"{pffrocd.columns=}")
-            data.append(to_be_appended)
-        # make and iteratively save the dataframe with results        
-        df = pd.DataFrame(data, columns=pffrocd.columns)
-        output_path = f"dfs/{current_datetime}.csv"
-        # append dataframe to file, only write headers if file does not exist yet
-        df.to_csv(output_path, mode='a', header=not os.path.exists(output_path))
-        data = []
+            # make and iteratively save the dataframe with results        
+            df = pd.DataFrame([to_be_appended], columns=pffrocd.columns)
+            output_path = f"dfs/{current_datetime}.csv"
+            # append dataframe to file, only write headers if file does not exist yet
+            df.to_csv(output_path, mode='a', header=not os.path.exists(output_path))
 
 
 if __name__ == "__main__":

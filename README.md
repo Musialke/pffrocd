@@ -153,7 +153,7 @@ Follow the logs to know what stage the program is at:
 tail -f log/<logfile>
 ```
 
-The logs are saved in the `log/` directory and the test results are appended to a csv file in `dfs/` after running all tests for one person.
+The logs are saved in the `log/` directory and the test results are appended to a csv file in `dfs/` after each run.
 
 
 ### Possible errors and solutions:
