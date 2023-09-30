@@ -1,0 +1,29 @@
+2023-09-30 13:01:48,059 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.5.111",
+        "username": "kamil",
+        "password": "kamil123",
+        "private_ssh_key_path": "/home/dietpi/.ssh/id_rsa",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.5.112",
+        "username": "kamil",
+        "password": "kamil123",
+        "private_ssh_key_path": "/home/dietpi/.ssh/id_rsa",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1500",
+        "security_level": "112",
+        "mt_algorithm": "0",
+        "niceness": "-20",
+        "starting_person": "15",
+        "bit_length": "32",
+        "gather_energy_data": "0"
+    }
+}
