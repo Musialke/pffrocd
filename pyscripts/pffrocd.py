@@ -325,7 +325,7 @@ def get_energy_consumption(hostname, username, private_key_path, remote_path, ru
         return energy_series, total_joules
 
 def get_two_random_embeddings(same_person):
-    print(os.getcwd())
+    # print(os.getcwd())
     people = os.listdir('lfw') # list of all people that have images
     people_with_multiple_images = [p for p in people if len(os.listdir(f"lfw/{p}")) > 1] # list of people with more than one image in folder
     embedding1, embedding2 = None, None # face embeddings
@@ -687,10 +687,10 @@ def get_bandwidth(hostname1, hostname2, username1, username2, password1, passwor
         with sftp.open(f'iperf3_{current_datetime}.log', 'r') as file:
             # Read the content of the file
             content = file.readlines()
-            print(f"{content=}")
+            # print(f"{content=}")
             # load the content into a dictionary
             d = json.loads(''.join(content))
-            print(f"{d=}")
+            # print(f"{d=}")
             bandwidth = float(d['end']['sum_received']['bits_per_second']) / 1e6
         
         # remove the file on the host
@@ -805,4 +805,4 @@ if __name__ == "__main__":
     with open("/home/kamil/Documents/uni/thesis/pffrocd/sample_aby_output.txt", "r") as f:
         output = f.read()
     d = parse_aby_output(output)
-    print(d.keys())
+    # print(d.keys())
