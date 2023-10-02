@@ -165,8 +165,8 @@ def run_test():
             # rerun the routine with powertop to gather energy consumption data
             if gather_energy_data:
                 logger.info("Running powertop to gather energy consumption data...")
-                running_time_client = client_ram_usage['User time (seconds)']
-                running_time_server = server_ram_usage['User time (seconds)']
+                running_time_client = float(client_ram_usage['User time (seconds)'])
+                running_time_server = float(server_ram_usage['User time (seconds)'])
                 powertop_command = f"sudo powertop --csv=powertop_{current_datetime}.csv -t {sfe_time + 1}"
                 output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, server_username, client_password, server_password, f"{command1} & {powertop_command}", f"{command2} & {powertop_command}", timeout=300)
                 # get the powertop files from hosts and parse them and save in the dataframe
