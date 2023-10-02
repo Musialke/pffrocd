@@ -162,16 +162,18 @@ def run_test():
             logger.debug(f"Parsed server ram usage: {server_ram_usage}")
             logger.debug(f"Parsed client ram usage: {client_ram_usage}")
 
-                # rerun the routine with powertop to gather energy consumption data
+            # rerun the routine with powertop to gather energy consumption data
             if gather_energy_data:
                 logger.info("Running powertop to gather energy consumption data...")
+                running_time_client = client_ram_usage['User time (seconds)']
+                running_time_server = server_ram_usage['User time (seconds)']
                 powertop_command = f"sudo powertop --csv=powertop_{current_datetime}.csv -t {sfe_time + 1}"
                 output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, server_username, client_password, server_password, f"{command1} & {powertop_command}", f"{command2} & {powertop_command}", timeout=300)
                 # get the powertop files from hosts and parse them and save in the dataframe
-                all_values, energy_client = pffrocd.get_energy_consumption(client_ip, client_username, client_key, f"{client_exec_path}/powertop_{current_datetime}.csv", sfe_time + 1)
+                all_values, energy_client = pffrocd.get_energy_consumption(client_ip, client_username, client_key, f"{client_exec_path}/powertop_{current_datetime}.csv", running_time_client + 1)
                 logger.debug(f"All values from powertop for client: {all_values}")
                 logger.debug(f"Energy client: {energy_client}")
-                all_values, energy_server = pffrocd.get_energy_consumption(server_ip, server_username, server_key, f"{server_exec_path}/powertop_{current_datetime}.csv", sfe_time + 1)
+                all_values, energy_server = pffrocd.get_energy_consumption(server_ip, server_username, server_key, f"{server_exec_path}/powertop_{current_datetime}.csv", running_time_server + 1)
                 logger.debug(f"All values from powertop for server: {all_values}")
                 logger.debug(f"Energy server: {energy_server}")
             else:
