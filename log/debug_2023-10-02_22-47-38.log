@@ -1,0 +1,34 @@
+2023-10-02 22:47:38,401 - DEBUG - pffrocd config: {
+    "client": {
+        "ip_address": "192.168.5.125",
+        "username": "kamil",
+        "password": "kamil123",
+        "private_ssh_key_path": "/home/dietpi/.ssh/id_rsa",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "server": {
+        "ip_address": "192.168.5.124",
+        "username": "kamil",
+        "password": "kamil123",
+        "private_ssh_key_path": "/home/dietpi/.ssh/id_rsa",
+        "executable_path": "/home/kamil/pffrocd/ABY/build/bin",
+        "executable_name": "cos_dist_float_scen_simd",
+        "pffrocd_path": "/home/kamil/pffrocd"
+    },
+    "misc": {
+        "nr_of_people": "1500",
+        "security_level": "128",
+        "mt_algorithm": "1",
+        "niceness": "-20",
+        "starting_person": "15",
+        "bit_length": "32",
+        "gather_energy_data": "1"
+    }
+}
+2023-10-02 22:47:54,418 - INFO - Initial (tested with iperf3) bandwidth: 243.42 Mbits/sec
+2023-10-02 22:48:00,165 - INFO - RUNNING for 1485 people
+2023-10-02 22:48:00,166 - INFO - Currently running for lfw/Adrian_McPherson (1/1485)
+2023-10-02 22:48:00,167 - DEBUG - Found 2 images for lfw/Adrian_McPherson
+2023-10-02 22:48:00,167 - DEBUG - setting image as reference image: lfw/Adrian_McPherson/Adrian_McPherson_0001.jpg
