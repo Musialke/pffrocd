@@ -38,6 +38,12 @@ server_exec_path = config.get('server', 'executable_path')
 server_exec_name = config.get('server', 'executable_name')
 server_pffrocd_path = config.get('server', 'pffrocd_path')
 
+# Added this to the config file
+# Since at first the master, server and client all had the same path e.g.: home/user/.ssh/id_rsa we could always use the server or client key path
+# However during my testing I had a different path on master, therefore, added this to config file
+# If all your paths are the same, you can set this in the config file to the same as the server or client key path
+master_key_path = config.get('master', 'private_ssh_key_path')
+
 nr_of_people = config.getint('misc', 'nr_of_people')
 niceness = config.getint('misc', 'niceness')
 starting_person = config.getint('misc', 'starting_person')
@@ -56,9 +62,9 @@ else:
 client_exec_name += f"_{bit_length}"
 server_exec_name += f"_{bit_length}"
 
-
-
 def run_test():
+    output_path = 'dfs/2024-06-20_12-00-00.csv'
+
     current_datetime = datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S')
     sec_lvl = config.getint('misc', 'security_level')
     mt_alg = config.getint('misc', 'mt_algorithm')
@@ -68,7 +74,7 @@ def run_test():
     logger.debug(f"pffrocd config: {pffrocd.get_config_in_printing_format(config)}")
 
     # get the bandwidth and log it
-    bandwidth = pffrocd.get_bandwidth(server_ip, client_ip, server_username, client_username, server_password, client_password, server_key, server_pffrocd_path, current_datetime)
+    bandwidth = pffrocd.get_bandwidth(server_ip, client_ip, server_username, client_username, server_password, client_password, master_key_path, server_pffrocd_path, current_datetime)
     logger.info(f"Initial (tested with iperf3) bandwidth: {bandwidth:.2f} Mbits/sec")
 
     # get the list of people that have more than one image
@@ -99,18 +105,30 @@ def run_test():
 
         # create shares of the reference image
         ref_img_embedding = pffrocd.get_embedding(ref_img, dtype=NUMPY_DTYPE)
+        # NORMALIZE THE FACE EMBEDDING SO THE SHARES ARE NORMALIZED TO
+        ref_img_embedding = ref_img_embedding / np.linalg.norm(ref_img_embedding)
+
         share0, share1 = pffrocd.create_shares(ref_img_embedding, dtype=NUMPY_DTYPE)
-
         # write the shares to the server and client
-        pffrocd.write_share_to_remote_file(client_ip, client_username, client_key, f"{client_exec_path}/share1.txt", share0)
-        pffrocd.write_share_to_remote_file(server_ip, server_username, server_key, f"{server_exec_path}/share0.txt", share1)
-
+        # I feel like an extra comment here is necessary. The share goes to the client, but since the client has role 1 it is written to share1.txt, such that in the cpp file we can do: share{role}.txt
+        # This made me confused for a while, so I think it is good to clarify this here
+        shareBytesSetupPhaseTotal = 0
+        shareBytesSetupPhaseServer = 0
+        shareBytesSetupPhaseClient = 0   
+        shareBytesSetupPhaseClient += pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1.txt", share0)
+        shareBytesSetupPhaseServer += pffrocd.write_share_to_remote_file(server_ip, server_username, master_key_path, f"{server_exec_path}/share0.txt", share1)
+        shareBytesSetupPhaseTotal = shareBytesSetupPhaseClient + shareBytesSetupPhaseServer
         # run the test for each image
         for count_img,img in enumerate(imgs):
+            df = pd.read_csv(output_path)
+            if img in df['other_img'].values:
+                logger.info(f"Skipping image {img} as it is already in the dataframe")
+                continue
+
             logger.info(f"Running test for {img}")
 
             # run the face embedding extraction script on the server
-            stdout, stderr = pffrocd.execute_command(server_ip, server_username, f"{server_pffrocd_path}/env/bin/python {server_pffrocd_path}/pyscripts/extract_embedding.py -i {server_pffrocd_path}/{img} -o {server_exec_path}/embedding.txt", server_key)
+            stdout, stderr = pffrocd.execute_command(server_ip, server_username, f"{server_pffrocd_path}/env/bin/python {server_pffrocd_path}/pyscripts/extract_embedding.py -i {server_pffrocd_path}/{img} -o {server_exec_path}/embedding.txt -n {True}", master_key_path)
             logger.debug(f"Stdout of extracting embedding: {stdout}")
             logger.debug(f"Stderr of extracting embedding: {stderr}")
             extraction_time = float(stdout)
@@ -120,11 +138,30 @@ def run_test():
                 logger.error(stderr)
 
             logger.info(f"Embedding extracted by the server in {extraction_time} seconds")
+
+            # Let the server create two shares from the embeddings
+            stdout, stderr = pffrocd.execute_command(server_ip, server_username, f"{server_pffrocd_path}/env/bin/python {server_pffrocd_path}/pyscripts/generate_shares.py -i {server_exec_path}/embedding.txt -b {bit_length} -o {server_exec_path}/share0prime.txt", master_key_path)
+            logger.debug(f"Stdout of extracting embedding: {stdout}")
+            logger.debug(f"Stderr of extracting embedding: {stderr}")
+            # Remove the brackets and split the string into a list of strings
+            s = stdout.strip('[]').split()
+            logger.info(f"Share prime looks like: {s}")
+            # Convert the list of strings into a list of floats
+            s = [float(i) for i in s]
+            # Convert the list of floats into a numpy array
+            shareprime = np.array(s, dtype=NUMPY_DTYPE)
+            logger.info(f"Share prime looks like: {shareprime}")
+
+            if stderr != '':
+                logger.error("REMOTE EXECUTION OF COMMAND FAILED")
+                logger.error(stderr)
+            shareBytesOnlinePhaseClient = 0
+            shareBytesOnlinePhaseClient+=pffrocd.write_share_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/share1prime.txt", shareprime)
             
             # send the files with embeddings to the client and server
             img_embedding = pffrocd.get_embedding(img, dtype=NUMPY_DTYPE)
-            pffrocd.write_embeddings_to_remote_file(client_ip, client_username, client_key, f"{client_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
-            pffrocd.write_embeddings_to_remote_file(server_ip, server_username, server_key, f"{server_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
+            pffrocd.write_embeddings_to_remote_file(client_ip, client_username, master_key_path, f"{client_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
+            pffrocd.write_embeddings_to_remote_file(server_ip, server_username, master_key_path, f"{server_exec_path}/embeddings.txt", img_embedding, ref_img_embedding)
             
             # run the sfe on both client and server in parallel
             logger.info("Running sfe...")
@@ -138,7 +175,7 @@ def run_test():
             command1 = f"cd {client_exec_path} ; nice -n {niceness} /usr/bin/time -v {client_exec_path}/{client_exec_name} -r 1 -a {server_ip} -f {client_exec_path}/embeddings.txt -o {client_pffrocd_path} -s {sec_lvl} -x {mt_alg}"
             command2 = f"cd {server_exec_path} ; nice -n {niceness} /usr/bin/time -v {server_exec_path}/{server_exec_name} -r 0 -a {server_ip} -f {server_exec_path}/embeddings.txt -o {client_pffrocd_path} -s {sec_lvl} -x {mt_alg}"
             sfe_start_time  = time.time()
-            output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, server_username, client_password, server_password, command1, command2, timeout=300)
+            output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, server_username, client_password, server_password, command1, command2, timeout=600)
             sfe_time = time.time() - sfe_start_time
             logger.info(f"Finished! Total sfe time: {sfe_time} seconds ({count_img+1}/{len(imgs)})")
             server_sfe_output = ''
@@ -161,7 +198,8 @@ def run_test():
             client_ram_usage = pffrocd.parse_usr_bin_time_output(client_sfe_error)
             logger.debug(f"Parsed server ram usage: {server_ram_usage}")
             logger.debug(f"Parsed client ram usage: {client_ram_usage}")
-
+            logger.info(f"Server SFE output: {server_sfe_output}")
+            logger.info(f"Client SFE output: {client_sfe_output}")
             # rerun the routine with powertop to gather energy consumption data
             if gather_energy_data:
                 logger.info("Running powertop to gather energy consumption data...")
@@ -170,10 +208,10 @@ def run_test():
                 powertop_command = f"sudo powertop --csv=powertop_{current_datetime}.csv -t {sfe_time + 1}"
                 output = pffrocd.execute_command_parallel_alternative([client_ip, server_ip], client_username, server_username, client_password, server_password, f"{command1} & {powertop_command}", f"{command2} & {powertop_command}", timeout=300)
                 # get the powertop files from hosts and parse them and save in the dataframe
-                all_values, energy_client = pffrocd.get_energy_consumption(client_ip, client_username, client_key, f"{client_exec_path}/powertop_{current_datetime}.csv", running_time_client + 1)
+                all_values, energy_client = pffrocd.get_energy_consumption(client_ip, client_username, master_key_path, f"{client_exec_path}/powertop_{current_datetime}.csv", running_time_client + 1)
                 logger.debug(f"All values from powertop for client: {all_values}")
                 logger.debug(f"Energy client: {energy_client}")
-                all_values, energy_server = pffrocd.get_energy_consumption(server_ip, server_username, server_key, f"{server_exec_path}/powertop_{current_datetime}.csv", running_time_server + 1)
+                all_values, energy_server = pffrocd.get_energy_consumption(server_ip, server_username, master_key_path, f"{server_exec_path}/powertop_{current_datetime}.csv", running_time_server + 1)
                 logger.debug(f"All values from powertop for server: {all_values}")
                 logger.debug(f"Energy server: {energy_server}")
             else:
@@ -212,12 +250,12 @@ def run_test():
             logger.debug(f"{client_ram_usage=}")
             logger.debug(f"{server_list_of_ram_values=}")
             logger.debug(f"{client_list_of_ram_values=}")
-            to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time] + server_list_of_ram_values + client_list_of_ram_values +  [energy_client, energy_server] + server_list_of_sfe_values + client_list_of_sfe_values
+            to_be_appended = [ref_img, img, result, expected_result, cos_dist_np, cos_dist_sfe, sfe_time + extraction_time, sfe_time, extraction_time, shareBytesSetupPhaseTotal, shareBytesSetupPhaseClient, shareBytesSetupPhaseServer, shareBytesOnlinePhaseClient] + server_list_of_ram_values + client_list_of_ram_values +  [energy_client, energy_server] + server_list_of_sfe_values + client_list_of_sfe_values
             logger.debug(f"{to_be_appended=}")
             logger.debug(f"{pffrocd.columns=}")
             # make and iteratively save the dataframe with results        
             df = pd.DataFrame([to_be_appended], columns=pffrocd.columns)
-            output_path = f"dfs/{current_datetime}.csv"
+            #output_path = f"dfs/{current_datetime}.csv"
             # append dataframe to file, only write headers if file does not exist yet
             df.to_csv(output_path, mode='a', header=not os.path.exists(output_path))
 

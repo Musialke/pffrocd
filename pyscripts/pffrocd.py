@@ -11,6 +11,7 @@ from deepface import DeepFace
 import paramiko
 import logging
 import datetime
+import sys
 import json
 from pssh.clients import ParallelSSHClient
 from pssh.config import HostConfig
@@ -32,6 +33,10 @@ columns = [
     'total_time',
     'sfe_time',
     'extraction_time',
+    'share_bytes_setup_phase_total',
+    'share_bytes_setup_phase_client',
+    'share_bytes_setup_phase_server',
+    'share_bytes_online_phase_client',
     'server.Command being timed',
     'server.User time (seconds)',
     'server.System time (seconds)',
@@ -224,6 +229,53 @@ def get_cos_dist_numpy(x, y):
     """
     return 1 - np.dot(x, y)/(np.linalg.norm(x)*np.linalg.norm(y))
 
+def run_sfe_improved(x,y, y_0=None, y_1=None, x_0=None, x_1=None, scalar_x0=None, scalar_x1=None, scalar_y0=None, scalar_y1=None):
+    """
+    Write the vectors to files used by ABY executable
+    If y_0 and y_1 are provided run it as actual scenario (shared IN gates)
+    Otherwise run as test providing two vectors to be compared
+    """
+    with open(f"{EXECUTABLE_PATH}/{INPUT_FILE_NAME}", 'w') as f:
+        for x_i, y_i in zip(x, y):
+            f.write(f"{x_i} {y_i}\n")
+
+    if y_0 is not None and y_1 is not None:
+    # write the shares into separate files
+        with open(f"{EXECUTABLE_PATH}/share0.txt", 'w') as f:
+            for i in y_0:
+                f.write(f"{i}\n")
+        with open(f"{EXECUTABLE_PATH}/share1.txt", 'w') as f:
+            for i in y_1:
+                f.write(f"{i}\n")
+        with open(f"{EXECUTABLE_PATH}/share0prime.txt", 'w') as f:
+            for i in x_0:
+                f.write(f"{i}\n")
+        with open(f"{EXECUTABLE_PATH}/share1prime.txt", 'w') as f:
+            for i in x_1:
+                f.write(f"{i}\n")
+        # scalar
+        if scalar_x0 is not None and scalar_x1 is not None:
+            with open(f"{EXECUTABLE_PATH}/share0scalar_x.txt", 'w') as f:
+                for i in scalar_x0:
+                    f.write(f"{i}\n")
+            with open(f"{EXECUTABLE_PATH}/share1scalar_x.txt", 'w') as f:
+                for i in scalar_x1:
+                    f.write(f"{i}\n")
+
+            with open(f"{EXECUTABLE_PATH}/share0scalar_y.txt", 'w') as f:
+                for i in scalar_y0:
+                    f.write(f"{i}\n")
+            with open(f"{EXECUTABLE_PATH}/share1scalar_y.txt", 'w') as f:
+                for i in scalar_y1:
+                    f.write(f"{i}\n")
+        
+
+    CMD = f"./{EXECUTABLE_NAME} -r 0 -f {INPUT_FILE_NAME} -o {OUTPUT_FILE_NAME} & (./{EXECUTABLE_NAME} -r 1 -f {INPUT_FILE_NAME} -o {OUTPUT_FILE_NAME} 2>&1 > /dev/null)"
+    output = subprocess.run(CMD, shell=True, capture_output=True, text=True, cwd=EXECUTABLE_PATH)
+    assert (output.returncode == 0), f"{output.stdout=}, {output.stderr=}" # make sure the process executed successfully
+    return output
+
+
 def run_sfe(x, y, y_0=None, y_1=None):
     """
     Write the vectors to files used by ABY executable
@@ -233,7 +285,7 @@ def run_sfe(x, y, y_0=None, y_1=None):
     with open(f"{EXECUTABLE_PATH}/{INPUT_FILE_NAME}", 'w') as f:
         for x_i, y_i in zip(x, y):
             f.write(f"{x_i} {y_i}\n")
-            
+
     if y_0 is not None and y_1 is not None:
         # write the shares into separate files
         with open(f"{EXECUTABLE_PATH}/share0.txt", 'w') as f:
@@ -242,9 +294,9 @@ def run_sfe(x, y, y_0=None, y_1=None):
         with open(f"{EXECUTABLE_PATH}/share1.txt", 'w') as f:
             for i in y_1:
                 f.write(f"{i}\n")
-            
+
     # execute the ABY cos sim computation
-    CMD = f"./{EXECUTABLE_NAME} -r 0 -f {INPUT_FILE_NAME} -s 112 -x 0 & (./{EXECUTABLE_NAME} -r 1 -f {INPUT_FILE_NAME} -s 112 -x 0 2>&1 > /dev/null)"
+    CMD = f"./{EXECUTABLE_NAME} -r 0 -f {INPUT_FILE_NAME} -o {OUTPUT_FILE_NAME} & (./{EXECUTABLE_NAME} -r 1 -f {INPUT_FILE_NAME} -o {OUTPUT_FILE_NAME} 2>&1 > /dev/null)"
     output = subprocess.run(CMD, shell=True, capture_output=True, text=True, cwd=EXECUTABLE_PATH)
     assert (output.returncode == 0), f"{output.stdout=}, {output.stderr=}" # make sure the process executed successfully
     return output
@@ -255,10 +307,10 @@ def get_embedding(imagepath, dtype):
 def parse_powertop_csv(filepath):
     """
     Parse a PowerTop CSV file and extract a DataFrame containing the software power consumers.
-    
+
     Args:
         filepath (str): The path to the PowerTop CSV file.
-        
+
     Returns:
         pandas.DataFrame: A DataFrame containing the software power consumers.
     """
@@ -305,7 +357,7 @@ def get_energy_consumption(hostname, username, private_key_path, remote_path, ru
             for row in energy_series:
                 value, unit = row.split()
                 value = float(value)
-                if unit == 'mW': 
+                if unit == 'mW':
                     value*=0.001
                 elif unit == 'uW':
                     value*=0.000001
@@ -360,31 +412,53 @@ def fxor(x,y, dtype):
         return fxor32(x,y)
     else:
         raise Exception("Invalid dtype")
+ 
+def fminus(x,y, dtype):
+    if dtype == np.float64:
+        return x - y
+    elif dtype == np.float32:
+        return np.float32(x - y)
+    else:
+        raise Exception("Invalid dtype")
 
-
-def generate_nonce(a, dtype):
+def generate_nonce(a, dtype, quantized=False):
     """Generates random float nonces given a list of floats of size 128 (the face emedding)
     Checks for nan values after xoring, if that happens then it generates the nonces again
     """
+
+    #TODO: Add a parameter such that it is possible to switch between xor and minus...
     n = np.zeros(128)
     for i in range(len(a)):
-        x = np.random.uniform(-3,3)
+        if quantized:
+            x = np.random.randint(-128,128)
+        else:
+            x = np.random.uniform(-3,3)
         if dtype == np.float32:
             x = np.float32(x)
         elif dtype == np.float64:
             x = np.float64(x)
         else:
             raise Exception("Invalid dtype")
-        n_i = fxor(a[i], x, dtype)
+        if quantized:
+            n_i = fminus(a[i], x, dtype)
+        else:
+            n_i = fxor(a[i], x, dtype)  
+
         while np.isnan(n_i):
-            x = np.random.uniform(-3,3)
+            if quantized:
+                x = np.random.randint(-128,128)
+            else:
+                x = np.random.uniform(-3,3)
             if dtype == np.float32:
                 x = np.float32(x)
             elif dtype == np.float64:
                 x = np.float64(x)
             else:
                 raise Exception("Invalid dtype")
-            n_i = fxor(a[i], x, dtype)
+            if quantized:
+                n_i = fminus(a[i], x, dtype)
+            else:
+                n_i = fxor(a[i], x, dtype)  
         n[i] = n_i
     return n.astype(dtype)
 
@@ -532,12 +606,12 @@ def setup_logging(name):
     file_handler.setLevel(logging.DEBUG)
     file_handler.setFormatter(formatter)
     logger.addHandler(file_handler)
-    
+
     return logger
 
 # Function to execute a command on a remote host
 def execute_command(host, username, command, private_key_path):
-    
+
     # Load the private key from the specified file path
     private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
 
@@ -606,8 +680,11 @@ def write_share_to_remote_file(hostname, username, private_key_path, remote_path
 
         with sftp.open(remote_path, 'w') as file:
             # Write the content to the file
+            total_bytes = 0
             for i in content:
-                file.write(f"{i}\n")
+                line = f"{i}\n"
+                total_bytes += sys.getsizeof(line)
+                file.write(line)
 
         # Close the SFTP session
         sftp.close()
@@ -615,9 +692,10 @@ def write_share_to_remote_file(hostname, username, private_key_path, remote_path
         # Close the SSH client connection
         client.close()
 
+    return total_bytes
+
 
 def write_embeddings_to_remote_file(hostname, username, private_key_path, remote_path, x: np.ndarray, y: np.ndarray):
-    # Load the private key from the specified file path
     private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
 
     # Create an SSH client
@@ -668,6 +746,7 @@ def get_bandwidth(hostname1, hostname2, username1, username2, password1, passwor
         # if host_output.exit_code != 0:
         #     return f"f'iperf3 failed on {host_output.host}. stdout: {stdout}, stderr: {stderr}"
     '''read the logfile into a dictionary'''
+    
     # Load the private key from the specified file path
     private_key = paramiko.RSAKey.from_private_key_file(private_key_path)
 
@@ -692,7 +771,7 @@ def get_bandwidth(hostname1, hostname2, username1, username2, password1, passwor
             d = json.loads(''.join(content))
             # print(f"{d=}")
             bandwidth = float(d['end']['sum_received']['bits_per_second']) / 1e6
-        
+
         # remove the file on the host
         sftp.remove(f'iperf3_{current_datetime}.log')
 
@@ -704,19 +783,38 @@ def get_bandwidth(hostname1, hostname2, username1, username2, password1, passwor
         return bandwidth
 
 
-def create_shares(x: np.ndarray, dtype):
+def create_shares(x: np.ndarray, dtype, quantized=False):
     """Create shares for the client and server from an image"""
 
     # generate nonces
-    r = generate_nonce(x, dtype)
+    r = generate_nonce(x, dtype, quantized)
 
     # server's part is the nonces
     share1 = r
 
     # client's part is the nonces xored with the embedding
-    share0 = fxor(x, share1, dtype)
+    #share0 = fxor(x, share1, dtype)
+    if quantized:
+        share0 = fminus(x, share1, dtype)
+    else:
+        share0 = fxor(x, share1, dtype)
 
     return share0.astype(dtype), share1.astype(dtype)
+
+def create_share(x: float):
+    
+    #nonce = fxor(x, np.random.uniform(-3,3), np.float32) 
+    nonce = x ^ np.random.uniform(-3,3)
+    print(nonce)
+
+    share1 = nonce
+
+    share0 = x ^ share1
+
+    return share0, share1
+
+
+
 
 def get_images_in_folder(folder_path):
     images = []
